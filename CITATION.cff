@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use or build on Sheepdog, please credit it as below (see NOTICE)."
+title: "Sheepdog"
+abstract: "One agent that herds every Claude Code session: dispatches jobs, has them independently reviewed and merges what passes."
+type: software
+license: Apache-2.0
+repository-code: "https://github.com/Sahinoglu0/sheepdog"
+authors:
+  - name: "The Sheepdog contributors"

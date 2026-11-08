@@ -2,6 +2,8 @@
 
 ## v0.4: Sheepdog
 
+- Lisans Apache-2.0 + kredi şartı: `NOTICE` (fork ve kopyalar bunu korumalı ve krediyi göstermeli), `THIRD_PARTY_NOTICES.md` (uyarlanan MIT lisanslı önceki çalışmanın bildirimi) ve `CITATION.cff`.
+
 - Proje **Sheepdog** adıyla yeniden adlandırıldı; İngilizce ve Türkçe tam iki dilli (README, belgeler, roller, ajanlar, yetenekler, mesajlar, deneme seti, örnek kartlar).
 - Bütün dosya, klasör ve komut adları İngilizceleştirildi: `board.sh`, `state.sh`, `launch.sh`, `watchdog.sh`, `dry-run.sh`, `doctor.sh`, `settings.sh`, `main-branch.sh`, `rounds.sh`, `trust.py`, `lang.sh`; `jobs/`, `roles/`, `trial/`, `examples/`, `tests/`; kart dosyaları `card.md`, `result.md`, `review.md`, `verification.md`, `merge.md`. Durum, rol ve kart alanı adları İngilizce asıl adlarla tutulur; Türkçe karşılıkları kabul edilir (`lang.sh`, bkz. `docs/DILLER.md`).
 - `sheepdog`: tek giriş komutu (`board`, `watch`, `ready`, `start`, `set`, `rounds`, `timeline`, `policy`, `lang`, `new`, `doctor`, ...).

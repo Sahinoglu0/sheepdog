@@ -1,0 +1,24 @@
+Sheepdog
+Copyright 2026 The Sheepdog contributors
+https://github.com/Sahinoglu0/sheepdog
+
+ATTRIBUTION NOTICE (Apache License 2.0, section 4(d))
+
+If you redistribute this work, in source or binary form, with or without
+modification, including as a fork, a copy, a template, a derivative or as a
+substantial part of another project, you must:
+
+  1. keep the LICENSE file and this NOTICE file with the distribution, and
+  2. state the following credit in a visible place of your project, such as the
+     top of its README or its "About" or "Credits" page:
+
+       Based on Sheepdog, created by the Sheepdog contributors
+       https://github.com/Sahinoglu0/sheepdog
+
+Do not present this work, or a work derived from it, as your own original
+creation, and do not use the name "Sheepdog" or the project artwork in a way
+that suggests endorsement by, or affiliation with, the Sheepdog contributors.
+(Apache-2.0 section 6 already withholds trademark rights.)
+
+This product includes ideas and portions of code derived from third-party
+works; see THIRD_PARTY_NOTICES.md.
