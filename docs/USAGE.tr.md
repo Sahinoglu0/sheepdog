@@ -1,5 +1,7 @@
 # Sheepdog kullanım rehberi
 
+[English](USAGE.md) · **Türkçe**
+
 Komutları, aksi belirtilmedikçe kitin kök klasöründe çalıştırın. `<hedef>`,
 `<proje>` ve `<kart>` yerlerini kendi yollarınızla veya kart klasör adıyla değiştirin;
 köşeli parantezleri yazmayın. Kartların `Proje:` alanına mutlak yol yazın.
@@ -7,16 +9,16 @@ Windows'ta Git Bash kullanın. Türkçe çalışmak için önce bir kez `./sheep
 
 ## Başlamadan önce
 
-1. `./kontrol.sh /tam/yol/proje` ile gereksinimleri kontrol edin. Kit Claude Code
+1. `./doctor.sh /tam/yol/proje` ile gereksinimleri kontrol edin. Kit Claude Code
    2.1.293 veya sonrasını, `--bg` ve `agents` desteğini, otomatik izin modunu,
    git 2.38+ ve Python 3.8+ bekler. Eksikleri gidermeden iş başlatmayın.
 2. Her hedef proje klasöründe bir kez `claude` açıp güven onayını kabul edin.
    Git deposunda yalnız üst klasörün onaylı olması yeterli değildir.
 3. Kart hazırlamak için kit kökünde normal `claude` oturumunda
    `/is-karti yapılacak iş` yazın. Soruları cevaplayın, oluşan
-   `isler/<kart>/kart.md` dosyasını okuyun. `Proje`, `Tür`, `Bekliyor`,
+   `jobs/<kart>/card.md` dosyasını okuyun. `Proje`, `Tür`, `Bekliyor`,
    kapsam ve ölçülebilir “Bitti demek” maddelerini kontrol edin.
-4. Onayladığınız kartı `./durum.sh isler/<kart> hazir` ile hazırlayın.
+4. Onayladığınız kartı `./state.sh jobs/<kart> hazir` ile hazırlayın.
    Sheepdog'u kit kökünde başlatın:
 
    ```bash
@@ -29,7 +31,7 @@ Windows'ta Git Bash kullanın. Türkçe çalışmak için önce bir kez `./sheep
 Sheepdog kartları yönetir; kart yazdırma işi normal oturumdaki `/is-karti`
 komutuyla yapılır. Kod kartında akış işçi → incelemeci → doğrulayıcı → prova →
 birleştiricidir. İçerik kartı incelemeden geçince biter. Ayrı terminalde
-`./pano.sh` ile durumu, `./pano.sh --baslayabilir` ile hazır ve bağımlılığı
+`./board.sh` ile durumu, `./board.sh --startable` ile hazır ve bağımlılığı
 bitmiş kartları görebilirsiniz. Sheepdog başlangıçlarda sessiz kalır;
 karar gerektiğinde, iş bitince veya tıkanınca haber verir.
 
@@ -40,22 +42,22 @@ karar gerektiğinde, iş bitince veya tıkanınca haber verir.
 1. Deneme seti bulunan kit sürümünde, kit kökünden çalıştırın:
 
    ```bash
-   bash deneme/kur.sh <hedef>
+   bash trial/setup.sh <hedef>
    ```
 
    Boş bir deneme hedefi seçin. Kurucunun çıktısındaki proje ve kart yollarını
-   esas alın. `deneme/kur.sh` yoksa önce deneme setini içeren sürüm gerekir.
+   esas alın. `trial/setup.sh` yoksa önce deneme setini içeren sürüm gerekir.
 2. Oluşturulan proje klasöründe `claude` açıp güven onayını kabul edin.
-   Kit köküne dönüp `./kontrol.sh <oluşturulan-proje>` çalıştırın.
+   Kit köküne dönüp `./doctor.sh <oluşturulan-proje>` çalıştırın.
 3. Hazır kartları okuyun; panoda `hazir` olduklarını kontrol edin. Taslak
-   bıraktığınız kartları yalnız okuyup onayladıktan sonra `durum.sh` ile hazırlayın.
+   bıraktığınız kartları yalnız okuyup onayladıktan sonra `state.sh` ile hazırlayın.
 4. Yukarıdaki komutla Sheepdog'u açın. **“Birleştirmeden önce sor.
-   Hazır kartları başlat.”** yazın. Başka terminalde `./pano.sh --izle` çalıştırın.
+   Hazır kartları başlat.”** yazın. Başka terminalde `./board.sh --watch` çalıştırın.
 
 **Beklenen:** Kartın durumu `calisiyor`, ardından kontrol aşamalarına geçer.
 Başarılı kod kartı için birleştirme onayı sorulur; onaydan sonra dal ve ana dal
-commit'i bildirilir. Kart klasöründe `sonuc.md`, `inceleme.md`, kod işleri için
-`dogrulama.md` ve birleştirme yapıldıysa `birlesme.md` bulunur.
+commit'i bildirilir. Kart klasöründe `result.md`, `review.md`, kod işleri için
+`verification.md` ve birleştirme yapıldıysa `merge.md` bulunur.
 
 **Dikkat:** Deneme de gerçek model oturumları açar ve kullanım limitinden harcar.
 Kurucunun üreteceği klasör adlarını tahmin ederek komut yazmayın.
@@ -70,8 +72,8 @@ Kurucunun üreteceği klasör adlarını tahmin ederek komut yazmayın.
 2. Her kartın hatayı üretme adımlarını ve başarı kontrollerini okuyun.
    Birbirine bağımlı değişiklikleri bağımsızmış gibi başlatmayın;
    gerekiyorsa sonraki kartın `Bekliyor:` alanına önceki kartın tam klasör adını yazın.
-3. Onaylanan her kart için `./durum.sh isler/<kart> hazir` çalıştırın.
-   Sheepdog'a **“hazır kartları başlat”** deyin; `./pano.sh` ile izleyin.
+3. Onaylanan her kart için `./state.sh jobs/<kart> hazir` çalıştırın.
+   Sheepdog'a **“hazır kartları başlat”** deyin; `./board.sh` ile izleyin.
 
 **Beklenen:** Bağımsız işler ayrı işçi oturumlarında ve worktree dallarında yürür.
 Aynı projede aynı anda yalnız bir birleştirici çalışır. Birleştirme sırası gelince
@@ -88,7 +90,7 @@ ana dala alınan değişikliği uzaktaki depoya göndermek ayrı bir karardır.
 1. Her proje için güven onayı verin ve kit kökünden kontrol edin:
 
    ```bash
-   ./kontrol.sh /tam/yol/proje-a /tam/yol/proje-b
+   ./doctor.sh /tam/yol/proje-a /tam/yol/proje-b
    ```
 
 2. Normal oturumda ayrı istekler yazın: **“/is-karti /tam/yol/proje-a içinde
@@ -96,7 +98,7 @@ ana dala alınan değişikliği uzaktaki depoya göndermek ayrı bir karardır.
    depolama seçeneklerini kaynaklarıyla karşılaştır; yalnız rapor üret”**.
 3. İlk kartın `Tür: kod`, rapor kartının `Tür: icerik`, bağımsız kartların
    `Bekliyor: yok` olduğunu kontrol edin. Her kartı onaylayıp `hazir` yapın.
-4. Tek Sheepdog'a **“hazır kartları başlat”** yazın. `./pano.sh --izle` açın.
+4. Tek Sheepdog'a **“hazır kartları başlat”** yazın. `./board.sh --watch` açın.
 
 **Beklenen:** Kartlar kendi `Proje:` klasörlerinde ayrı oturumlarla başlar.
 İçerik kartı incelemeden geçince biter; kod kartı doğrulama ve birleştirme de görür.
@@ -125,9 +127,9 @@ aynı makinede her proje için ayrı Sheepdog açmayın.
    üç kartı da onaylayıp `hazir` yapın. Sheepdog'a **“hazır kartları başlat”** deyin.
 4. Son seçimi kendiniz yapacaksanız uygulama kartını `taslak` bırakın.
    Özeti okuyup kararınızı karta işletin; sonra
-   `./durum.sh isler/003-uygulama hazir` çalıştırıp **“hazır kartları başlat”** deyin.
+   `./state.sh jobs/003-uygulama hazir` çalıştırıp **“hazır kartları başlat”** deyin.
 
-**Beklenen:** `./pano.sh --baslayabilir` önce yalnız araştırmayı gösterir.
+**Beklenen:** `./board.sh --startable` önce yalnız araştırmayı gösterir.
 Her `bitti` sonrasında Sheepdog bağımlılığı tamamlanmış hazır kartı başlatır.
 Karar gerekirse seçenekleri size iletir ve cevabınızı ilgili oturuma gönderir.
 
@@ -140,7 +142,7 @@ onayı yerine geçmez. Karar özeti kartının bitmesi, taslak uygulama kartın�
 
 1. İşler başlamadan Sheepdog'a **“Birleştirmeden önce sor.
    Hazır kartları başlat.”** yazın.
-2. Onay sorusu gelince kartın `sonuc.md`, `inceleme.md` ve `dogrulama.md`
+2. Onay sorusu gelince kartın `result.md`, `review.md` ve `verification.md`
    dosyalarını okuyun; dalı ve gerekirse diff'i kontrol edin.
 3. Uygunsa **“001 için birleştirmeyi onaylıyorum”** yazın; uygun değilse
    **“001'i henüz birleştirme; kararımı bekle”** deyin.
@@ -157,17 +159,17 @@ bir temkinli mod anahtarı yoktur; yeni Sheepdog oturumunda tercihinizi yine sö
 
 **Ne zaman:** Hazır ve kapsamı net işleri uzun bir çalışma süresine bırakırken.
 
-1. Kartları, güven onaylarını ve `./kontrol.sh <proje>` çıktısını kontrol edin.
+1. Kartları, güven onaylarını ve `./doctor.sh <proje>` çıktısını kontrol edin.
    Gerekli kararları önceden netleştirin; sonra Sheepdog'a **“hazır kartları başlat”** deyin.
-2. Sheepdog ilk oturumu açınca `./gozcu.sh` betiğini arka planda başlatır.
+2. Sheepdog ilk oturumu açınca `./watchdog.sh` betiğini arka planda başlatır.
    Gözcü varsayılan olarak 600 saniyede bir bakar; sessizlik sınırı 20 dakikadır.
    Sorun bildirip çıktığında, açık iş kaldıkça Sheepdog onu yeniden başlatır.
-3. Başka terminalde `./pano.sh --izle` açın (varsayılan yenileme 10 saniye).
+3. Başka terminalde `./board.sh --watch` açın (varsayılan yenileme 10 saniye).
    İzlemeyi bitirmek için bu terminalde Ctrl+C kullanın; bu yalnız panoyu kapatır.
-4. Sabah Sheepdog'a **“durum ne”** yazın ve `./pano.sh` çalıştırın.
+4. Sabah Sheepdog'a **“durum ne”** yazın ve `./board.sh` çalıştırın.
    `tikandi`, `birlesme-bekliyor` ve hâlâ aktif görünen kartlara bakın;
    Sheepdog'un karar sorularını cevaplayın. Biten kartların raporlarını,
-   kod kartlarında `birlesme.md` içindeki testleri ve ana dal commit'ini kontrol edin.
+   kod kartlarında `merge.md` içindeki testleri ve ana dal commit'ini kontrol edin.
 
 **Beklenen:** Gözcü kapanan, başarısız veya uzun süre hareketsiz görünen
    oturumları Sheepdog'a bildirir. Pano kart durumlarını gösterir.
@@ -180,8 +182,8 @@ Bir onay veya karar sorusu cevap bekliyorsa o iş ilerlemeyebilir.
 
 **Ne zaman:** İnceleme/test başarısızsa, ortam engeli varsa veya oturum ilerlemiyorsa.
 
-1. `./pano.sh` çalıştırın; Sheepdog'a **“007'nin durumu ne, neye takıldı?”** yazın.
-   Kartın `sonuc.md`, varsa `inceleme.md`, `dogrulama.md` ve `birlesme.md`
+1. `./board.sh` çalıştırın; Sheepdog'a **“007'nin durumu ne, neye takıldı?”** yazın.
+   Kartın `result.md`, varsa `review.md`, `verification.md` ve `merge.md`
    dosyalarındaki kanıta bakın.
 2. İncelemeci veya doğrulayıcı işi geri gönderirse bulgular aynı işçiye
    iletilir ve durum `calisiyor` olur. Üç turda geçmezse Sheepdog size sorar.
@@ -195,41 +197,41 @@ Bir onay veya karar sorusu cevap bekliyorsa o iş ilerlemeyebilir.
 **Beklenen:** Panoda `tikandi` kart için uyarı görürsünüz. Yeniden yapılan
    işin kanıtı güncellenir ve kontroller tekrar değerlendirilir.
 
-**Not:** Tur sayısını `./tur.sh isler/<kart>` verir (`.gecmis` kaydından); sınır Sheepdog'un hafızasına bağlı değildir.
+**Not:** Tur sayısını `./rounds.sh jobs/<kart>` verir (`.history` kaydından); sınır Sheepdog'un hafızasına bağlı değildir.
 Her gözcü uyarısı kartı otomatik `tikandi` yapmaz. Ölü oturum için otomatik
 kurtarma garantisi yoktur. Durumu elle `bitti` yaparak kontrolleri atlamayın;
-yeniden açılan işte mevcut dal/worktree bilgisi `sonuc.md` içinde korunmalıdır.
+yeniden açılan işte mevcut dal/worktree bilgisi `result.md` içinde korunmalıdır.
 
 ## Hangi rol hangi model?
 
 | Rol | İş | Varsayılan model | Efor | Ne zaman değiştirilir? |
 |---|---|---|---|---|
-| İşçi (`isci`) | Kartı uygular, kanıt yazar | `sonnet` | `high` | Karmaşık kartta daha güçlü model denenebilir |
+| İşçi (`worker`) | Kartı uygular, kanıt yazar | `sonnet` | `high` | Karmaşık kartta daha güçlü model denenebilir |
 | İncelemeci (`reviewer`) | Bağımsız kabul incelemesi | `sonnet` | `high` | Karmaşık diff veya muhakeme gerektiren kabul ölçütlerinde |
-| Doğrulayıcı (`dogrulayici`) | Yazılı kontrolleri çalıştırır | `sonnet` | `medium` | Basit kontrollerde ekonomik profil denenebilir |
-| Birleştirici (`birlestirici`) | Birleşmiş ağacı test eder, ana dala alır | `sonnet` | `high` | Karmaşık proje kapılarında daha güçlü model denenebilir |
+| Doğrulayıcı (`verifier`) | Yazılı kontrolleri çalıştırır | `sonnet` | `medium` | Basit kontrollerde ekonomik profil denenebilir |
+| Birleştirici (`merger`) | Birleşmiş ağacı test eder, ana dala alır | `sonnet` | `high` | Karmaşık proje kapılarında daha güçlü model denenebilir |
 | Sheepdog | Oturumları ve kararları yönetir | `opus` | `high` | Yönetim kararlarının niteliğini izleyerek |
 | Gözcü, pano, birleştirme provası | Takip, tablo, çakışma kontrolü | Model kullanmaz | — | Model ayarı yok |
 
-Bu değiştirme önerileri ve `ayarlar.sh` içindeki ekonomik/dengeli/güçlü
+Bu değiştirme önerileri ve `settings.sh` içindeki ekonomik/dengeli/güçlü
 profiller ölçülmedi; maliyet veya başarı garantisi değildir.
 
 ### Ayar değiştirmek
 
-En kolayı profil seçmek. `ayarlar.sh` içinde tek satırı değiştirin:
+En kolayı profil seçmek. `settings.sh` içinde tek satırı değiştirin:
 
 ```bash
-PROFIL=ekonomik   # ya da dengeli (varsayılan) ya da guclu
+PROFILE=frugal   # ya da balanced (varsayılan) ya da strong
 ```
 
 | Profil | İşçi | İncelemeci | Doğrulayıcı | Birleştirici | Ne zaman |
 |---|---|---|---|---|---|
-| ekonomik | sonnet, medium | sonnet, medium | haiku, medium | sonnet, medium | Kapsamı dar, bitti şartı net işler |
-| dengeli | sonnet, high | sonnet, high | sonnet, medium | sonnet, high | Varsayılan |
-| guclu | opus, high | opus, high | sonnet, high | opus, high | Karmaşık kod, zor inceleme |
+| frugal (ekonomik) | sonnet, medium | sonnet, medium | haiku, medium | sonnet, medium | Kapsamı dar, bitti şartı net işler |
+| balanced (dengeli) | sonnet, high | sonnet, high | sonnet, medium | sonnet, high | Varsayılan |
+| strong (güçlü) | opus, high | opus, high | sonnet, high | opus, high | Karmaşık kod, zor inceleme |
 
-Tek bir rolü profilden bağımsız değiştirmek için `ayarlar.sh` içindeki ikinci bölümde
-satırın başındaki `#` işaretini kaldırın (ör. `MODEL_ISCI=opus`). Efor değeri
+Tek bir rolü profilden bağımsız değiştirmek için `settings.sh` içindeki ikinci bölümde
+satırın başındaki `#` işaretini kaldırın (ör. `MODEL_WORKER=opus`). Efor değeri
 `low`, `medium`, `high` dışında olursa başlatma açık hata verir.
 
 Yalnız bir kartın işçisini değiştirmek için kart başlığının altındaki alanlara ekleyin:
@@ -241,24 +243,24 @@ Efor: high
 
 İki alan da isteğe bağlıdır; yalnız yazdığınız alan rol ayarının önüne geçer.
 İncelemeci, doğrulayıcı ve birleştirici karttaki bu alanları kullanmaz.
-Öncelik: işçi için kart → `ayarlar.sh` → yerleşik varsayılanlar;
-diğer roller için `ayarlar.sh` → yerleşik varsayılanlar.
+Öncelik: işçi için kart → `settings.sh` → yerleşik varsayılanlar;
+diğer roller için `settings.sh` → yerleşik varsayılanlar.
 Ayar dosyası yoksa tablodaki dört alt rol varsayılanı kullanılır.
 Değişiklikler yalnız yeni başlatmalarda okunur; çalışan oturum değişmez.
 
-Sheepdog için `.claude/agents/sheepdog.md` içindeki `model:` ve `effort:`
-satırlarını düzenleyip yeni Sheepdog oturumu başlatın. `ayarlar.sh` onu etkilemez.
+Sheepdog için `.claude/agents/sheepdog-tr.md` içindeki `model:` ve `effort:`
+satırlarını düzenleyip yeni Sheepdog oturumu başlatın. `settings.sh` onu etkilemez.
 
 Seçimi gerçek oturum açmadan görmek için:
 
 ```bash
-SHEEPDOG_KURU=1 ./baslat.sh isler/<kart> isci
-SHEEPDOG_KURU=1 ./baslat.sh isler/<kart> reviewer
+SHEEPDOG_DRY=1 ./launch.sh jobs/<kart> worker
+SHEEPDOG_DRY=1 ./launch.sh jobs/<kart> reviewer
 ```
 
 Güven onayı bu modda da gereklidir. Çıktı, kartın `Proje:` klasöründe çalıştırılacak
 komutun kabuk için kaçışlanmış tek satırıdır. Claude çalışmaz, kart durumu ve
-`.gecmis` değişmez. `ayarlar.sh` kabuk dosyası olarak okunur; içine yalnız ayar
+`.history` değişmez. `settings.sh` kabuk dosyası olarak okunur; içine yalnız ayar
 atamalarını ve yorumları koyun.
 
 ## Sheepdog'la kısa cümleler

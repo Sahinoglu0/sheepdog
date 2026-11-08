@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  smoke:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Environment
+        run: |
+          bash --version | head -1
+          git --version
+          (python3 --version || python --version) 2>&1
+
+      - name: Smoke test
+        run: bash tests/smoke.sh
+
+      - name: Smoke test (macOS stock bash 3.2)
+        if: runner.os == 'macOS'
+        run: /bin/bash tests/smoke.sh
+
+      - name: Artwork is up to date
+        if: runner.os == 'Linux'
+        run: |
+          python3 tools/build_assets.py
+          git diff --exit-code assets
+
+      - name: shellcheck (informational, never fails)
+        if: runner.os == 'Linux'
+        continue-on-error: true
+        run: |
+          if command -v shellcheck >/dev/null; then
+            shellcheck ./*.sh ./sheepdog tests/*.sh || true
+          else
+            echo "shellcheck not found, skipped"
+          fi

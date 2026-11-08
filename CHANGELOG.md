@@ -1,47 +1,17 @@
-# Değişiklik günlüğü
+# Changelog
 
-## v0.4: ekip sürümü
+**English** · [Türkçe](CHANGELOG.tr.md)
 
-- `ana-dal.sh`: ana dal adı otomatik bulunur (origin/HEAD, çıkış yapılmış dal, main, master). `birlestirme-hazirla.sh` ve birleştirici artık `main` varsaymaz.
-- `tur.sh`: geri gönderme turu `.gecmis` kaydından sayılır; üç tur sınırı Sheepdog'un hafızasına bağlı kalmaz.
-- Oturumlara `--add-dir` olarak artık tüm merkez değil yalnız kendi kart klasörü verilir; işçi `ayarlar.sh`, `roller/` ve diğer kartları yazamaz.
-- `baslat.sh`: model ve efor değerleri doğrulanır (`ayarlar.sh` ya da karttan gelen bozuk değer oturum açmaz); `Proje: ~/...` yolu açılır.
-- `gozcu.sh`: `claude agents` bir kez başarısız olunca yönetici uyandırılmaz, art arda üç hatada rapor verilir.
-- `pano.sh`: `Bekliyor:` birden çok kartı virgülle kabul eder.
-- Proje **Sheepdog** adıyla yeniden adlandırıldı (ajan `sheepdog`, ortam değişkeni `SHEEPDOG_KURU`); İngilizce ana sayfa, Türkçe `README.tr.md`.
-- `sheepdog`: tek giriş komutu (`board`, `watch`, `ready`, `start`, `set`, `rounds`, `timeline`, `policy`, `new`, `doctor`, ...).
-- `sheepdog policy ask|auto`: kalıcı "birleştirmeden önce sor" anahtarı (`.politika`); süper ajan her birleştirici başlatmadan önce okur.
-- `sheepdog timeline`: kart başına durum süreleri (`.gecmis`).
-- `sheepdog new`: kart iskeleti açar (numara otomatik).
-- Yeni belgeler: `docs/ARCHITECTURE.md`, `docs/GLOSSARY.md`, `docs/USAGE.md`, `CONTRIBUTING.md`, `SECURITY.md`, issue/PR şablonları; yeni görseller (akış, kart yaşam döngüsü).
-- Tam iki dilli (İngilizce ve Türkçe): betik mesajları, rol istemleri (`roller/en`, `roller/tr`), yönetici ajan (`sheepdog`, `sheepdog-tr`), kart yetenekleri (`/job-card`, `/is-karti`), İngilizce deneme projesi (`deneme/en`, `kur.sh --lang`), İngilizce örnek kartlar (`examples/`), belgeler. Kart alanları, durum adları ve rol adları iki dilde de kabul edilir (`dil.sh`). Dil: `./sheepdog lang en|tr` ya da `SHEEPDOG_LANG`.
-- Duman testi 235 kontrole çıktı.
+## v0.4: Sheepdog
 
-## v0.3: kolay kullanım
-
-- `deneme/`: kendi projenize dokunmadan 10 dakikalık deneme. `bash deneme/kur.sh <hedef>` hatası ve eksik özelliği olan küçük bir proje kurar, 901-903 kartlarını hazırlar.
-- `ornek-kartlar/`: 10 detaylı örnek kart (hata, özellik, test, bağımlılık, yeniden düzenleme, belge, performans, araştırma, veri raporu, bağımlı karar özeti) ve kart yazma rehberi.
-- `ayarlar.sh`: rol başına model ve efor; `PROFIL=ekonomik|dengeli|guclu`; kartta `Model:` ve `Efor:` ile tek işin işçisine özel model.
-- `docs/USAGE.tr.md`: yedi adım adım iş akışı, rol-model tablosu, Sheepdog'a kısa cümleler.
-- `SHEEPDOG_KURU=1`: `baslat.sh` oturum açmadan çalıştıracağı komutu gösterir.
-- Duman testi 169 kontrole çıktı.
-
-## v0.2: Linux, macOS ve Windows
-
-- Betikler macOS (kendi bash 3.2 sürümü dahil) ve Windows Git Bash'te çalışır; GitHub otomatik kontrolü üç sistemde koşar.
-- `guven.py`: güven onayı kontrolü tek yerde; yollar her sistemde normalleştirilir. Git deposunda klasörün kendisi ya da git kökü onaylı olmalı.
-- `kontrol.sh`: `python3` ya da `python`, git 2.38 ve Claude Code sürüm kontrolü `sort -V` olmadan.
-- `pano.sh`: özet satırı, tıkanan kart uyarısı, `--izle` ile canlı tablo.
-- Satır sonları `.gitattributes` ile LF'e sabitlendi (Windows'ta betikler bozulmaz).
-- Duman testi 58 kontrole çıktı: sahte `claude` ile sürüm kontrolü ve güven kontrolü dahil.
-
-## v0.1: deneysel ilk sürüm
-
-Claude Code 2.1.293 ile Linux'ta denendi. Parçalar:
-
-- Ajanlar: Sheepdog (`.claude/agents/sheepdog.md`); işçi, incelemeci, doğrulayıcı ve birleştirici rolleri (`roller/`).
-- İş kartı yazdıran yetenek: `/is-karti` (`.claude/skills/is-karti/`).
-- Programlar (model harcamaz): `pano.sh` (kart durumları), `gozcu.sh` (oturum gözcüsü), `birlestirme-hazirla.sh`.
-- Yardımcılar: `baslat.sh` (arka plan oturumu açar), `durum.sh` (kart durumunu değiştirir).
-- Örnek kartlar: `ornek-kartlar/`.
-- `isler/` klasörü (kartların yeri; içeriği git'e girmez).
+- The project is now **Sheepdog**, fully bilingual (English and Turkish): README, docs, roles, agents, skills, messages, the trial kit and the example cards.
+- All file, folder and command names are English: `board.sh`, `state.sh`, `launch.sh`, `watchdog.sh`, `dry-run.sh`, `doctor.sh`, `settings.sh`, `main-branch.sh`, `rounds.sh`, `trust.py`, `lang.sh`; `jobs/`, `roles/`, `trial/`, `examples/`, `tests/`; card files `card.md`, `result.md`, `review.md`, `verification.md`, `merge.md`. State, role and card-field names are kept in English canonical form; the Turkish names are accepted as aliases (`lang.sh`, see `docs/LANGUAGES.md`).
+- `sheepdog`: one front door (`board`, `watch`, `ready`, `start`, `set`, `rounds`, `timeline`, `policy`, `lang`, `new`, `doctor`, ...).
+- `sheepdog policy ask|auto`: a persistent "ask before merging" switch (`.policy`), read by the manager before every merger launch.
+- `sheepdog timeline` shows time per state per card; `sheepdog new` scaffolds a card.
+- `main-branch.sh` detects the main branch; `dry-run.sh` and the merger no longer assume `main`.
+- `rounds.sh` counts review rounds from `.history`, so the three-round limit no longer lives in the manager's memory.
+- Sessions get only their own card folder; model and effort values are validated; `~/` project paths are expanded.
+- `watchdog.sh` reports only after three consecutive `claude agents` failures. `board.sh` accepts several `Waits-for:` cards.
+- Entirely new artwork: animated SVGs generated by `tools/build_assets.py` (banner, flow, lifecycle, conversation, architecture, safety; in both languages).
+- The smoke test grew to 236 checks.

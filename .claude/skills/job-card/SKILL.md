@@ -12,8 +12,8 @@ Turn the request into job cards. The worker cannot ask questions later, so close
 1. Split the request into parts. A card is the smallest job that can be finished and checked on its own.
 2. Briefly look at the files and existing work involved.
 3. Ask the user one question at a time. If there are options, put your recommendation first. Stop when nothing is left that the worker would have to decide on its own. If the user does not answer, do not assume: write the question into the card as pending.
-4. Save each card as `isler/001-short-name/kart.md` (the folder is `isler`, the file `kart.md`). Number them in order.
-5. Leave all of them `Status: draft`. When the user approves, set `Status: ready` (`./durum.sh isler/<card> ready`). `Type` is `code` or `content`. If a card waits on others, write their folder names in `Waits-for:` (comma-separated).
+4. Save each card as `jobs/001-short-name/card.md` (a folder under `jobs/`, the file `card.md`). Number them in order.
+5. Leave all of them `Status: draft`. When the user approves, set `Status: ready` (`./state.sh jobs/<card> ready`). `Type` is `code` or `content`. If a card waits on others, write their folder names in `Waits-for:` (comma-separated).
 
 The scripts accept both the English field names below and the Turkish ones (`Durum`, `Tür`, `Bekliyor`, `Proje`).
 

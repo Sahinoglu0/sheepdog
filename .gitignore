@@ -1,11 +1,11 @@
-isler/*
-!isler/.gitkeep
-.gecmis
-.gozcu-yasam
+jobs/*
+!jobs/.gitkeep
+.history
+.watchdog-alive
 .claude/worktrees/
 .env
 .env.*
 *.pem
 *.key
-.politika
-.dil
+.policy
+.lang

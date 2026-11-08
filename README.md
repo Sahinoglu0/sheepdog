@@ -1,88 +1,83 @@
-<p>
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.svg">
-  <img src="assets/banner-light.svg" alt="Sheepdog: one agent herds every Claude Code session. It dispatches the work, has it checked, and merges what passes." width="100%">
-</picture>
+<p align="center">
+  <img src="assets/en/banner.svg" alt="Sheepdog: one agent herds every Claude Code session. It dispatches the work, has it reviewed, and merges what passes." width="100%">
 </p>
 
 <p align="center">
-  <a href="https://github.com/Sahinoglu0/sheepdog/actions/workflows/kontrol.yml"><img src="https://github.com/Sahinoglu0/sheepdog/actions/workflows/kontrol.yml/badge.svg" alt="CI"></a>
-  <img src="https://img.shields.io/badge/version-v0.4%20experimental-b45309?style=flat-square&labelColor=1f2328" alt="version v0.4, experimental">
-  <img src="https://img.shields.io/badge/Claude%20Code-%E2%89%A5%202.1.293-b45309?style=flat-square&labelColor=1f2328" alt="Claude Code 2.1.293 or newer">
-  <img src="https://img.shields.io/badge/Linux%20%C2%B7%20macOS%20%C2%B7%20Windows-CI%20tested-b45309?style=flat-square&labelColor=1f2328" alt="Linux, macOS and Windows">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-b45309?style=flat-square&labelColor=1f2328" alt="MIT license"></a>
+  <a href="https://github.com/Sahinoglu0/sheepdog/actions/workflows/ci.yml"><img src="https://github.com/Sahinoglu0/sheepdog/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <img src="https://img.shields.io/badge/version-v0.4%20experimental-2dd4bf?style=flat-square&labelColor=0f172a" alt="version v0.4, experimental">
+  <img src="https://img.shields.io/badge/Claude%20Code-%E2%89%A5%202.1.293-2dd4bf?style=flat-square&labelColor=0f172a" alt="Claude Code 2.1.293 or newer">
+  <img src="https://img.shields.io/badge/Linux%20%C2%B7%20macOS%20%C2%B7%20Windows-CI%20tested-2dd4bf?style=flat-square&labelColor=0f172a" alt="Linux, macOS and Windows">
+  <img src="https://img.shields.io/badge/languages-EN%20%C2%B7%20TR-a3e635?style=flat-square&labelColor=0f172a" alt="English and Turkish">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-a3e635?style=flat-square&labelColor=0f172a" alt="MIT license"></a>
 </p>
 
 <p align="center"><b>English</b> · <a href="README.tr.md">Türkçe</a></p>
 
-<p align="center"><b>Stop tab-hopping between Claude Code windows. Talk to one agent and let it keep track of the rest.</b></p>
+<h3 align="center">Stop tab-hopping between Claude Code windows.<br>Talk to one agent and let it keep track of the rest.</h3>
 
 ---
 
 Running different jobs in different sessions is the right call. But once the session count grows you have created a new job for yourself: **which one finished, which one is waiting on me, which one is stuck?**
 
-Sheepdog takes that bookkeeping off you. You only ever talk to **Sheepdog**. It starts every job in its own project, in its own background Claude Code session; has finished work checked by a *different* agent that did not do the work; sends incomplete work back; asks you a single sentence only where the decision is yours; and merges code that passes its tests into the project. It also notices when a session stalls or closes.
+Sheepdog takes that bookkeeping off you. You only ever talk to **Sheepdog**. It starts every job in its own project, in its own background Claude Code session; has finished work checked by a *different* agent that did not do the work; sends incomplete work back; asks you one sentence only where the decision is yours; and lands code that passes its tests on the main branch. It also notices when a session stalls or closes.
 
-<p>
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/flow-dark.svg">
-  <img src="assets/flow-light.svg" alt="Flow: card, worker, reviewer, verifier, dry run, merger, main. Incomplete work returns to the same worker; after three rounds the decision is yours. A watchdog checks sessions every ten minutes." width="100%">
-</picture>
+<p align="center">
+  <img src="assets/en/demo.svg" alt="Animated terminal: you ask Sheepdog to start the ready cards, it runs worker, reviewer and verifier sessions, asks once before merging, and reports the merge commit." width="860">
 </p>
 
 ## Contents
 
-[Highlights](#highlights) · [Try it in 10 minutes](#try-it-in-10-minutes) · [Install](#install-in-three-steps) · [What a session looks like](#what-a-session-looks-like) · [How it works](#how-it-works) · [Models](#which-role-uses-which-model) · [Safety](#safety-and-limits) · [Requirements](#requirements-and-platforms) · [FAQ](#faq) · [Docs](#documentation) · [Contributing](#contributing)
+[Highlights](#highlights) · [Try it in 10 minutes](#try-it-in-10-minutes) · [Install](#install-in-three-steps) · [How it works](#how-it-works) · [The `sheepdog` command](#the-sheepdog-command) · [Job cards](#job-cards) · [Models](#which-role-uses-which-model) · [Safety](#safety-and-limits) · [Requirements](#requirements-and-platforms) · [FAQ](#faq) · [Docs](#documentation) · [Roadmap](#roadmap)
 
 ## Highlights
 
 | | |
 |---|---|
 | **One conversation** | You talk to a single agent. Workers, reviewers and mergers are background sessions it manages. |
-| **Independent review** | The agent that checks the work is never the agent that did it. A third agent re-runs the card's checks verbatim. |
-| **Safe merging** | Merges are rehearsed first, then done in a throwaway copy of the main branch. The main branch only ever fast-forwards, and only if every gate passes. No push, no force, no rebase. |
-| **Scripts where judgment isn't needed** | The board, the watchdog and the merge dry run are plain scripts. They cost no model tokens. |
-| **Multi-project** | Jobs run in the project they belong to. Fix a bug in one repo, research in another, ship a feature in a third. |
-| **Dependencies between cards** | `Bekliyor: 001-a,002-b` starts a card only when everything it waits for is `bitti` (done). |
-| **One command, persistent policy** | `./sheepdog` is the front door: scaffold cards, see where time went (`timeline`), and set a lasting `policy ask` so every merge needs your approval, even in a new session. |
-| **Bilingual, for real** | English and Turkish roles, agents, card skills, messages, docs, trial project and example cards. Cards and states work in either language, even mixed. |
-| **Hard limits in code** | Review rounds are counted from an append-only log (`tur.sh`), not from the agent's memory. |
+| **Independent review** | The agent that checks the work never did the work. A third agent re-runs the card's checks exactly as written. |
+| **Safe merging** | A merge is rehearsed, then done in a throwaway copy of the main branch. Main only ever fast-forwards, and only if every gate passes. No push, no force, no rebase. |
+| **Scripts where judgment isn't needed** | The board, the watchdog and the merge dry run are plain scripts. They spend zero model tokens. |
+| **Many projects at once** | Jobs run in the project they belong to: a bug fix in one repo, research in another, a feature in a third. |
+| **Card dependencies** | `Waits-for: 001-a,002-b` starts a card only when everything it waits for is `done`. |
+| **Limits enforced in code** | Review rounds are counted from an append-only log (`rounds.sh`), not from an agent's memory. |
+| **A lasting merge policy** | `./sheepdog policy ask` makes every merge need your approval, even in a brand-new session. |
+| **Timeline** | `./sheepdog timeline` shows where each card spent its time. |
+| **Truly bilingual** | English and Turkish roles, agents, skills, messages, docs, trial project and example cards. Cards and states work in either language. |
 | **Tested everywhere** | A 230-check smoke test runs on Ubuntu, macOS (including its stock bash 3.2) and Windows (Git Bash) on every push. |
 
 ## Try it in 10 minutes
 
-Don't point it at your own project first. The trial kit builds a small Python library with a deliberate bug and a missing feature, plus three ready cards: a bug fix, a feature that asks you to choose between options, and a content job that depends on it.
+Do not point it at your own project first. The trial kit builds a small Python library that has a deliberate bug and a missing feature, plus three ready cards: a bug fix, a feature that asks you to choose between options, and a content job that depends on it.
 
 ```bash
 git clone https://github.com/Sahinoglu0/sheepdog hq
 cd hq
-bash deneme/kur.sh ../library-trial              # English trial (default)
-bash deneme/kur.sh ../kitaplik-denemesi --lang tr   # Turkish trial
+bash trial/setup.sh ../library-trial
 ```
 
-Add `--lang tr` for the Turkish project and cards. Details: [deneme/README.md](deneme/README.md) · [Türkçe](deneme/README.tr.md)
+Details: [trial/README.md](trial/README.md)
 
 ## Install in three steps
 
-> **Language:** the scripts, roles, agent and card template are available in **English (default) and Turkish**. For Turkish run `./sheepdog lang tr` once (or set `SHEEPDOG_LANG=tr`) and start the agent `sheepdog-tr`; the card skill is `/is-karti`. Cards, states and field names are accepted in both languages. See [docs/GLOSSARY.md](docs/GLOSSARY.md).
+> **Language.** Scripts, roles, the agent and card templates exist in **English (default) and Turkish**. For Turkish run `./sheepdog lang tr` once and start the agent `sheepdog-tr` instead of `sheepdog`. See [docs/LANGUAGES.md](docs/LANGUAGES.md).
 
 **1. Clone it and check your machine**
 
 ```bash
 git clone https://github.com/Sahinoglu0/sheepdog hq
 cd hq
-./kontrol.sh ~/your-project
+./sheepdog doctor ~/your-project
 ```
 
-`kontrol.sh` changes nothing. It checks the Claude Code version, `--bg` and `agents` support, git, Python, and the trust prompt for each project you pass, and tells you in one line what is missing.
+`doctor` changes nothing. It checks the Claude Code version, `--bg` and `agents` support, git, Python, and the trust prompt of every project you pass, and tells you in one line what is missing.
 
 **2. Accept the trust prompt in every project**
 
-Open `claude` once in each project folder where you will give jobs, and accept the trust dialog. Without it, a background session will not start and Sheepdog tells you so.
+Open `claude` once in each project folder where you will give jobs and accept the trust dialog. Without it a background session will not start, and Sheepdog tells you so.
 
 **3. Describe the job, then start Sheepdog**
 
-Open Claude Code inside `hq` and write `/job-card <the job>` (Turkish: `/is-karti`). The skill inspects the job, asks you about anything ambiguous, and writes a job card. Read the card and set `Status: ready` (`./sheepdog set <card> ready`). Then:
+Open Claude Code inside `hq` and write `/job-card <the job>`. The skill looks at the job, asks you about anything ambiguous, and writes a job card. Read the card and approve it with `./sheepdog set <card> ready`. Then:
 
 ```bash
 claude --agent sheepdog --name sheepdog --permission-mode auto
@@ -90,50 +85,37 @@ claude --agent sheepdog --name sheepdog --permission-mode auto
 
 and tell Sheepdog **"start the ready cards"**. Everything after that happens in that one conversation.
 
-## What a session looks like
-
-Taken from a real dry run on a clean install (translated; the original run was in Turkish, see [README.tr.md](README.tr.md)). The job was to fix a sign-up form that crashed on an empty e-mail.
-
-```text
-❯ In this project ask me before merging. Start the ready cards.
-● I started the worker session for the only ready card (001-empty-email-crash).
-  I will ask for your approval before merging in this project.
-● The worker for card 001 reported it is done. I moved the card to review and started the review session.
-● Card 001 passed review. It is a code card, so I moved it to verification and started the verifier.
-● Card 001 passed verification and the merge dry run is clean
-  (branch worktree-card-001-empty-email, 1 commit). Shall I merge this branch into main?
-❯ Yes, merge it.
-● Card 001 is done: branch worktree-card-001-empty-email entered main as merge commit e99b19e.
-```
-
-You did not write the job, open the worker's window, or check the result. You were asked exactly once, at the one point where the decision was yours.
-
 ## How it works
 
-The rule: **an agent where judgment is needed, a program where it isn't.** Programs cost no usage limit.
+The rule: **an agent where judgment is needed, a program where it isn't.** Programs spend no usage limit.
+
+<p align="center">
+  <img src="assets/en/architecture.svg" alt="Architecture: you talk to Sheepdog, which starts worker, reviewer, verifier and merger sessions. Scripts for the board, watchdog, dry run and state spend no model tokens." width="100%">
+</p>
 
 | Part | Kind | What it does |
 |---|---|---|
-| **Sheepdog** | agent | The one you talk to. Dispatches, tracks, and interrupts you only for a decision, a finished card, or a stuck one. It has no file-writing tool. |
-| **worker** (`isci`) | agent | Does the card in its own project on its own branch. Reports in one sentence when done, stuck, or in need of a decision. |
-| **reviewer** | agent | A separate agent that did not do the work. Checks the card's "done" criteria one by one and reads the diff. |
-| **verifier** (`dogrulayici`) | agent | Runs the card's checks verbatim and reports without softening the result. |
-| **merger** (`birlestirici`) | agent | Merges in a throwaway copy of the main branch, runs the project's rules and tests there, fast-forwards main only if everything passes. Never pushes. |
-| `pano.sh` | script | All cards in one table with a summary. `./pano.sh --izle` is a live view. |
-| `gozcu.sh` | script | Every ten minutes it looks at the sessions and tells Sheepdog about any that closed or stalled. |
-| `birlestirme-hazirla.sh` | script | Merge dry run: finds conflicts without touching the main branch. |
-| `ana-dal.sh` | script | Detects the project's main branch (`main`, `master`, or whatever `origin/HEAD` says). |
-| `tur.sh` | script | Counts how many rounds a card has been sent back, from the log. |
-| `durum.sh` | script | The only thing that changes a card's state. |
-| `baslat.sh` | script | Starts a role's background session with the right model and scope. |
+| **Sheepdog** | agent | The one you talk to. Dispatches, tracks, and interrupts you only for a decision, a finished card or a stuck one. It has no file-writing tool. |
+| **worker** | agent | Does the card in its own project on its own branch. Reports in one sentence when done, stuck, or in need of a decision. |
+| **reviewer** | agent | A separate agent that did not do the work. Checks the card's definition of done item by item and reads the diff. |
+| **verifier** | agent | Runs the card's checks verbatim and reports without softening the result. |
+| **merger** | agent | Merges in a throwaway copy of the main branch, runs the project's rules and tests there, and fast-forwards main only if everything passes. Never pushes. |
+| `board.sh` | script | All cards in one table with a summary. `--watch` is a live view. |
+| `watchdog.sh` | script | Every ten minutes it looks at the sessions and tells Sheepdog about any that closed or stalled. |
+| `dry-run.sh` | script | Merge dry run: finds conflicts without touching the main branch. |
+| `main-branch.sh` | script | Detects the project's main branch (`main`, `master`, or whatever `origin/HEAD` says). |
+| `rounds.sh` | script | Counts how many times a card was sent back, from the log. |
+| `state.sh` | script | The only thing that changes a card's state. |
+| `launch.sh` | script | Starts a role's background session with the right model and scope. |
 
-### Card lifecycle
+### A card's journey
 
-<p>
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/lifecycle-dark.svg">
-  <img src="assets/lifecycle-light.svg" alt="Card lifecycle: draft, ready, working, review, verify, merge queue, merging, done. Failed checks return the card to working." width="100%">
-</picture>
+<p align="center">
+  <img src="assets/en/flow.svg" alt="Flow: card, worker, reviewer, verifier, dry run, merger, main. Incomplete work returns to the same worker; after three rounds the decision is yours. A watchdog checks sessions every ten minutes." width="100%">
+</p>
+
+<p align="center">
+  <img src="assets/en/lifecycle.svg" alt="Card lifecycle: draft, ready, working, review, verify, merge-queue, merging, done. Failed checks return the card to working." width="100%">
 </p>
 
 ```mermaid
@@ -146,21 +128,35 @@ sequenceDiagram
     participant V as verifier
     participant M as merger
     You->>S: start the ready cards
-    S->>W: baslat.sh isler/001 isci
-    W-->>S: done (sonuc.md written)
-    S->>R: baslat.sh isler/001 reviewer
-    R-->>S: SONUÇ: GEÇTİ (inceleme.md)
-    S->>V: baslat.sh isler/001 dogrulayici
-    V-->>S: SONUÇ: GEÇTİ (dogrulama.md)
-    S->>S: birlestirme-hazirla.sh (dry run)
-    S->>M: baslat.sh isler/001 birlestirici
-    M-->>S: main fast-forwarded (birlesme.md)
+    S->>W: launch.sh jobs/001 worker
+    W-->>S: done (result.md written)
+    S->>R: launch.sh jobs/001 reviewer
+    R-->>S: RESULT: PASSED (review.md)
+    S->>V: launch.sh jobs/001 verifier
+    V-->>S: RESULT: PASSED (verification.md)
+    S->>S: dry-run.sh (merge rehearsal)
+    S->>M: launch.sh jobs/001 merger
+    M-->>S: main fast-forwarded (merge.md)
     S-->>You: card 001 merged at e99b19e
 ```
 
-### What is a job card?
+## The `sheepdog` command
 
-A card is a Markdown file the worker can complete without asking questions. Its "done" criteria must be checkable by someone who did not do the job.
+One front door over the scripts. None of it spends model tokens.
+
+```text
+./sheepdog board                 card table with a summary        ./sheepdog watch   live board
+./sheepdog ready                 cards that can start now         ./sheepdog doctor  check your machine
+./sheepdog new fix-login --project /abs/app [--type code|content] [--waits 001-a,002-b]
+./sheepdog start 001-fix-login [role]     ./sheepdog set 001-fix-login ready
+./sheepdog rounds 001-fix-login           ./sheepdog timeline [card]    time spent per state
+./sheepdog policy [ask|auto]              persistent merge policy ("ask": you approve every merge)
+./sheepdog lang [en|tr]                   language of messages, roles, agent and templates
+```
+
+## Job cards
+
+A card is a Markdown file the worker can complete without asking questions. Its definition of done must be checkable by someone who did not do the job.
 
 ```markdown
 # 001: Fix crash on empty e-mail
@@ -183,55 +179,45 @@ Everything out of scope.
 Where to stop and report.
 ```
 
-Every field and state also has a Turkish name (`Durum`, `Tür`, `Bekliyor`, `Proje`; `taslak`, `hazir`, `calisiyor` …) and the scripts accept both; see the [glossary](docs/GLOSSARY.md). Ten worked examples live in [examples/](examples/README.md) ([Türkçe: ornek-kartlar/](ornek-kartlar/README.md)).
+Ten worked examples live in [examples/](examples/README.md). Cards can also be written in Turkish; both forms are accepted (see [docs/LANGUAGES.md](docs/LANGUAGES.md)).
 
 ## Which role uses which model
 
 | Role | Default | Where to change |
 |---|---|---|
 | Sheepdog | opus, high | `.claude/agents/sheepdog.md` → `model:`, `effort:` |
-| worker | sonnet, high | `ayarlar.sh`; for a single job add `Model: opus` to the card |
-| reviewer | sonnet, high | `ayarlar.sh` |
-| verifier | sonnet, medium | `ayarlar.sh` |
-| merger | sonnet, high | `ayarlar.sh` |
+| worker | sonnet, high | `settings.sh`; for a single job add `Model: opus` to the card |
+| reviewer | sonnet, high | `settings.sh` |
+| verifier | sonnet, medium | `settings.sh` |
+| merger | sonnet, high | `settings.sh` |
 | watchdog, board, dry run | no model | none |
 
-The easiest switch is a profile in `ayarlar.sh`: `PROFIL=ekonomik` (frugal), `dengeli` (balanced, default) or `guclu` (strong). Profiles are suggestions and have **not** been benchmarked. To preview what would run without opening a session: `SHEEPDOG_KURU=1 ./baslat.sh isler/<card> isci`.
-
-## The `./sheepdog` command
-
-One English-named front door over the scripts. None of it spends model tokens.
-
-```text
-./sheepdog board                 card table with summary        ./sheepdog watch   live board
-./sheepdog ready                 cards that can start now       ./sheepdog doctor  check your machine
-./sheepdog new fix-login --project /abs/app [--type kod|icerik] [--waits 001-a,002-b]
-./sheepdog start 001-fix-login [role]     ./sheepdog set 001-fix-login hazir
-./sheepdog rounds 001-fix-login           ./sheepdog timeline [card]   time spent per state
-./sheepdog policy [ask|auto]              persistent merge policy ("ask" = you approve every merge)
-```
+The easiest switch is a profile in `settings.sh`: `PROFILE=frugal`, `balanced` (default) or `strong`. Profiles are suggestions and have **not** been benchmarked. To preview what would run without opening a session: `SHEEPDOG_DRY=1 ./launch.sh jobs/<card> worker`.
 
 ## This is not orchestration
 
-Orchestration splits **one job** into parts: you say "build me a site", sub-agents do design, code and tests, and the result is one site.
-Sheepdog does not split jobs. It tracks **independent jobs**: a bug fix, a research task, a feature in another project. Each runs in its own folder in its own session. The two combine well: a session may split its own job across sub-agents and Sheepdog still only cares about the result.
+Orchestration splits **one job** into parts: you say "build me a site", sub-agents do design, code and tests, and the result is one site. Sheepdog does not split jobs. It tracks **independent jobs**: a bug fix, a research task, a feature in another project. Each runs in its own folder in its own session. The two combine well: a session may split its own job across sub-agents and Sheepdog still only cares about the result.
 
 ## Safety and limits
 
+<p align="center">
+  <img src="assets/en/safety.svg" alt="Defense in layers: prompt rules, scoped access, validated launch, git guardrails, and your OS account or container as the real wall." width="100%">
+</p>
+
 You stay in control:
 
-- Tell Sheepdog **"ask me before merging"** to approve every merge yourself. We recommend this for important projects.
+- Tell Sheepdog **"ask me before merging"** (or run `./sheepdog policy ask`) to approve every merge yourself. We recommend this for important projects.
 - If the project has an `AGENTS.md` or `CLAUDE.md` with merge rules (full test run, etc.), the merger applies them; otherwise it runs the card's checks.
 - A job that fails goes back to the same worker. After three rounds the decision comes to you.
-- Occasionally open a finished job and look at it yourself. Sheepdog manages the jobs; you manage Sheepdog.
+- Now and then open a finished job and look at it yourself. Sheepdog manages the jobs; you manage Sheepdog.
 
 Be aware of:
 
 - Every session spends from your usage limit separately. Don't set this up for a single job.
 - Sessions stop when the computer shuts down. Run one Sheepdog per machine, because workers message the session named `sheepdog`.
 - Auto permission mode reduces prompts. Sessions can be influenced by text they read online; for important work use a separate OS account or a container.
-- Sheepdog has no file-writing tool, but it can run shell commands. That is a behavioral rule, not a hard security boundary. Likewise, "workers may not read `.env` and key files" is a rule, not a lock.
-- Sessions get access only to their own card folder, not the whole hub, so a worker cannot rewrite `ayarlar.sh` or the role prompts. Model and effort values are validated before a session starts. This narrows the blast radius; it is **not** a sandbox.
+- Sheepdog has no file-writing tool, but it can run shell commands. That is a behavioral rule, not a hard security boundary. Likewise "workers may not read `.env` and key files" is a rule, not a lock.
+- Sessions get access only to their own card folder, not the whole hub, so a worker cannot rewrite `settings.sh` or the role prompts. Model and effort values are validated before a session starts. This narrows the blast radius; it is **not** a sandbox.
 - For code jobs, background sessions create `.claude/worktrees/` inside your project. Add it to the project's `.gitignore`, and clean up old branches and worktrees yourself (`git worktree list`).
 
 Report security problems as described in [SECURITY.md](SECURITY.md).
@@ -266,13 +252,13 @@ Edit the `model:` line in `.claude/agents/sheepdog.md`. The manager makes the "s
 <details>
 <summary><b>Can I give a hard job a stronger model?</b></summary>
 
-Yes. Add `Model: opus` (and optionally `Efor: high`) to the card. Only that job's worker is affected.
+Yes. Add `Model: opus` (and optionally `Effort: high`) to the card. Only that job's worker is affected.
 </details>
 
 <details>
 <summary><b>Are non-code jobs supported?</b></summary>
 
-Yes. A card with `Tür: icerik` (research, writing, notes) is done once review passes; there is no merge step.
+Yes. A card with `Type: content` (research, writing, notes) is done once review passes; there is no merge step.
 </details>
 
 <details>
@@ -288,50 +274,37 @@ No. It runs while your machine is on.
 </details>
 
 <details>
-<summary><b>Why do some file names look Turkish?</b></summary>
+<summary><b>Which languages are supported?</b></summary>
 
-The kit was first written in Turkish and the script and artifact file names (`pano.sh`, `durum.sh`, `sonuc.md`, …) stayed. Everything user-facing is bilingual: `./sheepdog` has English commands, cards and states are accepted in English or Turkish, and the roles, agent, card skill, messages, docs, trial and example cards exist in both languages. The [glossary](docs/GLOSSARY.md) maps every name.
+English and Turkish, fully: messages, roles, agents, skills, docs, the trial project and the example cards. Run `./sheepdog lang tr` for Turkish. Card fields, state names and role names are accepted in either language, even mixed.
 </details>
 
 ## Documentation
 
 | | |
 |---|---|
-| [docs/USAGE.md](docs/USAGE.md) | Seven step-by-step workflows, role-to-model table, short phrases for Sheepdog |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | State machine, session naming, files on disk, trust model |
-| [docs/GLOSSARY.md](docs/GLOSSARY.md) | Turkish term → English meaning for every command, state and file |
-| [docs/USAGE.tr.md](docs/USAGE.tr.md) | The full usage guide in Turkish |
-| [examples/](examples/README.md) · [ornek-kartlar/](ornek-kartlar/README.md) | Ten example cards and a card-writing guide (English · Turkish) |
-| [deneme/](deneme/README.md) · [Türkçe](deneme/README.tr.md) | The 10-minute trial kit, English and Turkish |
+| [docs/USAGE.md](docs/USAGE.md) | Seven step-by-step workflows, the role-to-model table, short phrases for Sheepdog |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | State machine, session naming, merge protocol, trust model, files on disk |
+| [docs/LANGUAGES.md](docs/LANGUAGES.md) | How the two languages work, and every accepted alias |
+| [trial/README.md](trial/README.md) | The 10-minute trial kit |
+| [examples/README.md](examples/README.md) | Ten example cards and a card-writing guide |
 | [CHANGELOG.md](CHANGELOG.md) | Release notes |
+| [CONTRIBUTING.md](CONTRIBUTING.md) · [SECURITY.md](SECURITY.md) | Contributing and reporting vulnerabilities |
 
 ## Roadmap
 
-- [ ] English-named script and artifact files (with compatibility links for the Turkish ones)
 - [ ] A "stop this card" flow
 - [ ] Measured cost and success numbers for the model profiles
 - [ ] Real-session testing on macOS and Windows
+- [ ] A read-only local web board that mirrors `./sheepdog board`
+- [ ] More languages through `lang.sh` and `roles/<lang>/`
 
 ## Contributing
 
-Issues and pull requests are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md). The smoke test (`bash testler/duman.sh`) must stay green; it spends no model tokens and opens no real sessions.
+Issues and pull requests are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md). The smoke test (`bash tests/smoke.sh`) must stay green; it spends no model tokens and opens no real sessions. The artwork in `assets/` is generated by `python3 tools/build_assets.py`.
 
 ## Credits and license
 
 The idea comes from DeepSeek's super-agent approach: [deepseek-ai/dsh-superagent-prototype](https://github.com/deepseek-ai/dsh-superagent-prototype). This kit is not their code; it is that idea adapted to Claude Code and spread across different projects.
 
 [MIT license](LICENSE) · [Changelog](CHANGELOG.md)
-
-<details>
-<summary><b>Türkçe özet</b></summary>
-
-**Sheepdog**, farklı projelere yayılmış ayrı Claude Code oturumlarını tek bir ajan üzerinden yönetmenizi sağlar. Yalnız onunla konuşursunuz; her işi kendi projesinde ayrı oturumda başlatır, biten işi işi yapmamış başka bir ajana kontrol ettirir, eksiği geri gönderir, yalnız karar sizindeyse tek cümleyle sorar ve testlerden geçen değişikliği projeye ekletir. Deneysel sürümdür.
-
-Tam Türkçe belge: **[README.tr.md](README.tr.md)** · Kullanım rehberi: [docs/USAGE.tr.md](docs/USAGE.tr.md)
-
-```bash
-git clone https://github.com/Sahinoglu0/sheepdog hq && cd hq
-./kontrol.sh ~/projeniz
-claude --agent sheepdog --name sheepdog --permission-mode auto
-```
-</details>

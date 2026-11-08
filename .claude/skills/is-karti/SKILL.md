@@ -12,7 +12,7 @@ description: Bir isteği, işçi ajanın soru sormadan yapabileceği iş kartlar
 1. İsteği parçalara böl. Bir kart, tek başına bitirilip kontrol edilebilen en küçük iştir.
 2. Gereken dosyalara ve mevcut işe kısaca bak.
 3. Kullanıcıya her seferinde tek soru sor. Şıklar varsa önerini başa yaz. İşçinin kafasına göre karar vereceği bir şey kalmayınca dur. Kullanıcı cevap vermezse varsayım yapma, soruyu bekleyen olarak karta yaz.
-4. Her kartı `isler/001-kisa-ad/kart.md` olarak kaydet. Numaralar sırayla gitsin.
+4. Her kartı `jobs/001-kisa-ad/card.md` olarak kaydet. Numaralar sırayla gitsin.
 5. Hepsini `Durum: taslak` bırak. Kullanıcı onaylayınca `Durum: hazir` yap. `Tür` satırı `kod` veya `icerik` olur. Başka kartı bekliyorsa `Bekliyor:` satırına kart klasörünün adını yaz (birden çoksa virgülle ayır).
 
 ## Kart şablonu

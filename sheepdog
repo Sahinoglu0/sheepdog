@@ -1,73 +1,74 @@
 #!/bin/bash
-# Sheepdog: tek giriş komutu (English-named front door). Model harcamaz.
+# Sheepdog: the single front door for the kit. All commands spend no model tokens.
 # usage: ./sheepdog <command> [args]   (run ./sheepdog help)
 cd "$(dirname "$0")" || exit 1
-. ./dil.sh; H="$PWD"; cmd="${1:-help}"; [ $# -gt 0 ] && shift
-card(){ local k="${1%/}"; k="${k#isler/}"; echo "isler/$k"; }
+. ./lang.sh; cmd="${1:-help}"; [ $# -gt 0 ] && shift
+card(){ local k="${1%/}"; k="${k#jobs/}"; echo "jobs/$k"; }
 case "$cmd" in
-  board|status)  exec ./pano.sh "$@" ;;
-  watch)         exec ./pano.sh --izle "$@" ;;
-  ready)         exec ./pano.sh --baslayabilir ;;
-  start)         [ -n "$1" ] || { echo "usage: sheepdog start <card> [isci|reviewer|dogrulayici|birlestirici]"; exit 2; }
-                 c="$(card "$1")"; shift; exec ./baslat.sh "$c" "${1:-isci}" ;;
+  board|status)  exec ./board.sh "$@" ;;
+  watch)         exec ./board.sh --watch "$@" ;;
+  ready)         exec ./board.sh --startable ;;
+  start)         [ -n "$1" ] || { echo "usage: sheepdog start <card> [worker|reviewer|verifier|merger]"; exit 2; }
+                 c="$(card "$1")"; shift; exec ./launch.sh "$c" "${1:-worker}" ;;
   set)           [ $# -eq 2 ] || { echo "usage: sheepdog set <card> <state>"; exit 2; }
-                 exec ./durum.sh "$(card "$1")" "$2" ;;
+                 exec ./state.sh "$(card "$1")" "$2" ;;
   rounds)        [ -n "$1" ] || { echo "usage: sheepdog rounds <card>"; exit 2; }
-                 exec ./tur.sh "$(card "$1")" ;;
+                 exec ./rounds.sh "$(card "$1")" ;;
   lang)          case "${1:-}" in
                    "") echo "$SHEEPDOG_LANG" ;;
-                   en|tr) echo "$1" > .dil; echo "language: $1 ($(T "roller, ajan ve kart şablonu bu dilde" "roles, agent and card template use this language"))";
-                          [ "$1" = tr ] && echo "claude --agent sheepdog-tr --name sheepdog --permission-mode auto" || echo "claude --agent sheepdog --name sheepdog --permission-mode auto" ;;
+                   en|tr) echo "$1" > .lang; echo "language: $1"
+                          if [ "$1" = tr ]; then echo "claude --agent sheepdog-tr --name sheepdog --permission-mode auto"
+                          else echo "claude --agent sheepdog --name sheepdog --permission-mode auto"; fi ;;
                    *) echo "usage: sheepdog lang [en|tr]"; exit 2 ;;
                  esac ;;
-  doctor)        exec ./kontrol.sh "$@" ;;
-  main-branch)   exec ./ana-dal.sh "$@" ;;
-  dry-run)       exec ./birlestirme-hazirla.sh "$@" ;;
+  doctor)        exec ./doctor.sh "$@" ;;
+  main-branch)   exec ./main-branch.sh "$@" ;;
+  dry-run)       exec ./dry-run.sh "$@" ;;
   policy)        # persistent merge policy: ask (you approve every merge) | auto (default)
                  case "${1:-}" in
-                   "") cat .politika 2>/dev/null || echo auto ;;
-                   ask|auto) echo "$1" > .politika; echo "merge policy: $1" ;;
+                   "") cat .policy 2>/dev/null || echo auto ;;
+                   ask|auto) echo "$1" > .policy; echo "merge policy: $1" ;;
                    *) echo "usage: sheepdog policy [ask|auto]"; exit 2 ;;
                  esac ;;
-  timeline)      [ -f .gecmis ] || { echo "no history yet"; exit 0; }
+  timeline)      [ -f .history ] || { echo "no history yet"; exit 0; }
                  f=""; [ -n "$1" ] && f="$(basename "${1%/}")"
                  awk -v f="$f" '
                    function fmt(s,  m){ m=int(s/60); if(s<60) return s "s"; if(m<60) return m "m " (s%60) "s"; return int(m/60) "h " (m%60) "m" }
                    f!="" && $2!=f {next}
-                   { if($2 in last){ printf "  %-26s %-18s %s\n", $2, st[$2], fmt($1-t[$2]) } ; st[$2]=$3; t[$2]=$1; last[$2]=1; if(!($2 in ord)){ord[$2]=++n; nm[n]=$2} }
-                   END{ "date +%s" | getline now; for(i=1;i<=n;i++){ c=nm[i]; printf "  %-26s %-18s %s (current)\n", c, st[c], fmt(now-t[c]) } }' .gecmis ;;
+                   { if($2 in last){ printf "  %-26s %-14s %s\n", $2, st[$2], fmt($1-t[$2]) }; st[$2]=$3; t[$2]=$1; last[$2]=1; if(!($2 in ord)){ord[$2]=++n; nm[n]=$2} }
+                   END{ "date +%s" | getline now; for(i=1;i<=n;i++){ c=nm[i]; printf "  %-26s %-14s %s (current)\n", c, st[c], fmt(now-t[c]) } }' .history ;;
   new)           # scaffold a draft card: sheepdog new <slug> --project <abs path> [--type code|content] [--waits a,b]
                  slug="$1"; [ -n "$slug" ] || { echo "usage: sheepdog new <slug> --project <path> [--type code|content] [--waits a,b]"; exit 2; }; shift
-                 proj=""; tur=kod; bek=yok
-                 while [ $# -gt 0 ]; do case "$1" in --project) proj="$2"; shift 2;; --type) tur="$2"; shift 2;; --waits) bek="$2"; shift 2;; *) echo "unknown option: $1"; exit 2;; esac; done
+                 proj=""; typ=code; waits=none
+                 while [ $# -gt 0 ]; do case "$1" in --project) proj="$2"; shift 2;; --type) typ="$2"; shift 2;; --waits) waits="$2"; shift 2;; *) echo "unknown option: $1"; exit 2;; esac; done
                  [ -n "$proj" ] || { echo "--project is required"; exit 2; }
-                 tur="$(ntur "$tur")"; case "$tur" in kod|icerik) ;; *) echo "--type must be kod|code or icerik|content"; exit 2;; esac
+                 typ="$(ntype "$typ")"; case "$typ" in code|content) ;; *) echo "--type must be code or content"; exit 2;; esac
                  case "$slug" in *[!a-z0-9-]*|"") echo "slug: lowercase letters, digits, dashes"; exit 2;; esac
-                 mkdir -p isler; n=0; for d in isler/[0-9][0-9][0-9]-*; do [ -d "$d" ] || continue; b="${d#isler/}"; v=$((10#${b%%-*})); [ "$v" -gt "$n" ] && n=$v; done
-                 id="$(printf '%03d' $((n+1)))-$slug"; mkdir -p "isler/$id"
+                 mkdir -p jobs; n=0; for d in jobs/[0-9][0-9][0-9]-*; do [ -d "$d" ] || continue; b="${d#jobs/}"; v=$((10#${b%%-*})); [ "$v" -gt "$n" ] && n=$v; done
+                 id="$(printf '%03d' $((n+1)))-$slug"; mkdir -p "jobs/$id"
                  if [ "$SHEEPDOG_LANG" = tr ]; then
-                   printf '# %s: %s\n\nDurum: taslak\nTür: %s\nBekliyor: %s\nProje: %s\n\n## Ne yapılacak\nTek paragraf. Okuyan biri soru sormadan yapabilsin.\n\n## Neye dokunma\nKapsam dışı olanlar.\n\n## Bitti demek\n- [ ] Ne olmuş olacak, neyle kanıtlanacak.\n\n## Takılırsan\nNerede durup haber verecek.\n' "${id%%-*}" "$slug" "$tur" "$bek" "$proj" > "isler/$id/kart.md"
+                   tt=kod; [ "$typ" = content ] && tt=icerik; ww="$waits"; [ "$ww" = none ] && ww=yok
+                   printf '# %s: %s\n\nDurum: taslak\nTür: %s\nBekliyor: %s\nProje: %s\n\n## Ne yapılacak\nTek paragraf. Okuyan biri soru sormadan yapabilsin.\n\n## Neye dokunma\nKapsam dışı olanlar.\n\n## Bitti demek\n- [ ] Ne olmuş olacak, neyle kanıtlanacak.\n\n## Takılırsan\nNerede durup haber verecek.\n' "${id%%-*}" "$slug" "$tt" "$ww" "$proj" > "jobs/$id/card.md"
                  else
-                   [ "$bek" = yok ] && bek=none; case "$tur" in kod) tur=code;; icerik) tur=content;; esac
-                   printf '# %s: %s\n\nStatus: draft\nType: %s\nWaits-for: %s\nProject: %s\n\n## What to do\nOne paragraph. Someone should be able to do it without asking questions.\n\n## Do not touch\nEverything out of scope.\n\n## Definition of done\n- [ ] What will be true, and what proves it.\n\n## If you get stuck\nWhere to stop and report.\n' "${id%%-*}" "$slug" "$tur" "$bek" "$proj" > "isler/$id/kart.md"
+                   printf '# %s: %s\n\nStatus: draft\nType: %s\nWaits-for: %s\nProject: %s\n\n## What to do\nOne paragraph. Someone should be able to do it without asking questions.\n\n## Do not touch\nEverything out of scope.\n\n## Definition of done\n- [ ] What will be true, and what proves it.\n\n## If you get stuck\nWhere to stop and report.\n' "${id%%-*}" "$slug" "$typ" "$waits" "$proj" > "jobs/$id/card.md"
                  fi
-                 echo "isler/$id/kart.md" ;;
+                 echo "jobs/$id/card.md" ;;
   help|-h|--help|*)
     cat <<'T'
-sheepdog: one front door for the kit (all commands spend no model tokens)
+sheepdog: one front door for the kit (every command spends zero model tokens)
 
-  board | status        card table with summary
+  board | status        card table with a summary
   watch [secs]          live board
   ready                 cards that can start now
-  start <card> [role]   open a background session (default role: isci)
-  set <card> <state>    change a card's state (taslak hazir calisiyor inceleme dogrulama
-                        birlesme-bekliyor birlesiyor bitti tikandi)
-  rounds <card>         how many times the card went to work (from .gecmis)
-  timeline [card]       time spent in each state, from .gecmis
-  policy [ask|auto]     show / set the persistent merge policy
-  lang [en|tr]          show / set the language of roles, agent and card template
+  start <card> [role]   open a background session (default role: worker)
+  set <card> <state>    change a card's state: draft ready working review verify
+                        merge-queue merging done stuck
+  rounds <card>         how many times the card went to work (from .history)
+  timeline [card]       time spent in each state (from .history)
+  policy [ask|auto]     show or set the persistent merge policy
+  lang [en|tr]          show or set the language of messages, roles, agent and templates
   new <slug> --project P [--type code|content] [--waits a,b]   scaffold a draft card
-  doctor [projects...]  check your machine and trust prompts
+  doctor [projects...]  check your machine and the trust prompts
   main-branch <proj>    detect a project's main branch
   dry-run <proj> <br>   merge dry run, main untouched
 T
