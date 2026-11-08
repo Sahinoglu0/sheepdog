@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use or build on Sheepdog, please credit it as below (see NOTICE)."
+message: "If you use or build on Sheepdog, a credit is appreciated (see NOTICE)."
 title: "Sheepdog"
 abstract: "One agent that herds every Claude Code session: dispatches jobs, has them independently reviewed and merges what passes."
 type: software

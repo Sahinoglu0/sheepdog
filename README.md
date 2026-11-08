@@ -8,7 +8,7 @@
   <img src="https://img.shields.io/badge/Claude%20Code-%E2%89%A5%202.1.293-2dd4bf?style=flat-square&labelColor=0f172a" alt="Claude Code 2.1.293 or newer">
   <img src="https://img.shields.io/badge/Linux%20%C2%B7%20macOS%20%C2%B7%20Windows-CI%20tested-2dd4bf?style=flat-square&labelColor=0f172a" alt="Linux, macOS and Windows">
   <img src="https://img.shields.io/badge/languages-EN%20%C2%B7%20TR-a3e635?style=flat-square&labelColor=0f172a" alt="English and Turkish">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0%20%2B%20credit-a3e635?style=flat-square&labelColor=0f172a" alt="Apache 2.0 license with a credit requirement"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-a3e635?style=flat-square&labelColor=0f172a" alt="Apache 2.0 license"></a>
 </p>
 
 <p align="center"><b>English</b> · <a href="README.tr.md">Türkçe</a></p>
@@ -308,11 +308,13 @@ Issues and pull requests are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md). Th
 
 ## License and credit
 
-Sheepdog is licensed under the [Apache License 2.0](LICENSE) **with a credit requirement**: if you fork it, copy it, or build on it, you must keep the [NOTICE](NOTICE) file and show this credit in a visible place of your project (for example the top of its README):
+Sheepdog is licensed under the [Apache License 2.0](LICENSE). You are free to use, modify and redistribute it, including commercially, as long as you follow the license (it asks you to keep the license text and the [NOTICE](NOTICE) file).
 
-> Based on **Sheepdog**, created by Sahinoglu0 (GitHub): <https://github.com/Sahinoglu0/sheepdog>
+**A friendly request:** if you fork it, copy it or build on it, please give credit somewhere visible, for example near the top of your README:
 
-Details are in [NOTICE](NOTICE); the requirement is enforced through Apache-2.0 section 4(d). Please do not present derived work as an original creation, and do not use the Sheepdog name or artwork to suggest endorsement. A citation file is available in [CITATION.cff](CITATION.cff).
+> Based on **Sheepdog** by Sahinoglu0: <https://github.com/Sahinoglu0/sheepdog>
+
+This is a request, not an extra license condition. Please also don't use the Sheepdog name or artwork to suggest that the author endorses your project. A citation file is available in [CITATION.cff](CITATION.cff).
 
 The idea comes from DeepSeek's super-agent approach: [deepseek-ai/dsh-superagent-prototype](https://github.com/deepseek-ai/dsh-superagent-prototype).
 

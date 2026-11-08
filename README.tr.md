@@ -8,7 +8,7 @@
   <img src="https://img.shields.io/badge/Claude%20Code-%E2%89%A5%202.1.293-2dd4bf?style=flat-square&labelColor=0f172a" alt="Claude Code 2.1.293 veya sonrası">
   <img src="https://img.shields.io/badge/Linux%20%C2%B7%20macOS%20%C2%B7%20Windows-CI%20testli-2dd4bf?style=flat-square&labelColor=0f172a" alt="Linux, macOS ve Windows">
   <img src="https://img.shields.io/badge/diller-EN%20%C2%B7%20TR-a3e635?style=flat-square&labelColor=0f172a" alt="İngilizce ve Türkçe">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/lisans-Apache%202.0%20%2B%20kredi-a3e635?style=flat-square&labelColor=0f172a" alt="Kredi şartlı Apache 2.0 lisansı"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/lisans-Apache%202.0-a3e635?style=flat-square&labelColor=0f172a" alt="Apache 2.0 lisansı"></a>
 </p>
 
 <p align="center"><a href="README.md">English</a> · <b>Türkçe</b></p>
@@ -312,11 +312,13 @@ Sorunlar ve çekme istekleri (pull request) memnuniyetle karşılanır; bkz. [CO
 
 ## Lisans ve kredi
 
-Sheepdog, **kredi şartlı** [Apache Lisansı 2.0](LICENSE) ile lisanslıdır: forklarsanız, kopyalarsanız ya da üzerine geliştirirseniz [NOTICE](NOTICE) dosyasını korumalı ve şu krediyi projenizde görünür bir yerde (örneğin README'nizin başında) göstermelisiniz:
+Sheepdog [Apache Lisansı 2.0](LICENSE) ile lisanslıdır. Lisansa uyduğunuz sürece (lisans metnini ve [NOTICE](NOTICE) dosyasını korumanızı ister) ticari kullanım dahil özgürce kullanabilir, değiştirebilir ve dağıtabilirsiniz.
+
+**Dostça bir rica:** forklarsanız, kopyalarsanız ya da üzerine geliştirirseniz lütfen görünür bir yerde, örneğin README'nizin başında, kredi verin:
 
 > **Sheepdog** temel alınmıştır, yapımcısı Sahinoglu0: <https://github.com/Sahinoglu0/sheepdog>
 
-Ayrıntılar [NOTICE](NOTICE) dosyasında; şart Apache-2.0 madde 4(d) üzerinden uygulanır. Türev işi özgün eser gibi sunmayın, Sheepdog adını ya da görsellerini onay izlenimi vermek için kullanmayın. Atıf dosyası: [CITATION.cff](CITATION.cff).
+Bu bir ricadır, lisansa eklenmiş bir koşul değildir. Yazarın projenizi onayladığı izlenimini vermek için Sheepdog adını ya da görsellerini kullanmamanızı da rica ederiz. Atıf dosyası: [CITATION.cff](CITATION.cff).
 
 Fikir DeepSeek'in süper ajan yaklaşımından geliyor: [deepseek-ai/dsh-superagent-prototype](https://github.com/deepseek-ai/dsh-superagent-prototype).
 
