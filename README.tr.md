@@ -43,7 +43,7 @@ Sheepdog bu takibi sizden alır. Siz yalnızca **Sheepdog** ile konuşursunuz. O
 | **Kalıcı birleştirme politikası** | `./sheepdog policy ask` her birleştirmeyi onayınıza bağlar; yepyeni bir oturumda bile. |
 | **Zaman çizelgesi** | `./sheepdog timeline` her kartın zamanını nerede harcadığını gösterir. |
 | **Gerçekten iki dilli** | İngilizce ve Türkçe roller, ajanlar, yetenekler, mesajlar, belgeler, deneme projesi ve örnek kartlar. Kartlar ve durumlar iki dilde de çalışır. |
-| **Her yerde test edilir** | 230 kontrollük duman testi her push'ta Ubuntu, macOS (kendi bash 3.2 sürümü dahil) ve Windows'ta (Git Bash) koşar. |
+| **Her yerde test edilir** | 255 kontrollük duman testi her push'ta Ubuntu, macOS (kendi bash 3.2 sürümü dahil) ve Windows'ta (Git Bash) koşar. |
 
 ## 10 dakikada deneyin
 
@@ -70,6 +70,8 @@ cd hq
 ./sheepdog lang tr
 ./sheepdog doctor ~/projeniz
 ```
+
+(`hq` yalnızca "merkez" klasörünün adı; istediğiniz adı verebilirsiniz.)
 
 `doctor` hiçbir şeyi değiştirmez. Claude Code sürümünü, `--bg` ve `agents` desteğini, git ve Python'u ve verdiğiniz her projenin güven onayını yoklar; eksik olanı tek satırla söyler.
 
@@ -205,7 +207,7 @@ Orkestrasyon **tek bir işi** parçalara böler: "bana bir site yap" denir, alt 
 ## Güvenlik ve sınırlar
 
 <p align="center">
-  <img src="assets/tr/safety.svg" alt="Katmanlı koruma: istem kuralları, daraltılmış erişim, doğrulanmış başlatma, git korkulukları ve gerçek duvar olan işletim sistemi hesabınız ya da kapsayıcı." width="100%">
+  <img src="assets/tr/safety.svg" alt="Katmanlı koruma: istem kuralları, yönlendirme, doğrulanmış başlatma, git korkulukları ve gerçek duvar olan işletim sistemi hesabınız ya da kapsayıcı." width="100%">
 </p>
 
 Kontrol sizde:
@@ -221,7 +223,8 @@ Dikkat edin:
 - Bilgisayar kapanınca oturumlar durur. Bir bilgisayarda tek Sheepdog çalıştırın; işçiler `sheepdog` adlı oturuma mesaj atar.
 - Otomatik izin modu soruları azaltır. Oturumlar internetten okudukları metinden etkilenebilir; önemli işlerde ayrı bir işletim sistemi hesabı veya kapsayıcı kullanın.
 - Sheepdog'un dosya yazma aracı yok ama kabuk komutu çalıştırabilir. Bu bir davranış kuralıdır, katı bir güvenlik sınırı değildir. Aynı şekilde "işçiler `.env` ve anahtar dosyalarını okumaz" bir kuraldır, kilit değildir.
-- Oturumlar yalnız kendi kart klasörüne erişir, bütün merkeze değil; bir işçi `settings.sh` ya da rol istemlerini yeniden yazamaz. Model ve efor değerleri oturum açılmadan doğrulanır. Bu etki alanını daraltır; **güvenlik kutusu değildir**.
+- Her oturum yalnız kendi kart klasörü için `--add-dir` ile başlatılır. Bu erişim ekler, kaldırmaz: işçi sizin projenizde otomatik izin modunda çalışır ve prensipte merkez dahil başka yerlere de yazabilir (`settings.sh`, rol istemleri). Bu daraltmayı düzen için sayın, güvence olarak görmeyin. Model ve efor değerleri oturum açılmadan doğrulanır, ama bunların hiçbiri **güvenlik kutusu değildir**.
+- Kart klasörü bütün rollerce yazılabilir; yani incelemenin bağımsızlığı bir istem kuralıdır: bir işçi prensipte `review.md` dosyasını kendisi yazabilir. Sheepdog karar dosyalarını incelemecinin kendi mesajıyla birlikte okur; biten işleri siz de arada kontrol edin.
 - Kod işlerinde arka plan oturumları projenizin içinde `.claude/worktrees/` klasörü açar. Bunu projenin `.gitignore` dosyasına ekleyin; iş bitince eski dalları ve worktree'leri `git worktree list` ile görüp kendiniz temizleyin.
 
 Güvenlik sorunlarını [SECURITY.tr.md](SECURITY.tr.md) içinde anlatıldığı gibi bildirin.

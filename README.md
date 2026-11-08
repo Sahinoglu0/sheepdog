@@ -43,7 +43,7 @@ Sheepdog takes that bookkeeping off you. You only ever talk to **Sheepdog**. It 
 | **A lasting merge policy** | `./sheepdog policy ask` makes every merge need your approval, even in a brand-new session. |
 | **Timeline** | `./sheepdog timeline` shows where each card spent its time. |
 | **Truly bilingual** | English and Turkish roles, agents, skills, messages, docs, trial project and example cards. Cards and states work in either language. |
-| **Tested everywhere** | A 230-check smoke test runs on Ubuntu, macOS (including its stock bash 3.2) and Windows (Git Bash) on every push. |
+| **Tested everywhere** | A 255-check smoke test runs on Ubuntu, macOS (including its stock bash 3.2) and Windows (Git Bash) on every push. |
 
 ## Try it in 10 minutes
 
@@ -68,6 +68,8 @@ git clone https://github.com/Sahinoglu0/sheepdog hq
 cd hq
 ./sheepdog doctor ~/your-project
 ```
+
+(`hq` is just a folder name for the "hub"; call it anything.)
 
 `doctor` changes nothing. It checks the Claude Code version, `--bg` and `agents` support, git, Python, and the trust prompt of every project you pass, and tells you in one line what is missing.
 
@@ -201,7 +203,7 @@ Orchestration splits **one job** into parts: you say "build me a site", sub-agen
 ## Safety and limits
 
 <p align="center">
-  <img src="assets/en/safety.svg" alt="Defense in layers: prompt rules, scoped access, validated launch, git guardrails, and your OS account or container as the real wall." width="100%">
+  <img src="assets/en/safety.svg" alt="Defense in layers: prompt rules, scoped hints, validated launch, git guardrails, and your OS account or container as the real wall." width="100%">
 </p>
 
 You stay in control:
@@ -217,7 +219,8 @@ Be aware of:
 - Sessions stop when the computer shuts down. Run one Sheepdog per machine, because workers message the session named `sheepdog`.
 - Auto permission mode reduces prompts. Sessions can be influenced by text they read online; for important work use a separate OS account or a container.
 - Sheepdog has no file-writing tool, but it can run shell commands. That is a behavioral rule, not a hard security boundary. Likewise "workers may not read `.env` and key files" is a rule, not a lock.
-- Sessions get access only to their own card folder, not the whole hub, so a worker cannot rewrite `settings.sh` or the role prompts. Model and effort values are validated before a session starts. This narrows the blast radius; it is **not** a sandbox.
+- Each session is started with `--add-dir` for its own card folder only. That adds access; it does not remove any. A worker runs in your project with auto permission mode and could, in principle, still write elsewhere, including the hub (`settings.sh`, the role prompts). Treat the scoping as hygiene, not enforcement. Model and effort values are validated before a session starts, but none of this is a **sandbox**.
+- The card folder is writable by every role, so review independence is a prompt-level rule: a worker could in principle write `review.md` itself. Sheepdog reads verdicts together with the reviewer's own message, and you should spot-check finished jobs.
 - For code jobs, background sessions create `.claude/worktrees/` inside your project. Add it to the project's `.gitignore`, and clean up old branches and worktrees yourself (`git worktree list`).
 
 Report security problems as described in [SECURITY.md](SECURITY.md).

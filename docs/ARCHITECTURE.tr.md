@@ -79,7 +79,8 @@ stateDiagram-v2
 | Sınır | Nasıl sağlanır | Güç |
 |---|---|---|
 | Rol kart durumunu değiştirmez | istem kuralı + yalnız `state.sh` yazar | davranışsal |
-| Rol merkezde yalnız kendi kart klasörüne yazar | `--add-dir <merkez>/<kart>` | daraltılmış erişim, güvenlik kutusu değil |
+| Rol merkezde kendi kart klasöründe çalışır | `--add-dir <merkez>/<kart>` | erişim ekler, kaldırmaz: düzen, duvar değil |
+| İnceleme işten bağımsızdır | roller ayrı oturumlardır; kart klasörü hepsince yazılabilir | istem düzeyinde: bir işçi `review.md` dosyasını kendisi yazabilir; arada kontrol edin |
 | Model ve efor değerleri makul | `launch.sh` başlatmadan önce doğrular | uygulanır |
 | Yönetici dosya yazamaz | araç listesi | altyapı uygular; Bash hâlâ var |
 | Birleştirme geçmişi yeniden yazmaz | birleştirici istemi + ff-only | davranışsal + git |

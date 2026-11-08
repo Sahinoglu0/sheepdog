@@ -51,7 +51,7 @@ Cards, states and roles are accepted in **either** language, even mixed in one h
 | Role | Turkish alias |
 |---|---|
 | `worker` | `isci` |
-| `reviewer` | `reviewer` |
+| `reviewer` | `incelemeci` |
 | `verifier` | `dogrulayici` |
 | `merger` | `birlestirici` |
 

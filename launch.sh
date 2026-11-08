@@ -9,6 +9,7 @@ ROLEFILE="$HUB/roles/$SHEEPDOG_LANG/$ROL.md"
 PROJECT="$(field Proje "$CARD")"
 case "$PROJECT" in "~"|"~/"*) PROJECT="$HOME${PROJECT#\~}";; esac
 [ -d "$PROJECT" ] || { echo "$(T "Proje klasörü yok" "Project folder not found"): $PROJECT"; exit 1; }
+[ "$ROL" != worker ] || [ "$(nstate "$(field Durum "$CARD")")" != done ] || { echo "$(T "Kart zaten bitti; işçi yeniden başlatılmaz" "Card is already done; not relaunching a worker"): $CARD" >&2; exit 1; }
 PY=python3; "$PY" -c "" 2>/dev/null || PY=python
 "$PY" "$HUB/trust.py" "$PROJECT" || { echo "$(T "Güven onayı yok: $PROJECT içinde bir kez claude açıp onay verin" "No trust approval: open claude once inside $PROJECT and accept the trust prompt")"; exit 2; }
 MODEL_WORKER=sonnet; EFFORT_WORKER=high
@@ -26,7 +27,7 @@ case "$ROL" in
   verifier) AD2="$AD-verifier"; MODEL="$MODEL_VERIFIER"; EF="$EFFORT_VERIFIER";;
   merger) AD2="$AD-merger"; MODEL="$MODEL_MERGER"; EF="$EFFORT_MERGER";;
 esac
-for m in "$MODEL" "$EF"; do case "$m" in *[!A-Za-z0-9._-]*|"") echo "$(T "Geçersiz model/efor" "Invalid model/effort"): '$m' (settings.sh / card)" >&2; exit 1;; esac; done
+for m in "$MODEL" "$EF"; do case "$m" in -*|*[!A-Za-z0-9._-]*|"") echo "$(T "Geçersiz model/efor" "Invalid model/effort"): '$m' (settings.sh / card)" >&2; exit 1;; esac; done
 case "$EF" in low|medium|high) ;; *) echo "$(T "Geçersiz efor" "Invalid effort"): '$EF' ($(T rol role): $ROL; $(T beklenen expected): low, medium, high)" >&2; exit 1;; esac
 cd "$PROJECT"
 if [ "${SHEEPDOG_DRY:-}" = 1 ]; then

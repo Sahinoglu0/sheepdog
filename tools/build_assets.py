@@ -37,7 +37,7 @@ TXT = {
   "arch_roles": [("worker", "own project, own branch"), ("reviewer", "did not do the work"), ("verifier", "re-runs the checks"), ("merger", "ff-only into main")],
   "arch_scripts": ["board", "watchdog", "dry-run", "state"], "arch_scripts_t": "scripts · zero model tokens",
   "safety_title": "Defense in layers", "safety_sub": "narrows the blast radius; it is not a sandbox",
-  "safety": [("Rules in the prompts", "no push, no .env, no state edits"), ("Scoped access", "a session sees only its own card folder"), ("Validated launch", "model and effort checked before start"), ("Git guardrails", "dry run, throwaway worktree, fast-forward only"), ("Your OS account / container", "the layer that is actually a wall")],
+  "safety": [("Rules in the prompts", "no push, no .env, no state edits"), ("Scoped hints", "a session is pointed at its own card folder (hygiene, not a wall)"), ("Validated launch", "model and effort checked before start"), ("Git guardrails", "dry run, throwaway worktree, fast-forward only"), ("Your OS account / container", "the layer that is actually a wall")],
  },
  "tr": {
   "tagline1": "Tek ajan bütün", "tagline2": "Claude Code oturumlarını güder.",
@@ -65,7 +65,7 @@ TXT = {
   "arch_roles": [("işçi", "kendi proje ve dalında"), ("incelemeci", "işi yapmamış ajan"), ("doğrulayıcı", "kontrolleri yeniden koşar"), ("birleştirici", "main'e yalnız ileri sarar")],
   "arch_scripts": ["board", "watchdog", "dry-run", "state"], "arch_scripts_t": "betikler · sıfır model harcaması",
   "safety_title": "Katmanlı koruma", "safety_sub": "etki alanını daraltır; güvenlik kutusu değildir",
-  "safety": [("İstemlerdeki kurallar", "push yok, .env yok, durum değiştirme yok"), ("Daraltılmış erişim", "oturum yalnız kendi kart klasörünü görür"), ("Doğrulanmış başlatma", "model ve efor başlamadan kontrol edilir"), ("Git korkulukları", "prova, geçici worktree, yalnız ileri sarma"), ("İşletim sistemi hesabınız / kapsayıcı", "gerçekten duvar olan katman")],
+  "safety": [("İstemlerdeki kurallar", "push yok, .env yok, durum değiştirme yok"), ("Yönlendirme", "oturum kendi kart klasörüne yönlendirilir (düzen, duvar değil)"), ("Doğrulanmış başlatma", "model ve efor başlamadan kontrol edilir"), ("Git korkulukları", "prova, geçici worktree, yalnız ileri sarma"), ("İşletim sistemi hesabınız / kapsayıcı", "gerçekten duvar olan katman")],
  },
 }
 

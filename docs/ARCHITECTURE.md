@@ -79,7 +79,8 @@ stateDiagram-v2
 | Boundary | How it is enforced | Strength |
 |---|---|---|
 | A role may not edit card state | prompt rule + only `state.sh` writes | behavioral |
-| A role may only write its own card folder in the hub | `--add-dir <hub>/<card>` | scoped access, not a sandbox |
+| A role works on its own card folder in the hub | `--add-dir <hub>/<card>` | adds access, removes none: hygiene, not a wall |
+| Review is independent of the work | roles are separate sessions; the card folder is writable by all of them | prompt-level: a worker could write `review.md` itself; spot-check |
 | Model and effort values are sane | validated in `launch.sh` before launch | enforced |
 | The manager cannot write files | tool list | enforced by the harness; Bash is still available |
 | Merging never rewrites history | merger prompt + ff-only | behavioral + git |

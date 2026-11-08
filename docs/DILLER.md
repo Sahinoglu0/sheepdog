@@ -51,7 +51,7 @@ Kartlar, durumlar ve roller **iki dilde de** kabul edilir; aynı merkezde karı�
 | Rol | İngilizce karşılığı |
 |---|---|
 | `isci` | `worker` |
-| `reviewer` | `reviewer` |
+| `incelemeci` | `reviewer` |
 | `dogrulayici` | `verifier` |
 | `birlestirici` | `merger` |
 

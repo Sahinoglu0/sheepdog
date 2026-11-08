@@ -11,11 +11,11 @@ _alias(){ case "$1" in
   Durum|Status) echo 'Durum|Status';; "Tür"|Type) echo 'Tür|Type';; Bekliyor|Waits-for) echo 'Bekliyor|Waits-for';;
   Proje|Project) echo 'Proje|Project';; Model) echo 'Model';; Efor|Effort) echo 'Efor|Effort';; *) echo "$1";; esac; }
 # field <Key> <file>: value of the first matching field (either language)
-field(){ local a; a="$(_alias "$1")"; sed -n -E "s/^($a): //p" "$2" | head -1; }
+field(){ local a; a="$(_alias "$1")"; sed -n -E "s/^($a): //p" "$2" | head -1 | tr -d '\r'; }
 # nstate: any state name (en or tr) -> canonical English name used on disk and in logs
-nstate(){ case "$1" in
+nstate(){ local s; s="$(printf '%s' "$1" | tr 'A-Z' 'a-z' | tr -d '\r')"; case "$s" in
   taslak) echo draft;; hazir) echo ready;; calisiyor) echo working;; inceleme) echo review;; dogrulama) echo verify;;
-  birlesme-bekliyor) echo merge-queue;; birlesiyor) echo merging;; bitti) echo done;; tikandi) echo stuck;; *) echo "$1";; esac; }
+  birlesme-bekliyor) echo merge-queue;; birlesiyor) echo merging;; bitti) echo done;; tikandi) echo stuck;; *) echo "$s";; esac; }
 # tstate: canonical English state -> Turkish
 tstate(){ case "$1" in
   draft) echo taslak;; ready) echo hazir;; working) echo calisiyor;; review) echo inceleme;; verify) echo dogrulama;;
@@ -25,4 +25,4 @@ dstate(){ if [ "$SHEEPDOG_LANG" = tr ]; then tstate "$1"; else echo "$1"; fi; }
 # ntype: any type name -> canonical English (code|content)
 ntype(){ case "$1" in kod) echo code;; icerik) echo content;; *) echo "$1";; esac; }
 # nrole: role alias (en or tr) -> canonical role id (worker|reviewer|verifier|merger)
-nrole(){ case "$1" in isci) echo worker;; dogrulayici) echo verifier;; birlestirici) echo merger;; *) echo "$1";; esac; }
+nrole(){ case "$1" in isci) echo worker;; incelemeci) echo reviewer;; dogrulayici) echo verifier;; birlestirici) echo merger;; *) echo "$1";; esac; }

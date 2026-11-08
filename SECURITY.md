@@ -8,6 +8,8 @@ Sheepdog launches autonomous coding sessions in auto permission mode. Read the *
 
 - Role restrictions (no pushing, no editing state, no reading `.env`) are prompt rules, not locks.
 - The manager has Bash. "No file-writing tool" is a behavior rule, not a sandbox.
+- `--add-dir` adds access to a session; it does not restrict it. A worker may be able to write outside its card folder, including the hub.
+- Review independence is a prompt rule: the card folder is writable by every role.
 - Sessions can be influenced by text they read from the web or from repositories.
 
 Run important work in a separate OS account or container.

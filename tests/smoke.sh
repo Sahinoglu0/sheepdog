@@ -365,6 +365,37 @@ kod 0 "English trial shows the planted bug" bash -c "cd '$T/en-deneme' && (pytho
 grep -q '^Status: ready' "$T/en-deneme/../ikinci-merkez/jobs/901-early-return-bug/card.md" && gecti "English trial card ready" || kaldi "English trial card ready"
 kod 0 "ana-dal English error text" bash -c './main-branch.sh "$0/yok-klasor" 2>&1 | grep -q "Main branch not found"; true' "$T"
 
+echo "regressions from the independent review"
+# main-branch.sh must not mistake a checked-out feature branch for the main branch
+FR="$T/feat-repo"; mkdir -p "$FR"; gf(){ git -C "$FR" -c user.name=t -c user.email=t@x "$@"; }
+gf init -q -b main && echo a > "$FR/a" && gf add . && gf commit -qm i && gf checkout -q -b feat/x
+kod 0 "main-branch ignores a checked-out feature branch" ./main-branch.sh "$FR"
+icerir "reports main" "main"
+icermez "not the feature branch" "feat"
+kod 0 "dry-run targets main, not the feature branch" ./dry-run.sh "$FR" feat/x
+icerir "dry run main -> feature" "feat/x -> main"
+# state.sh changes only the first Status/Durum line and keeps CRLF
+mkdir -p jobs/030-body; printf '# 030\r\n\r\nStatus: Ready\r\nType: code\r\nProject: %s\r\n\r\n```\r\nStatus: example\r\n```\r\n' "$T" > jobs/030-body/card.md
+kod 0 "state.sh accepts a capitalised state in the card" ./board.sh --startable
+icerir "capitalised Ready is startable" "030-body"
+kod 0 "state.sh on a CRLF card" ./state.sh jobs/030-body working
+grep -c '^Status: ' jobs/030-body/card.md | grep -qx 2 && grep -q '^Status: example' jobs/030-body/card.md && grep -q '^Status: working' jobs/030-body/card.md && gecti "only the first Status line changed" || kaldi "only the first Status line changed"
+head -3 jobs/030-body/card.md | grep -q "$(printf 'working\r')" && gecti "CRLF kept" || kaldi "CRLF kept"
+# launch.sh hardening
+mkdir -p jobs/031-dash; printf '# 031\n\nStatus: ready\nType: code\nModel: --dangerously-skip-permissions\nProject: %s\n' "$T" > jobs/031-dash/card.md
+kod 1 "launch rejects a model that starts with a dash" env PATH="$T/model-bin:$PATH" SHEEPDOG_CLAUDE_JSON="$T/en-guven.json" SHEEPDOG_DRY=1 ./launch.sh jobs/031-dash worker
+icerir "invalid model message" "Invalid model/effort"
+kod 0 "reviewer Turkish alias incelemeci" env PATH="$T/model-bin:$PATH" SHEEPDOG_CLAUDE_JSON="$T/en-guven.json" SHEEPDOG_DRY=1 ./launch.sh jobs/004-d incelemeci
+icerir "alias resolves to the reviewer prompt" "roles/en/reviewer.md"
+mkdir -p jobs/032-done; printf '# 032\n\nStatus: done\nType: code\nProject: %s\n' "$T" > jobs/032-done/card.md
+kod 1 "launch refuses a worker for a done card" env PATH="$T/model-bin:$PATH" SHEEPDOG_CLAUDE_JSON="$T/en-guven.json" SHEEPDOG_DRY=1 ./launch.sh jobs/032-done worker
+icerir "done card message" "already done"
+# watchdog.sh survives an unexpected JSON shape and reports after three failures
+mkdir -p "$T/wd-bin"; printf '#!/bin/bash\necho {\\"error\\":\\"x\\"}\n' > "$T/wd-bin/claude"; chmod +x "$T/wd-bin/claude"
+kod 0 "watchdog reports an unlistable session list (no traceback)" env PATH="$T/wd-bin:$PATH" timeout 60 ./watchdog.sh 0 20
+icerir "watchdog report" "could not list sessions"
+icermez "no Python traceback" "Traceback"
+
 echo
 echo "result: $OK passed, $HATA failed"
 [ "$HATA" = 0 ]
