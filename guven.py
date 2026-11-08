@@ -16,7 +16,7 @@ def norm(yol):
 
 
 def ayarlar():
-    yol = os.environ.get("SUPER_AJAN_CLAUDE_JSON") or os.path.join(os.path.expanduser("~"), ".claude.json")
+    yol = os.environ.get("SHEEPDOG_CLAUDE_JSON") or os.path.join(os.path.expanduser("~"), ".claude.json")
     with open(yol, encoding="utf-8") as f:
         return {norm(k): v for k, v in json.load(f).get("projects", {}).items()}
 

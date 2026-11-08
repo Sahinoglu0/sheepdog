@@ -18,4 +18,4 @@ Proje dosyalarını ve ana dalı değiştirme; yalnız kartın kendi klasöründ
 - [ ] `sonuc.md` sonundaki ayrı kanıt paragrafında okunan kaynak yolları, ana dal commit'i, çalıştırılan komutların çıkış kodları ve önce/sonra `git status --porcelain` çıktısı var; proje dosyaları değiştirilmemiş.
 
 ## Takılırsan
-902'nin birleşmiş özelliği ana dalda yoksa, kod ile README uyuşmuyorsa veya komutları doğrulayamıyorsan durup süper ajana somut engeli bildir; çıktı uydurma.
+902'nin birleşmiş özelliği ana dalda yoksa, kod ile README uyuşmuyorsa veya komutları doğrulayamıyorsan durup Sheepdog'a somut engeli bildir; çıktı uydurma.

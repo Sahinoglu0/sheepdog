@@ -12,7 +12,7 @@ Proje: /projenizin/klasörü
 Yalnız `servisler/siparis.py` ve belirtilen test dosyası değişebilir. Fiyatlandırma kuralları, veritabanı, API ve diğer modüller kapsam dışı. `.env` ve anahtar dosyalarını okuma veya değiştirme. Push, PR ve ana dala birleştirme yapma.
 
 ## Takılırsan
-Davranışta hata görürsen bu kartta düzeltme. “Mevcut davranışı koru / ayrı hata kartı aç” seçeneklerini süper ajana ilet, kullanıcı kararını bekle. Test edilemeyen yan etki, başka modüle taşıma gereği veya 60 dakika sınırı varsa dur ve somut engeli bildir.
+Davranışta hata görürsen bu kartta düzeltme. “Mevcut davranışı koru / ayrı hata kartı aç” seçeneklerini Sheepdog'a ilet, kullanıcı kararını bekle. Test edilemeyen yan etki, başka modüle taşıma gereği veya 60 dakika sınırı varsa dur ve somut engeli bildir.
 
 ## Bitti demek
 - [ ] `python -m pytest tests/test_siparis_toplami.py -q` düzenlemeden önce ve sonra çıkış kodu 0. İki çıktı, aynı test senaryoları ve önceki test commit’i `sonuc.md` → `Davranışı sabitleme` içinde.

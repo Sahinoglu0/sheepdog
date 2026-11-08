@@ -1,8 +1,8 @@
 #!/bin/bash
-# Süper ajan kitinin model ayarları. baslat.sh her yeni oturumda bu dosyayı okur.
+# Sheepdog kitinin model ayarları. baslat.sh her yeni oturumda bu dosyayı okur.
 #
 # Rol          | İş                                     | Model kullanır mı
-# Süper ajan   | Oturumları yönetir, kararı size sorar  | evet, ama ayarı burada değil: .claude/agents/super-ajan.md (model:, effort:)
+# Sheepdog   | Oturumları yönetir, kararı size sorar  | evet, ama ayarı burada değil: .claude/agents/sheepdog.md (model:, effort:)
 # İşçi         | Kartı yapar, sonuç ve kanıt yazar      | evet
 # İncelemeci   | İşi yapmadan, istenen yapıldı mı bakar | evet
 # Doğrulayıcı  | Kartın kontrollerini çalıştırır        | evet

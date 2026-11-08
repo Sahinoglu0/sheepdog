@@ -18,4 +18,4 @@ Yalnız `kitaplik/islemler.py` ve yeni `testler/test_iade_regresyon.py` dosyası
 - [ ] Dal, commit ve worktree yolu `sonuc.md` içinde; diff yalnız izin verilen iki dosyayı değiştiriyor.
 
 ## Takılırsan
-Hatayı üretemezsen, kapsam dışında değişiklik gerekirse veya iş 30 dakikayı geçecekse durup somut engeli süper ajana bildir.
+Hatayı üretemezsen, kapsam dışında değişiklik gerekirse veya iş 30 dakikayı geçecekse durup somut engeli Sheepdog'a bildir.

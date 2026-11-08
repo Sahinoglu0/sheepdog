@@ -12,7 +12,7 @@ Proje: /notlarinizin/klasörü
 Yalnız `raporlar/haftalik-ozet.md`, `raporlar/haftalik_hesap.py` ve kartın yanındaki `sonuc.md` yazılabilir. Kaynak CSV salt okunur; diğer haftalar ve muhasebe kayıtları kapsam dışı. `.env` ve anahtar dosyalarını okuma veya değiştirme. Veriyi dış servise yükleme.
 
 ## Takılırsan
-Şema farklıysa, bozuk veya yinelenen satır varsa ya da 45 dakika dolarsa dur. Kimlikleri ifşa etmeden satır numaraları ve sorun sayısını süper ajana bildir. “Düzeltilmiş girdi bekle / sorunlu satırları ayrı sayıp kapsamı daralt” seçeneklerini kullanıcıya sorulmak üzere ilet; karar gelmeden raporu tamamlanmış gösterme.
+Şema farklıysa, bozuk veya yinelenen satır varsa ya da 45 dakika dolarsa dur. Kimlikleri ifşa etmeden satır numaraları ve sorun sayısını Sheepdog'a bildir. “Düzeltilmiş girdi bekle / sorunlu satırları ayrı sayıp kapsamı daralt” seçeneklerini kullanıcıya sorulmak üzere ilet; karar gelmeden raporu tamamlanmış gösterme.
 
 ## Bitti demek
 - [ ] `python3 raporlar/haftalik_hesap.py veri/siparisler.csv --baslangic 2026-10-26 --bitis 2026-11-02` çıkış kodu 0; komut ve çıktı `sonuc.md` → `Hesap` içinde. Betik sözleşmesi bu argümanları kabul ediyor; girdi SHA-256 değeri aynı başlıkta.

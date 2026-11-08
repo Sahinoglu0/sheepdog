@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-labelledby="t d"><title id="t">Card lifecycle</title><desc id="d">A job card moves through draft, ready, working, review, verify, merge queue, merging and done. Failed checks send it back to working; environment problems mark it stuck.</desc>
+<style>.m{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.s{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}.tx{fill:#e6edf3}.mu{fill:#9198a1}.ac{fill:#f0883e}.ok{fill:#3fb950}.fl{stroke-dasharray:5 7;animation:ak 1.2s linear infinite}@keyframes ak{to{stroke-dashoffset:-24}}@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style>
+<rect x="0.5" y="0.5" width="1199" height="319" rx="16" fill="#0d1117" stroke="#30363d"/>
+<text x="40" y="52" class="s tx" font-size="20" font-weight="700">Card lifecycle</text><text x="40" y="76" class="s mu" font-size="14">Only durum.sh changes a card’s state. Workers never do.</text>
+<rect x="40.0" y="130" width="118" height="64" rx="10" fill="#161b22" stroke="#30363d" stroke-width="2"/>
+<text x="99.0" y="157" text-anchor="middle" class="m tx" font-size="14" font-weight="700">taslak</text>
+<text x="99.0" y="212" text-anchor="middle" class="s mu" font-size="13">draft</text>
+<path d="M161.0 162H178.1" stroke="#9198a1" stroke-width="1.6"/><path d="M174.1 158L179.1 162L174.1 166" fill="none" stroke="#9198a1" stroke-width="1.6"/>
+<rect x="183.1" y="130" width="118" height="64" rx="10" fill="#161b22" stroke="#30363d" stroke-width="2"/>
+<text x="242.1" y="157" text-anchor="middle" class="m tx" font-size="14" font-weight="700">hazir</text>
+<text x="242.1" y="212" text-anchor="middle" class="s mu" font-size="13">ready</text>
+<path d="M304.1 162H321.3" stroke="#9198a1" stroke-width="1.6"/><path d="M317.3 158L322.3 162L317.3 166" fill="none" stroke="#9198a1" stroke-width="1.6"/>
+<rect x="326.3" y="130" width="118" height="64" rx="10" fill="#161b22" stroke="#f0883e" stroke-width="2"/>
+<text x="385.3" y="157" text-anchor="middle" class="m tx" font-size="14" font-weight="700">calisiyor</text>
+<text x="385.3" y="212" text-anchor="middle" class="s mu" font-size="13">working</text>
+<path d="M447.3 162H464.4" stroke="#9198a1" stroke-width="1.6"/><path d="M460.4 158L465.4 162L460.4 166" fill="none" stroke="#9198a1" stroke-width="1.6"/>
+<rect x="469.4" y="130" width="118" height="64" rx="10" fill="#161b22" stroke="#f0883e" stroke-width="2"/>
+<text x="528.4" y="157" text-anchor="middle" class="m tx" font-size="14" font-weight="700">inceleme</text>
+<text x="528.4" y="212" text-anchor="middle" class="s mu" font-size="13">review</text>
+<path d="M590.4 162H607.6" stroke="#9198a1" stroke-width="1.6"/><path d="M603.6 158L608.6 162L603.6 166" fill="none" stroke="#9198a1" stroke-width="1.6"/>
+<rect x="612.6" y="130" width="118" height="64" rx="10" fill="#161b22" stroke="#f0883e" stroke-width="2"/>
+<text x="671.6" y="157" text-anchor="middle" class="m tx" font-size="14" font-weight="700">dogrulama</text>
+<text x="671.6" y="212" text-anchor="middle" class="s mu" font-size="13">verify</text>
+<path d="M733.6 162H750.7" stroke="#9198a1" stroke-width="1.6"/><path d="M746.7 158L751.7 162L746.7 166" fill="none" stroke="#9198a1" stroke-width="1.6"/>
+<rect x="755.7" y="130" width="118" height="64" rx="10" fill="#161b22" stroke="#f0883e" stroke-width="2"/>
+<text x="814.7" y="157" text-anchor="middle" class="m tx" font-size="14" font-weight="700">birlesme-<tspan x="814.7" dy="14">bekliyor</tspan></text>
+<text x="814.7" y="212" text-anchor="middle" class="s mu" font-size="13">merge queue</text>
+<path d="M876.7 162H893.9" stroke="#9198a1" stroke-width="1.6"/><path d="M889.9 158L894.9 162L889.9 166" fill="none" stroke="#9198a1" stroke-width="1.6"/>
+<rect x="898.9" y="130" width="118" height="64" rx="10" fill="#161b22" stroke="#f0883e" stroke-width="2"/>
+<text x="957.9" y="157" text-anchor="middle" class="m tx" font-size="14" font-weight="700">birlesiyor</text>
+<text x="957.9" y="212" text-anchor="middle" class="s mu" font-size="13">merging</text>
+<path d="M1019.9 162H1037.0" stroke="#9198a1" stroke-width="1.6"/><path d="M1033.0 158L1038.0 162L1033.0 166" fill="none" stroke="#9198a1" stroke-width="1.6"/>
+<rect x="1042.0" y="130" width="118" height="64" rx="10" fill="#161b22" stroke="#3fb950" stroke-width="2"/>
+<text x="1101.0" y="157" text-anchor="middle" class="m ok" font-size="14" font-weight="700">bitti</text>
+<text x="1101.0" y="212" text-anchor="middle" class="s mu" font-size="13">done</text>
+<path d="M385.3 262V204" fill="none" stroke="#f0883e" stroke-width="1.6" class="fl"/><path d="M380.3 210L385.3 202L390.3 210" fill="none" stroke="#f0883e" stroke-width="1.6"/><path d="M385.3 262H957.9" stroke="#f0883e" stroke-width="1.6" fill="none"/><path d="M528.4 224V262" stroke="#f0883e" stroke-width="1.6" fill="none"/><path d="M671.6 224V262" stroke="#f0883e" stroke-width="1.6" fill="none"/><path d="M957.9 224V262" stroke="#f0883e" stroke-width="1.6" fill="none"/>
+<text x="671.6" y="286" text-anchor="middle" class="s ac" font-size="14">KALDI → findings go back to the same worker · 3 rounds max (tur.sh) · then you decide</text>
+<text x="99.0" y="108" text-anchor="middle" class="s mu" font-size="13">you write</text><text x="242.1" y="108" text-anchor="middle" class="s mu" font-size="13">you approve</text>
+<text x="997.9" y="108" text-anchor="middle" class="s mu" font-size="13">stuck → tikandi</text></svg>

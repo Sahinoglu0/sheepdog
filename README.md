@@ -1,84 +1,94 @@
 <p>
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.svg">
-  <img src="assets/banner-light.svg" alt="süper ajan: Bütün Claude Code oturumlarını tek ajan yönetir. İşi dağıtır, kontrol ettirir, geçeni projeye ekler." width="100%">
+  <img src="assets/banner-light.svg" alt="Sheepdog: one agent herds every Claude Code session. It dispatches the work, has it checked, and merges what passes." width="100%">
 </picture>
 </p>
 
 <p align="center">
-  <a href="https://github.com/OWNER/ekip-ajan/actions/workflows/kontrol.yml"><img src="https://github.com/OWNER/ekip-ajan/actions/workflows/kontrol.yml/badge.svg" alt="kontrol"></a>
-  <img src="https://img.shields.io/badge/s%C3%BCr%C3%BCm-v0.4%20deneysel-b45309?style=flat-square&labelColor=1f2328" alt="sürüm v0.4, deneysel">
-  <img src="https://img.shields.io/badge/Claude%20Code-%E2%89%A5%202.1.293-b45309?style=flat-square&labelColor=1f2328" alt="Claude Code 2.1.293 veya sonrası">
-  <img src="https://img.shields.io/badge/Linux%20%C2%B7%20macOS%20%C2%B7%20Windows-test%20ediliyor-b45309?style=flat-square&labelColor=1f2328" alt="Linux, macOS ve Windows">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/lisans-MIT-b45309?style=flat-square&labelColor=1f2328" alt="MIT lisansı"></a>
+  <a href="https://github.com/Sahinoglu0/sheepdog/actions/workflows/kontrol.yml"><img src="https://github.com/Sahinoglu0/sheepdog/actions/workflows/kontrol.yml/badge.svg" alt="CI"></a>
+  <img src="https://img.shields.io/badge/version-v0.4%20experimental-b45309?style=flat-square&labelColor=1f2328" alt="version v0.4, experimental">
+  <img src="https://img.shields.io/badge/Claude%20Code-%E2%89%A5%202.1.293-b45309?style=flat-square&labelColor=1f2328" alt="Claude Code 2.1.293 or newer">
+  <img src="https://img.shields.io/badge/Linux%20%C2%B7%20macOS%20%C2%B7%20Windows-CI%20tested-b45309?style=flat-square&labelColor=1f2328" alt="Linux, macOS and Windows">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-b45309?style=flat-square&labelColor=1f2328" alt="MIT license"></a>
 </p>
 
-<p align="center"><b>Pencere pencere gezmeyi bırakın. Tek bir ajanla konuşun, gerisini o takip etsin.</b></p>
+<p align="center"><b>English</b> · <a href="README.tr.md">Türkçe</a></p>
+
+<p align="center"><b>Stop tab-hopping between Claude Code windows. Talk to one agent and let it keep track of the rest.</b></p>
 
 ---
 
-Farklı işleri farklı oturumda yapmak doğru. Ama oturum sayısı artınca kendinize yeni bir iş açıyorsunuz: **hangisi bitti, hangisi sizi bekliyor, hangisi takıldı?**
+Running different jobs in different sessions is the right call. But once the session count grows you have created a new job for yourself: **which one finished, which one is waiting on me, which one is stuck?**
 
-Süper ajan bu takibi sizden alır. Siz yalnızca onunla konuşursunuz. O her işi kendi projesinde, ayrı bir Claude Code oturumunda başlatır, biten işi işi yapmamış başka bir ajana kontrol ettirir, eksik olanı geri gönderir, kararınız gereken yerde size tek cümleyle sorar ve testlerden geçen kod değişikliğini projeye ekletir. Takılan ya da kapanan oturumu da fark eder.
+Sheepdog takes that bookkeeping off you. You only ever talk to **Sheepdog**. It starts every job in its own project, in its own background Claude Code session; has finished work checked by a *different* agent that did not do the work; sends incomplete work back; asks you a single sentence only where the decision is yours; and merges code that passes its tests into the project. It also notices when a session stalls or closes.
 
 <p>
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/akis-dark.svg">
-  <img src="assets/akis-light.svg" alt="Akış: kart, işçi, incelemeci, doğrulayıcı, prova, birleştirici, ana dal. Eksik iş aynı işçiye geri döner, üç turda geçmezse karar sizde. Gözcü on dakikada bir oturumlara bakar." width="100%">
+  <source media="(prefers-color-scheme: dark)" srcset="assets/flow-dark.svg">
+  <img src="assets/flow-light.svg" alt="Flow: card, worker, reviewer, verifier, dry run, merger, main. Incomplete work returns to the same worker; after three rounds the decision is yours. A watchdog checks sessions every ten minutes." width="100%">
 </picture>
 </p>
 
-## İlk kez mi deneyeceksiniz?
+## Contents
 
-Kendi projenize dokunmadan 10 dakikada görün. Deneme seti, bilerek hatası ve eksik özelliği bırakılmış küçük bir proje kurar ve üç kartı hazırlar: bir hata düzeltmesi, size seçenek soran bir özellik ve ona bağlı bir içerik işi.
+[Highlights](#highlights) · [Try it in 10 minutes](#try-it-in-10-minutes) · [Install](#install-in-three-steps) · [What a session looks like](#what-a-session-looks-like) · [How it works](#how-it-works) · [Models](#which-role-uses-which-model) · [Safety](#safety-and-limits) · [Requirements](#requirements-and-platforms) · [FAQ](#faq) · [Docs](#documentation) · [Contributing](#contributing)
 
-```bash
-bash deneme/kur.sh ../kitaplik-denemesi
-```
+## Highlights
 
-Ayrıntılar: [deneme/README.md](deneme/README.md)
-
-## Üç adımda kurulum
-
-**1. İndirin ve makinenizi kontrol edin**
-
-```bash
-git clone https://github.com/OWNER/ekip-ajan merkez
-cd merkez
-./kontrol.sh ~/projeniz
-```
-
-`kontrol.sh` hiçbir şeyi değiştirmez. Claude Code sürümünü, `--bg` ve `agents` desteğini, git ve Python'u, verdiğiniz projelerde güven onayını yoklar; eksik olanı tek satırla söyler.
-
-**2. Projelerinize güven onayı verin**
-
-İş vereceğiniz her proje klasöründe bir kez `claude` açıp güven onayını kabul edin. Onay yoksa arka plan oturumu başlamaz, süper ajan size bildirir.
-
-**3. İşi anlatın, süper ajanı başlatın**
-
-`merkez` içinde Claude Code açıp işi anlatın: `/is-karti yapılacak iş`. Komut işi inceler, belirsiz yeri size sorar ve bir iş kartı yazar. Kartı okuyup `Durum: hazir` yapın. Sonra:
-
-```bash
-claude --agent super-ajan --name super-ajan --permission-mode auto
-```
-
-ve süper ajana **"hazır kartları başlat"** yazın. Gerisi bu konuşmadan yürür.
-
-## Ne için kullanılır
-
-| Ne yapmak istiyorsunuz | Nereden başlayın |
+| | |
 |---|---|
-| Sistemi güvenle denemek | [Deneme seti](deneme/README.md) |
-| Bir projede birkaç hatayı aynı anda düzeltmek | [KULLANIM.md → 2](KULLANIM.md#2-tek-projede-birkaç-hata-düzeltmesi) |
-| Farklı projelerde ilgisiz işleri birlikte yürütmek | [KULLANIM.md → 3](KULLANIM.md#3-farklı-projelerde-aynı-anda-ilgisiz-işler) |
-| Önce araştırıp sonra karar verip uygulamak | [KULLANIM.md → 4](KULLANIM.md#4-araştırma--karar-özeti--uygulama) |
-| Her birleştirmeyi kendiniz onaylamak | [KULLANIM.md → 5](KULLANIM.md#5-temkinli-mod-birleştirmeden-önce-sor) |
-| Gece açık bırakıp sabah sonuçlara bakmak | [KULLANIM.md → 6](KULLANIM.md#6-bilgisayarı-açık-bırakıp-uzun-süre-çalıştırmak) |
-| İyi bir iş kartı yazmak | [10 örnek kart ve rehber](ornek-kartlar/README.md) |
+| **One conversation** | You talk to a single agent. Workers, reviewers and mergers are background sessions it manages. |
+| **Independent review** | The agent that checks the work is never the agent that did it. A third agent re-runs the card's checks verbatim. |
+| **Safe merging** | Merges are rehearsed first, then done in a throwaway copy of the main branch. The main branch only ever fast-forwards, and only if every gate passes. No push, no force, no rebase. |
+| **Scripts where judgment isn't needed** | The board, the watchdog and the merge dry run are plain scripts. They cost no model tokens. |
+| **Multi-project** | Jobs run in the project they belong to. Fix a bug in one repo, research in another, ship a feature in a third. |
+| **Dependencies between cards** | `Bekliyor: 001-a,002-b` starts a card only when everything it waits for is `bitti` (done). |
+| **One command, persistent policy** | `./sheepdog` is the front door: scaffold cards, see where time went (`timeline`), and set a lasting `policy ask` so every merge needs your approval, even in a new session. |
+| **Hard limits in code** | Review rounds are counted from an append-only log (`tur.sh`), not from the agent's memory. |
+| **Tested everywhere** | A 200-check smoke test runs on Ubuntu, macOS (including its stock bash 3.2) and Windows (Git Bash) on every push. |
 
-## Bir konuşma böyle görünür
+## Try it in 10 minutes
 
-Aşağıdaki satırlar temiz bir kurulumla yapılan gerçek bir provadan, değiştirilmeden alındı. İş, örnek bir projede boş e-postada çöken kayıt formunu düzeltmekti.
+Don't point it at your own project first. The trial kit builds a small Python library with a deliberate bug and a missing feature, plus three ready cards: a bug fix, a feature that asks you to choose between options, and a content job that depends on it.
+
+```bash
+git clone https://github.com/Sahinoglu0/sheepdog hq
+cd hq
+bash deneme/kur.sh ../library-trial
+```
+
+Details (in Turkish): [deneme/README.md](deneme/README.md)
+
+## Install in three steps
+
+**1. Clone it and check your machine**
+
+```bash
+git clone https://github.com/Sahinoglu0/sheepdog hq
+cd hq
+./kontrol.sh ~/your-project
+```
+
+`kontrol.sh` changes nothing. It checks the Claude Code version, `--bg` and `agents` support, git, Python, and the trust prompt for each project you pass, and tells you in one line what is missing.
+
+**2. Accept the trust prompt in every project**
+
+Open `claude` once in each project folder where you will give jobs, and accept the trust dialog. Without it, a background session will not start and Sheepdog tells you so.
+
+**3. Describe the job, then start Sheepdog**
+
+Open Claude Code inside `hq` and write `/is-karti <the job>` (*is-karti* = job card). The skill inspects the job, asks you about anything ambiguous, and writes a job card. Read the card and set `Durum: hazir` (*ready*). Then:
+
+```bash
+claude --agent sheepdog --name sheepdog --permission-mode auto
+```
+
+and tell Sheepdog **"start the ready cards"**. Everything after that happens in that one conversation.
+
+## What a session looks like
+
+Taken unchanged from a real dry run on a clean install. The job was to fix a sign-up form that crashed on an empty e-mail. (Sheepdog answered in Turkish, the language of the original kit; the roles and prompts are language-agnostic.)
 
 ```text
 ❯ Bu projede birleştirmeden önce bana sor. Hazır kartları başlat.
@@ -92,119 +102,232 @@ Aşağıdaki satırlar temiz bir kurulumla yapılan gerçek bir provadan, deği�
 ● Kart 001 bitti: worktree-kart-001-bos-eposta dalı ana dala e99b19e birleştirme commit'iyle girdi.
 ```
 
-İşi siz yazmadınız, işçinin penceresini açmadınız, kontrolü siz yapmadınız. Karar gereken tek yerde size soruldu.
+You did not write the job, open the worker's window, or check the result. You were asked exactly once, at the one point where the decision was yours.
 
-## Parçalar
+## How it works
 
-Kural basit: **yargı gereken yerde ajan, gerekmeyen yerde program.** Programlar limit harcamaz.
+The rule: **an agent where judgment is needed, a program where it isn't.** Programs cost no usage limit.
 
-| Parça | Tür | Ne yapar |
+| Part | Kind | What it does |
 |---|---|---|
-| **süper ajan** | ajan | Konuştuğunuz tek ajan. İşi dağıtır, takip eder, sizi yalnız karar gerekince, iş bitince ya da iş takılınca böler. Dosya yazma aracı yoktur. |
-| **işçi** | ajan | Kartı kendi projesinde, kendi dalında yapar. Bitince, takılınca ya da karar gerekince süper ajana tek cümle yazar. |
-| **incelemeci** | ajan | İşi yapmamış ayrı bir ajan. Kartın "bitti" şartına bakar, istenen gerçekten yapılmış mı kontrol eder. |
-| **doğrulayıcı** | ajan | Kod işlerinde kartın kontrollerini çalıştırır, sonucu yumuşatmadan yazar. |
-| **birleştirici** | ajan | Değişikliği ana dalın geçici bir kopyasında birleştirir, projenin kurallarını ve testlerini orada koşar. Geçerse ana dalı ileri sarar, geçmezse ana dala dokunmaz. Push yapmaz. |
-| `pano.sh` | program | Bütün kartlar tek tabloda, altında özet. `./pano.sh --izle` canlı tablo. |
-| `gozcu.sh` | program | On dakikada bir oturumlara bakar, kapanan ya da takılanı süper ajana söyler. |
-| `birlestirme-hazirla.sh` | program | Ana dala dokunmadan çakışma var mı bakar. |
+| **Sheepdog** | agent | The one you talk to. Dispatches, tracks, and interrupts you only for a decision, a finished card, or a stuck one. It has no file-writing tool. |
+| **worker** (`isci`) | agent | Does the card in its own project on its own branch. Reports in one sentence when done, stuck, or in need of a decision. |
+| **reviewer** | agent | A separate agent that did not do the work. Checks the card's "done" criteria one by one and reads the diff. |
+| **verifier** (`dogrulayici`) | agent | Runs the card's checks verbatim and reports without softening the result. |
+| **merger** (`birlestirici`) | agent | Merges in a throwaway copy of the main branch, runs the project's rules and tests there, fast-forwards main only if everything passes. Never pushes. |
+| `pano.sh` | script | All cards in one table with a summary. `./pano.sh --izle` is a live view. |
+| `gozcu.sh` | script | Every ten minutes it looks at the sessions and tells Sheepdog about any that closed or stalled. |
+| `birlestirme-hazirla.sh` | script | Merge dry run: finds conflicts without touching the main branch. |
+| `ana-dal.sh` | script | Detects the project's main branch (`main`, `master`, or whatever `origin/HEAD` says). |
+| `tur.sh` | script | Counts how many rounds a card has been sent back, from the log. |
+| `durum.sh` | script | The only thing that changes a card's state. |
+| `baslat.sh` | script | Starts a role's background session with the right model and scope. |
 
-Yardımcılar: `/is-karti` kart yazdırır, `baslat.sh` oturum açar, `durum.sh` kart durumunu değiştirir, `kontrol.sh` kurulumu yoklar, `ayarlar.sh` modelleri seçer.
+### Card lifecycle
 
-## Hangi rol hangi model
+<p>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/lifecycle-dark.svg">
+  <img src="assets/lifecycle-light.svg" alt="Card lifecycle: draft, ready, working, review, verify, merge queue, merging, done. Failed checks return the card to working." width="100%">
+</picture>
+</p>
 
-| Rol | Varsayılan | Nereden değişir |
+```mermaid
+sequenceDiagram
+    autonumber
+    actor You
+    participant S as Sheepdog
+    participant W as worker
+    participant R as reviewer
+    participant V as verifier
+    participant M as merger
+    You->>S: start the ready cards
+    S->>W: baslat.sh isler/001 isci
+    W-->>S: done (sonuc.md written)
+    S->>R: baslat.sh isler/001 reviewer
+    R-->>S: SONUÇ: GEÇTİ (inceleme.md)
+    S->>V: baslat.sh isler/001 dogrulayici
+    V-->>S: SONUÇ: GEÇTİ (dogrulama.md)
+    S->>S: birlestirme-hazirla.sh (dry run)
+    S->>M: baslat.sh isler/001 birlestirici
+    M-->>S: main fast-forwarded (birlesme.md)
+    S-->>You: card 001 merged at e99b19e
+```
+
+### What is a job card?
+
+A card is a Markdown file the worker can complete without asking questions. Its "done" criteria must be checkable by someone who did not do the job.
+
+```markdown
+# 001: Fix crash on empty e-mail
+
+Durum: taslak          # state: taslak (draft) → hazir (ready) → … → bitti (done)
+Tür: kod               # kod (code, gets verify + merge) or icerik (content, review only)
+Bekliyor: yok          # "waits for": none, or comma-separated card folder names
+Proje: /abs/path/to/project
+
+## Ne yapılacak            (what to do)
+One paragraph. Someone should be able to do it without asking.
+
+## Neye dokunma            (do not touch)
+Everything out of scope.
+
+## Bitti demek             (definition of done)
+- [ ] What will be true, and what proves it.
+
+## Takılırsan              (if you get stuck)
+Where to stop and report.
+```
+
+The card format, state names and artifact file names are Turkish, a legacy of the original kit; see the [glossary](docs/GLOSSARY.md). Ten worked examples live in [ornek-kartlar/](ornek-kartlar/README.md).
+
+## Which role uses which model
+
+| Role | Default | Where to change |
 |---|---|---|
-| süper ajan | opus, high | `.claude/agents/super-ajan.md` → `model:`, `effort:` |
-| işçi | sonnet, high | `ayarlar.sh`; tek bir iş için karta `Model: opus` |
-| incelemeci | sonnet, high | `ayarlar.sh` |
-| doğrulayıcı | sonnet, medium | `ayarlar.sh` |
-| birleştirici | sonnet, high | `ayarlar.sh` |
-| gözcü, pano, prova | model yok | — |
+| Sheepdog | opus, high | `.claude/agents/sheepdog.md` → `model:`, `effort:` |
+| worker | sonnet, high | `ayarlar.sh`; for a single job add `Model: opus` to the card |
+| reviewer | sonnet, high | `ayarlar.sh` |
+| verifier | sonnet, medium | `ayarlar.sh` |
+| merger | sonnet, high | `ayarlar.sh` |
+| watchdog, board, dry run | no model | none |
 
-En kolayı profil seçmek: `ayarlar.sh` içinde `PROFIL=ekonomik`, `dengeli` (varsayılan) ya da `guclu`. Profiller öneridir, ölçülmedi. Seçimi oturum açmadan görmek için: `SUPER_AJAN_KURU=1 ./baslat.sh isler/<kart> isci`. Ayrıntı: [KULLANIM.md](KULLANIM.md#hangi-rol-hangi-model).
+The easiest switch is a profile in `ayarlar.sh`: `PROFIL=ekonomik` (frugal), `dengeli` (balanced, default) or `guclu` (strong). Profiles are suggestions and have **not** been benchmarked. To preview what would run without opening a session: `SHEEPDOG_KURU=1 ./baslat.sh isler/<card> isci`.
 
-## Bu orkestrasyon değil
+## The `./sheepdog` command
 
-Orkestrasyon **tek bir işi** parçalara böler: "bana bir site yap" denir, alt ajanlar tasarımı, kodu ve testi yapar, sonuç tek bir sitedir.
-Süper ajan işi parçalamaz, **birbirinden bağımsız işleri** takip eder: bir hata düzeltmesi, bir araştırma, başka bir projede yeni bir özellik. Her biri kendi klasöründe, kendi oturumunda yürür. İkisi birlikte de çalışır; bir oturum kendi işini alt ajanlara bölebilir, süper ajan yine yalnız sonucuyla ilgilenir.
+One English-named front door over the scripts. None of it spends model tokens.
 
-## Kontrol sizde
+```text
+./sheepdog board                 card table with summary        ./sheepdog watch   live board
+./sheepdog ready                 cards that can start now       ./sheepdog doctor  check your machine
+./sheepdog new fix-login --project /abs/app [--type kod|icerik] [--waits 001-a,002-b]
+./sheepdog start 001-fix-login [role]     ./sheepdog set 001-fix-login hazir
+./sheepdog rounds 001-fix-login           ./sheepdog timeline [card]   time spent per state
+./sheepdog policy [ask|auto]              persistent merge policy ("ask" = you approve every merge)
+```
 
-- **Birleştirmeyi kendiniz yapmak** isterseniz süper ajana "birleştirmeden önce sor" deyin. Önemli projelerde bunu öneririz.
-- Projenizin `AGENTS.md` ya da `CLAUDE.md` dosyasında birleştirme kuralı (tam test turu vb.) varsa birleştirici onu uygular, yoksa kartın kontrollerini çalıştırır.
-- Geçemeyen iş aynı işçiye döner. Üç turda geçmezse karar size gelir; tur sayısı `tur.sh` ile `.gecmis` kaydından sayılır.
-- Arada bir, biten işlerden birini açıp kendiniz bakın. Süper ajan işleri yönetiyor, süper ajanı siz yönetiyorsunuz.
+## This is not orchestration
 
-## Dikkat
+Orchestration splits **one job** into parts: you say "build me a site", sub-agents do design, code and tests, and the result is one site.
+Sheepdog does not split jobs. It tracks **independent jobs**: a bug fix, a research task, a feature in another project. Each runs in its own folder in its own session. The two combine well: a session may split its own job across sub-agents and Sheepdog still only cares about the result.
 
-- Her oturum limitinizden ayrı harcar. Tek iş için kurmayın.
-- Oturumlar bilgisayar kapanınca durur.
-- Bir bilgisayarda aynı anda tek süper ajan çalıştırın; işçiler `super-ajan` adına mesaj atar.
-- Otomatik izin modu soruları azaltır. Oturumlar internetten okudukları metinden etkilenebilir; önemli işlerde ayrı bir işletim sistemi hesabı veya kapsayıcı kullanın.
-- Süper ajanın dosya yazma aracı yok, ama kabuk komutu çalıştırabilir. Bu tam bir güvenlik sınırı değil, davranış kuralıdır.
-- `.env` ve anahtar dosyaları işçilere yasaktır, ama bunu kural sağlar, kilit değil.
-- Kod işlerinde arka plan oturumları projenizin içinde `.claude/worktrees/` klasörü açar. Bu klasörü projenizin `.gitignore` dosyasına ekleyin. İş bitince eski dalları ve worktree'leri `git worktree list` ile görüp kendiniz temizleyin.
+## Safety and limits
 
-## Gereksinimler ve platformlar
+You stay in control:
 
-- Claude Code 2.1.293 veya sonrası; `claude --bg` ve `claude agents` (araştırma önizlemesi) çalışmalı.
-- Hesabınızda otomatik izin modu (`--permission-mode auto`) açık olmalı.
-- `git` 2.38 veya sonrası, `bash` ve Python 3.8 veya sonrası (`python3` ya da `python`).
-- Kod işleri için projenin git deposu olması gerekir.
+- Tell Sheepdog **"ask me before merging"** to approve every merge yourself. We recommend this for important projects.
+- If the project has an `AGENTS.md` or `CLAUDE.md` with merge rules (full test run, etc.), the merger applies them; otherwise it runs the card's checks.
+- A job that fails goes back to the same worker. After three rounds the decision comes to you.
+- Occasionally open a finished job and look at it yourself. Sheepdog manages the jobs; you manage Sheepdog.
 
-| Sistem | Durum |
+Be aware of:
+
+- Every session spends from your usage limit separately. Don't set this up for a single job.
+- Sessions stop when the computer shuts down. Run one Sheepdog per machine, because workers message the session named `sheepdog`.
+- Auto permission mode reduces prompts. Sessions can be influenced by text they read online; for important work use a separate OS account or a container.
+- Sheepdog has no file-writing tool, but it can run shell commands. That is a behavioral rule, not a hard security boundary. Likewise, "workers may not read `.env` and key files" is a rule, not a lock.
+- Sessions get access only to their own card folder, not the whole hub, so a worker cannot rewrite `ayarlar.sh` or the role prompts. Model and effort values are validated before a session starts. This narrows the blast radius; it is **not** a sandbox.
+- For code jobs, background sessions create `.claude/worktrees/` inside your project. Add it to the project's `.gitignore`, and clean up old branches and worktrees yourself (`git worktree list`).
+
+Report security problems as described in [SECURITY.md](SECURITY.md).
+
+## Requirements and platforms
+
+- Claude Code 2.1.293 or newer with `claude --bg` and `claude agents` (research preview) working.
+- Auto permission mode (`--permission-mode auto`) enabled on your account.
+- `git` 2.38+, `bash`, and Python 3.8+ (`python3` or `python`).
+- Code jobs need the project to be a git repository.
+
+| System | Status |
 |---|---|
-| Linux | Gerçek işlerle uçtan uca denendi, betikler her güncellemede otomatik test ediliyor |
-| macOS | Betikler her güncellemede otomatik test ediliyor (macOS'un kendi bash 3.2 sürümü dahil); gerçek oturumlarla henüz denenmedi |
-| Windows | Komutları Git for Windows ile gelen Git Bash'te çalıştırın. Betikler her güncellemede otomatik test ediliyor; gerçek oturumlarla henüz denenmedi |
+| Linux | Run end to end with real jobs; scripts smoke-tested on every push |
+| macOS | Scripts smoke-tested on every push (including macOS's own bash 3.2); not yet tried with real sessions |
+| Windows | Run the commands in Git Bash. Scripts smoke-tested on every push; not yet tried with real sessions |
+
+## FAQ
 
 <details>
-<summary><b>Sık sorulanlar</b></summary>
+<summary><b>Will it eat my usage limit?</b></summary>
 
-**Limitimi çok mu harcar?**
-Her işçi, incelemeci ve doğrulayıcı ayrı bir oturumdur, yani tek oturumdan fazla harcar. Pano, gözcü ve birleştirme provası model kullanmaz. Aynı anda birkaç iş yürütmüyorsanız gerek yok.
-
-**Yöneticiye ucuz model verebilir miyim?**
-`.claude/agents/super-ajan.md` dosyasındaki `model:` satırını değiştirebilirsiniz. DeepSeek yöneticiye hafif modelin yettiğini söylüyor; bu kitte güçlü model seçildi, çünkü işi geri gönderme kararı süper ajanda.
-
-**Zor bir işe güçlü model verebilir miyim?**
-Evet. Karta `Model: opus` ve isterseniz `Efor: high` satırı ekleyin; yalnız o işin işçisi etkilenir.
-
-**Kod dışı işler olur mu?**
-Olur. Kartta `Tür: icerik` yazan işler (araştırma, metin, not) incelemeden geçince biter, birleştirme adımı yoktur.
-
-**Bir oturum takılırsa ne olur?**
-Gözcü on dakikada bir bakar. Kapanan ya da uzun süredir hareketsiz oturumu süper ajana bildirir, süper ajan da size tek cümleyle yazar.
-
-**Süper ajan bilgisayarım kapalıyken çalışır mı?**
-Hayır. Bilgisayarınız açıkken çalışır.
-
+Every worker, reviewer and verifier is a separate session, so it spends more than one session would. The board, the watchdog and the merge dry run use no model. If you aren't running several jobs at once, you don't need it.
 </details>
 
-## Kaynak ve lisans
+<details>
+<summary><b>Can I give the manager a cheaper model?</b></summary>
 
-Fikir DeepSeek'in süper ajan yaklaşımından geliyor: [deepseek-ai/dsh-superagent-prototype](https://github.com/deepseek-ai/dsh-superagent-prototype). Bu kit onun kodu değildir; fikrin Claude Code'a uyarlanmış, farklı projelere yayılmış hâlidir.
-
-[MIT lisansı](LICENSE) · [Sürüm notları](CHANGELOG.md)
+Edit the `model:` line in `.claude/agents/sheepdog.md`. The manager makes the "send it back" decision, so the default is a strong model.
+</details>
 
 <details>
-<summary><b>English summary</b></summary>
+<summary><b>Can I give a hard job a stronger model?</b></summary>
 
-**Super-agent kit** lets you manage separate Claude Code sessions spread across different projects through a single "super agent". You talk only to the super agent. It starts each job in its own session inside the job's project, has finished work checked by a different agent, sends incomplete work back, asks you only when a decision is yours, and has code changes that pass the project's checks merged. It also notices sessions that stall or close. Experimental. The documentation above is in Turkish.
+Yes. Add `Model: opus` (and optionally `Efor: high`) to the card. Only that job's worker is affected.
+</details>
 
-This kit is not DeepSeek's code. It is an adaptation of the idea in [deepseek-ai/dsh-superagent-prototype](https://github.com/deepseek-ai/dsh-superagent-prototype) to Claude Code.
+<details>
+<summary><b>Are non-code jobs supported?</b></summary>
 
-**Requirements:** Claude Code 2.1.293+ with `claude --bg` and `claude agents` (research preview); auto permission mode on your account; `git` 2.38+, `bash`, Python 3.8+. Works in a Linux or macOS terminal (macOS's built-in bash 3.2 is enough); on Windows use Git Bash. Scripts are tested automatically on all three systems; end-to-end runs with real sessions have been done on Linux only.
+Yes. A card with `Tür: icerik` (research, writing, notes) is done once review passes; there is no merge step.
+</details>
 
-**Use in three steps**
-1. `git clone https://github.com/OWNER/ekip-ajan merkez`, then `./kontrol.sh ~/your-project` inside it. Open `claude` once in each project and accept the trust prompt.
-2. In `merkez`, open Claude Code and write job cards with `/is-karti <the job>`. Read each card and set `Durum: hazir`.
-3. Start the super agent and say "hazır kartları başlat" ("start the ready cards"):
-   ```bash
-   claude --agent super-ajan --name super-ajan --permission-mode auto
-   ```
+<details>
+<summary><b>What if a session gets stuck?</b></summary>
 
-Say "birleştirmeden önce sor" ("ask before merging") if you want to merge yourself. Each session spends from your usage limit separately; use a separate OS account or container for important work.
+The watchdog looks every ten minutes. It reports a closed or long-silent session to Sheepdog, which tells you in one sentence. A single failed `claude agents` call does not wake the manager; three in a row do.
+</details>
 
+<details>
+<summary><b>Does it work while my computer is off?</b></summary>
+
+No. It runs while your machine is on.
+</details>
+
+<details>
+<summary><b>Why are file names and card fields in Turkish?</b></summary>
+
+The kit was first written in Turkish. The behavior is language-independent, and the [glossary](docs/GLOSSARY.md) maps every Turkish name to its English meaning. An English-named interface is on the [roadmap](#roadmap).
+</details>
+
+## Documentation
+
+| | |
+|---|---|
+| [docs/USAGE.md](docs/USAGE.md) | Seven step-by-step workflows, role-to-model table, short phrases for Sheepdog |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | State machine, session naming, files on disk, trust model |
+| [docs/GLOSSARY.md](docs/GLOSSARY.md) | Turkish term → English meaning for every command, state and file |
+| [docs/USAGE.tr.md](docs/USAGE.tr.md) | The full usage guide in Turkish |
+| [ornek-kartlar/](ornek-kartlar/README.md) | Ten example cards and a card-writing guide (Turkish) |
+| [CHANGELOG.md](CHANGELOG.md) | Release notes |
+
+## Roadmap
+
+- [ ] English-named commands, states and card fields (with a compatibility layer for the Turkish ones)
+- [ ] English example cards and trial project
+- [ ] A "stop this card" flow
+- [ ] Measured cost and success numbers for the model profiles
+- [ ] Real-session testing on macOS and Windows
+
+## Contributing
+
+Issues and pull requests are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md). The smoke test (`bash testler/duman.sh`) must stay green; it spends no model tokens and opens no real sessions.
+
+## Credits and license
+
+The idea comes from DeepSeek's super-agent approach: [deepseek-ai/dsh-superagent-prototype](https://github.com/deepseek-ai/dsh-superagent-prototype). This kit is not their code; it is that idea adapted to Claude Code and spread across different projects.
+
+[MIT license](LICENSE) · [Changelog](CHANGELOG.md)
+
+<details>
+<summary><b>Türkçe özet</b></summary>
+
+**Sheepdog**, farklı projelere yayılmış ayrı Claude Code oturumlarını tek bir ajan üzerinden yönetmenizi sağlar. Yalnız onunla konuşursunuz; her işi kendi projesinde ayrı oturumda başlatır, biten işi işi yapmamış başka bir ajana kontrol ettirir, eksiği geri gönderir, yalnız karar sizindeyse tek cümleyle sorar ve testlerden geçen değişikliği projeye ekletir. Deneysel sürümdür.
+
+Tam Türkçe belge: **[README.tr.md](README.tr.md)** · Kullanım rehberi: [docs/USAGE.tr.md](docs/USAGE.tr.md)
+
+```bash
+git clone https://github.com/Sahinoglu0/sheepdog hq && cd hq
+./kontrol.sh ~/projeniz
+claude --agent sheepdog --name sheepdog --permission-mode auto
+```
 </details>

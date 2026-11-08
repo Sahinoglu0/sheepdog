@@ -12,7 +12,7 @@ Proje: /projenizin/klasörü
 Yalnız belirtilen uç nokta ve CSV test dosyası değişebilir. Arayüz, şema, mevcut JSON yanıtı ve erişim kuralları kapsam dışı. `.env` ve anahtar dosyalarını okuma veya değiştirme. Push, PR ve ana dala birleştirme yapma.
 
 ## Takılırsan
-Tüm kayıtları üretmek mevcut altyapıda güvenli değilse tasarım seçme: süper ajana “akış halinde indirme / kayıt sınırı / arka planda dosya üretme” seçeneklerini maliyet ve kullanıcı etkisiyle ilet; kullanıcı kararını bekle. Mevcut altyapı yeterliyse uygulamaya devam et. Erişim filtresi belirsizse veya 60 dakika dolarsa dur, kalan işi bildir.
+Tüm kayıtları üretmek mevcut altyapıda güvenli değilse tasarım seçme: Sheepdog'a “akış halinde indirme / kayıt sınırı / arka planda dosya üretme” seçeneklerini maliyet ve kullanıcı etkisiyle ilet; kullanıcı kararını bekle. Mevcut altyapı yeterliyse uygulamaya devam et. Erişim filtresi belirsizse veya 60 dakika dolarsa dur, kalan işi bildir.
 
 ## Bitti demek
 - [ ] `python -m pytest tests/test_siparisler_csv.py -q` çıkış kodu 0. Filtre, sıralama, başlıklar, boş liste ve en az iki sayfalık veri testleri var; komut ve çıktı `sonuc.md` → `CSV sözleşmesi` içinde.

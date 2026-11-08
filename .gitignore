@@ -7,3 +7,4 @@ isler/*
 .env.*
 *.pem
 *.key
+.politika

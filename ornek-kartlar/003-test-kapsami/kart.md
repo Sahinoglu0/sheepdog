@@ -12,7 +12,7 @@ Test edilmemiş `servisler/indirim.py` modülündeki `indirim_hesapla(tutar_kuru
 Yalnız `tests/test_indirim.py` değişebilir. Üretim kodu, test yapılandırması, bağımlılık dosyaları ve diğer modüller kapsam dışı. `.env` ve anahtar dosyalarını okuma veya değiştirme. Push, PR ve ana dala birleştirme yapma.
 
 ## Takılırsan
-Mevcut davranış belgeyle çelişirse düzeltme yapma; “mevcut davranışı testte belgelemek / ayrı hata kartı açmak” seçeneklerini süper ajana ilet, kullanıcı kararını bekle. Beklenen sonucu belirleyemiyorsan veya 45 dakika dolarsa dur; belirsiz girdiyi ve gözlenen çıktıyı bildir.
+Mevcut davranış belgeyle çelişirse düzeltme yapma; “mevcut davranışı testte belgelemek / ayrı hata kartı açmak” seçeneklerini Sheepdog'a ilet, kullanıcı kararını bekle. Beklenen sonucu belirleyemiyorsan veya 45 dakika dolarsa dur; belirsiz girdiyi ve gözlenen çıktıyı bildir.
 
 ## Bitti demek
 - [ ] `sonuc.md` → `Davranış tablosu` içinde sayılan dokuz durumun girdisi, sabit beklenen sonucu ve test adı var; istisna durumları açıkça ayrılmış.

@@ -1,4 +1,4 @@
-# Süper ajan kullanım rehberi
+# Sheepdog kullanım rehberi
 
 Komutları, aksi belirtilmedikçe kitin kök klasöründe çalıştırın. `<hedef>`,
 `<proje>` ve `<kart>` yerlerini kendi yollarınızla veya kart klasör adıyla değiştirin;
@@ -17,20 +17,20 @@ Windows'ta Git Bash kullanın.
    `isler/<kart>/kart.md` dosyasını okuyun. `Proje`, `Tür`, `Bekliyor`,
    kapsam ve ölçülebilir “Bitti demek” maddelerini kontrol edin.
 4. Onayladığınız kartı `./durum.sh isler/<kart> hazir` ile hazırlayın.
-   Süper ajanı kit kökünde başlatın:
+   Sheepdog'u kit kökünde başlatın:
 
    ```bash
-   claude --agent super-ajan --name super-ajan --permission-mode auto
+   claude --agent sheepdog --name sheepdog --permission-mode auto
    ```
 
    Ardından **“hazır kartları başlat”** yazın. Bir bilgisayarda aynı anda tek
-   `super-ajan` oturumu kullanın; işçiler bu ada mesaj yollar.
+   `sheepdog` oturumu kullanın; işçiler bu ada mesaj yollar.
 
-Süper ajan kartları yönetir; kart yazdırma işi normal oturumdaki `/is-karti`
+Sheepdog kartları yönetir; kart yazdırma işi normal oturumdaki `/is-karti`
 komutuyla yapılır. Kod kartında akış işçi → incelemeci → doğrulayıcı → prova →
 birleştiricidir. İçerik kartı incelemeden geçince biter. Ayrı terminalde
 `./pano.sh` ile durumu, `./pano.sh --baslayabilir` ile hazır ve bağımlılığı
-bitmiş kartları görebilirsiniz. Süper ajan başlangıçlarda sessiz kalır;
+bitmiş kartları görebilirsiniz. Sheepdog başlangıçlarda sessiz kalır;
 karar gerektiğinde, iş bitince veya tıkanınca haber verir.
 
 ## 1. İlk deneme
@@ -49,7 +49,7 @@ karar gerektiğinde, iş bitince veya tıkanınca haber verir.
    Kit köküne dönüp `./kontrol.sh <oluşturulan-proje>` çalıştırın.
 3. Hazır kartları okuyun; panoda `hazir` olduklarını kontrol edin. Taslak
    bıraktığınız kartları yalnız okuyup onayladıktan sonra `durum.sh` ile hazırlayın.
-4. Yukarıdaki komutla süper ajanı açın. **“Birleştirmeden önce sor.
+4. Yukarıdaki komutla Sheepdog'u açın. **“Birleştirmeden önce sor.
    Hazır kartları başlat.”** yazın. Başka terminalde `./pano.sh --izle` çalıştırın.
 
 **Beklenen:** Kartın durumu `calisiyor`, ardından kontrol aşamalarına geçer.
@@ -71,7 +71,7 @@ Kurucunun üreteceği klasör adlarını tahmin ederek komut yazmayın.
    Birbirine bağımlı değişiklikleri bağımsızmış gibi başlatmayın;
    gerekiyorsa sonraki kartın `Bekliyor:` alanına önceki kartın tam klasör adını yazın.
 3. Onaylanan her kart için `./durum.sh isler/<kart> hazir` çalıştırın.
-   Süper ajana **“hazır kartları başlat”** deyin; `./pano.sh` ile izleyin.
+   Sheepdog'a **“hazır kartları başlat”** deyin; `./pano.sh` ile izleyin.
 
 **Beklenen:** Bağımsız işler ayrı işçi oturumlarında ve worktree dallarında yürür.
 Aynı projede aynı anda yalnız bir birleştirici çalışır. Birleştirme sırası gelince
@@ -96,13 +96,13 @@ ana dala alınan değişikliği uzaktaki depoya göndermek ayrı bir karardır.
    depolama seçeneklerini kaynaklarıyla karşılaştır; yalnız rapor üret”**.
 3. İlk kartın `Tür: kod`, rapor kartının `Tür: icerik`, bağımsız kartların
    `Bekliyor: yok` olduğunu kontrol edin. Her kartı onaylayıp `hazir` yapın.
-4. Tek süper ajana **“hazır kartları başlat”** yazın. `./pano.sh --izle` açın.
+4. Tek Sheepdog'a **“hazır kartları başlat”** yazın. `./pano.sh --izle` açın.
 
 **Beklenen:** Kartlar kendi `Proje:` klasörlerinde ayrı oturumlarla başlar.
 İçerik kartı incelemeden geçince biter; kod kartı doğrulama ve birleştirme de görür.
 
 **Dikkat:** Her oturum ayrı limit harcar. Proje yollarını karıştırmayın;
-aynı makinede her proje için ayrı süper ajan açmayın.
+aynı makinede her proje için ayrı Sheepdog açmayın.
 
 ## 4. Araştırma → karar özeti → uygulama
 
@@ -111,8 +111,8 @@ aynı makinede her proje için ayrı süper ajan açmayın.
 1. Normal oturumda **“/is-karti Bu proje için önce seçenekleri kaynaklarıyla
    araştır, sonra karar özeti çıkar, son olarak seçilen çözümü uygula.
    Üç kartın çıktı dosyalarını ve kabul ölçütlerini belirle.”** yazın.
-2. Örneğin kartları aşağıdaki gibi bağlayın. `Bekliyor:` tek bir kartın
-   tam klasör adını alır; virgülle liste yazmayın.
+2. Örneğin kartları aşağıdaki gibi bağlayın. `Bekliyor:` bir veya birden çok kartın
+   tam klasör adını alır (birden çoksa virgülle ayırın).
 
    | Kart klasörü | Tür | Bekliyor |
    |---|---|---|
@@ -122,13 +122,13 @@ aynı makinede her proje için ayrı süper ajan açmayın.
 
 3. Sonraki kartın “Ne yapılacak” alanına önceki çıktının açık dosya yolunu
    ve nasıl kullanılacağını yazın. Karar ölçütlerini önceden belirlediyseniz
-   üç kartı da onaylayıp `hazir` yapın. Süper ajana **“hazır kartları başlat”** deyin.
+   üç kartı da onaylayıp `hazir` yapın. Sheepdog'a **“hazır kartları başlat”** deyin.
 4. Son seçimi kendiniz yapacaksanız uygulama kartını `taslak` bırakın.
    Özeti okuyup kararınızı karta işletin; sonra
    `./durum.sh isler/003-uygulama hazir` çalıştırıp **“hazır kartları başlat”** deyin.
 
 **Beklenen:** `./pano.sh --baslayabilir` önce yalnız araştırmayı gösterir.
-Her `bitti` sonrasında süper ajan bağımlılığı tamamlanmış hazır kartı başlatır.
+Her `bitti` sonrasında Sheepdog bağımlılığı tamamlanmış hazır kartı başlatır.
 Karar gerekirse seçenekleri size iletir ve cevabınızı ilgili oturuma gönderir.
 
 **Dikkat:** `Bekliyor:` yalnız önceki kartın `bitti` olmasını bekler; kullanıcı
@@ -138,7 +138,7 @@ onayı yerine geçmez. Karar özeti kartının bitmesi, taslak uygulama kartın�
 
 **Ne zaman:** Ana dala girecek her değişikliği ayrıca onaylamak istediğinizde.
 
-1. İşler başlamadan süper ajana **“Birleştirmeden önce sor.
+1. İşler başlamadan Sheepdog'a **“Birleştirmeden önce sor.
    Hazır kartları başlat.”** yazın.
 2. Onay sorusu gelince kartın `sonuc.md`, `inceleme.md` ve `dogrulama.md`
    dosyalarını okuyun; dalı ve gerekirse diff'i kontrol edin.
@@ -150,7 +150,7 @@ izin vermeden birleştirici başlatılmaz. Onaydan sonra birleşmiş ağaçta te
 çalışır; geçerse ana dal ileri sarılır ve sonuç bildirilir.
 
 **Dikkat:** Bu talimatı birleştirici başlamadan verin. Ayar dosyasında kalıcı
-bir temkinli mod anahtarı yoktur; yeni süper ajan oturumunda tercihinizi yine söyleyin.
+bir temkinli mod anahtarı yoktur; yeni Sheepdog oturumunda tercihinizi yine söyleyin.
 İçerik kartları birleştirme aşamasına girmez.
 
 ## 6. Bilgisayarı açık bırakıp uzun süre çalıştırmak
@@ -158,19 +158,19 @@ bir temkinli mod anahtarı yoktur; yeni süper ajan oturumunda tercihinizi yine 
 **Ne zaman:** Hazır ve kapsamı net işleri uzun bir çalışma süresine bırakırken.
 
 1. Kartları, güven onaylarını ve `./kontrol.sh <proje>` çıktısını kontrol edin.
-   Gerekli kararları önceden netleştirin; sonra süper ajana **“hazır kartları başlat”** deyin.
-2. Süper ajan ilk oturumu açınca `./gozcu.sh` betiğini arka planda başlatır.
+   Gerekli kararları önceden netleştirin; sonra Sheepdog'a **“hazır kartları başlat”** deyin.
+2. Sheepdog ilk oturumu açınca `./gozcu.sh` betiğini arka planda başlatır.
    Gözcü varsayılan olarak 600 saniyede bir bakar; sessizlik sınırı 20 dakikadır.
-   Sorun bildirip çıktığında, açık iş kaldıkça süper ajan onu yeniden başlatır.
+   Sorun bildirip çıktığında, açık iş kaldıkça Sheepdog onu yeniden başlatır.
 3. Başka terminalde `./pano.sh --izle` açın (varsayılan yenileme 10 saniye).
    İzlemeyi bitirmek için bu terminalde Ctrl+C kullanın; bu yalnız panoyu kapatır.
-4. Sabah süper ajana **“durum ne”** yazın ve `./pano.sh` çalıştırın.
+4. Sabah Sheepdog'a **“durum ne”** yazın ve `./pano.sh` çalıştırın.
    `tikandi`, `birlesme-bekliyor` ve hâlâ aktif görünen kartlara bakın;
-   süper ajanın karar sorularını cevaplayın. Biten kartların raporlarını,
+   Sheepdog'un karar sorularını cevaplayın. Biten kartların raporlarını,
    kod kartlarında `birlesme.md` içindeki testleri ve ana dal commit'ini kontrol edin.
 
 **Beklenen:** Gözcü kapanan, başarısız veya uzun süre hareketsiz görünen
-   oturumları süper ajana bildirir. Pano kart durumlarını gösterir.
+   oturumları Sheepdog'a bildirir. Pano kart durumlarını gösterir.
 
 **Dikkat:** Bilgisayar ve oturumlar açık kalmalı; kapanınca işler durur.
 Gözcü tek başına işi yeniden başlatmaz ve pano oturum sağlığını kanıtlamaz.
@@ -180,14 +180,14 @@ Bir onay veya karar sorusu cevap bekliyorsa o iş ilerlemeyebilir.
 
 **Ne zaman:** İnceleme/test başarısızsa, ortam engeli varsa veya oturum ilerlemiyorsa.
 
-1. `./pano.sh` çalıştırın; süper ajana **“007'nin durumu ne, neye takıldı?”** yazın.
+1. `./pano.sh` çalıştırın; Sheepdog'a **“007'nin durumu ne, neye takıldı?”** yazın.
    Kartın `sonuc.md`, varsa `inceleme.md`, `dogrulama.md` ve `birlesme.md`
    dosyalarındaki kanıta bakın.
 2. İncelemeci veya doğrulayıcı işi geri gönderirse bulgular aynı işçiye
-   iletilir ve durum `calisiyor` olur. Üç turda geçmezse süper ajan size sorar.
+   iletilir ve durum `calisiyor` olur. Üç turda geçmezse Sheepdog size sorar.
 3. Cevabınızı somut yazın: **“007'nin işçisine ilet: hata yalnız boş sorguda
    oluşuyor; beklenen sonuç boş liste. Şu adımlarla üret: …”** veya gelen karar
-   sorusuna **“007 için ikinci seçeneği uygula”** deyin. Süper ajan cevabı aynı oturuma iletir.
+   sorusuna **“007 için ikinci seçeneği uygula”** deyin. Sheepdog cevabı aynı oturuma iletir.
 4. Birleştirme ortam yüzünden kalırsa durum `tikandi` olur. Ortam sorununu
    giderdikten sonra **“007 için ortam engeli giderildi; mevcut kanıtı ve oturum
    durumunu kontrol et”** deyin. Dal kaynaklı sorunlar aynı işçiye geri gider.
@@ -195,7 +195,7 @@ Bir onay veya karar sorusu cevap bekliyorsa o iş ilerlemeyebilir.
 **Beklenen:** Panoda `tikandi` kart için uyarı görürsünüz. Yeniden yapılan
    işin kanıtı güncellenir ve kontroller tekrar değerlendirilir.
 
-**Not:** Tur sayısını `./tur.sh isler/<kart>` verir (`.gecmis` kaydından); sınır süper ajanın hafızasına bağlı değildir.
+**Not:** Tur sayısını `./tur.sh isler/<kart>` verir (`.gecmis` kaydından); sınır Sheepdog'un hafızasına bağlı değildir.
 Her gözcü uyarısı kartı otomatik `tikandi` yapmaz. Ölü oturum için otomatik
 kurtarma garantisi yoktur. Durumu elle `bitti` yaparak kontrolleri atlamayın;
 yeniden açılan işte mevcut dal/worktree bilgisi `sonuc.md` içinde korunmalıdır.
@@ -208,7 +208,7 @@ yeniden açılan işte mevcut dal/worktree bilgisi `sonuc.md` içinde korunmalı
 | İncelemeci (`reviewer`) | Bağımsız kabul incelemesi | `sonnet` | `high` | Karmaşık diff veya muhakeme gerektiren kabul ölçütlerinde |
 | Doğrulayıcı (`dogrulayici`) | Yazılı kontrolleri çalıştırır | `sonnet` | `medium` | Basit kontrollerde ekonomik profil denenebilir |
 | Birleştirici (`birlestirici`) | Birleşmiş ağacı test eder, ana dala alır | `sonnet` | `high` | Karmaşık proje kapılarında daha güçlü model denenebilir |
-| Süper ajan | Oturumları ve kararları yönetir | `opus` | `high` | Yönetim kararlarının niteliğini izleyerek |
+| Sheepdog | Oturumları ve kararları yönetir | `opus` | `high` | Yönetim kararlarının niteliğini izleyerek |
 | Gözcü, pano, birleştirme provası | Takip, tablo, çakışma kontrolü | Model kullanmaz | — | Model ayarı yok |
 
 Bu değiştirme önerileri ve `ayarlar.sh` içindeki ekonomik/dengeli/güçlü
@@ -246,14 +246,14 @@ diğer roller için `ayarlar.sh` → yerleşik varsayılanlar.
 Ayar dosyası yoksa tablodaki dört alt rol varsayılanı kullanılır.
 Değişiklikler yalnız yeni başlatmalarda okunur; çalışan oturum değişmez.
 
-Süper ajan için `.claude/agents/super-ajan.md` içindeki `model:` ve `effort:`
-satırlarını düzenleyip yeni süper ajan oturumu başlatın. `ayarlar.sh` onu etkilemez.
+Sheepdog için `.claude/agents/sheepdog.md` içindeki `model:` ve `effort:`
+satırlarını düzenleyip yeni Sheepdog oturumu başlatın. `ayarlar.sh` onu etkilemez.
 
 Seçimi gerçek oturum açmadan görmek için:
 
 ```bash
-SUPER_AJAN_KURU=1 ./baslat.sh isler/<kart> isci
-SUPER_AJAN_KURU=1 ./baslat.sh isler/<kart> reviewer
+SHEEPDOG_KURU=1 ./baslat.sh isler/<kart> isci
+SHEEPDOG_KURU=1 ./baslat.sh isler/<kart> reviewer
 ```
 
 Güven onayı bu modda da gereklidir. Çıktı, kartın `Proje:` klasöründe çalıştırılacak
@@ -261,7 +261,7 @@ komutun kabuk için kaçışlanmış tek satırıdır. Claude çalışmaz, kart 
 `.gecmis` değişmez. `ayarlar.sh` kabuk dosyası olarak okunur; içine yalnız ayar
 atamalarını ve yorumları koyun.
 
-## Süper ajanla kısa cümleler
+## Sheepdog'la kısa cümleler
 
 - “Hazır kartları başlat.”
 - “Durum ne?”

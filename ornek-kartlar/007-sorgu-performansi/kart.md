@@ -12,7 +12,7 @@ Proje: /projenizin/klasörü
 Yalnız `depolar/siparisler.py` ve belirtilen performans test dosyası değişebilir. Şema, indeks, önbellek, üretim veritabanı ve altyapı ayarları kapsam dışı. `.env` ve anahtar dosyalarını okuma veya değiştirme. Push, PR ve ana dala birleştirme yapma.
 
 ## Takılırsan
-Başlangıç ölçümünde sorun üretilemiyorsa, ölçümler kararsızsa veya 60 dakika dolarsa dur; ham sayıları süper ajana gönder. İndeks/şema ya da önbellek gerekiyorsa “ayrı indeks kartı / sorgu tasarımını yeniden değerlendirme” seçeneklerini kullanıcıya süper ajan üzerinden sor. Hedefe erişmek için veri boyutunu küçültme.
+Başlangıç ölçümünde sorun üretilemiyorsa, ölçümler kararsızsa veya 60 dakika dolarsa dur; ham sayıları Sheepdog'a gönder. İndeks/şema ya da önbellek gerekiyorsa “ayrı indeks kartı / sorgu tasarımını yeniden değerlendirme” seçeneklerini kullanıcıya Sheepdog üzerinden sor. Hedefe erişmek için veri boyutunu küçültme.
 
 ## Bitti demek
 - [ ] `python -m pytest tests/test_siparisler_performans.py -q -s` komutunun önce/sonra çıktıları `sonuc.md` → `Ölçüm` içinde; veri sayısı, veritabanı sürümü, üç ısınma ve on ölçüm ayrı belirtilmiş.

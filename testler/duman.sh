@@ -74,7 +74,7 @@ echo "HATA: kuru mod claude çağırdı" >&2
 exit 99
 SAHTE
 chmod +x "$T/model-bin/claude"
-kuru(){ env PATH="$T/model-bin:$PATH" SUPER_AJAN_CLAUDE_JSON="$T/model-guven.json" SUPER_AJAN_KURU=1 ./baslat.sh "$@"; }
+kuru(){ env PATH="$T/model-bin:$PATH" SHEEPDOG_CLAUDE_JSON="$T/model-guven.json" SHEEPDOG_KURU=1 ./baslat.sh "$@"; }
 cp isler/004-d/kart.md "$T/model-kart-once"
 cp .gecmis "$T/model-gecmis-once"
 for rol in isci reviewer dogrulayici birlestirici; do
@@ -203,12 +203,12 @@ git -C "$G/onayli-depo" init -q; git -C "$G/onaysiz-depo" init -q
 import json,os,sys
 print(json.dumps({"projects":{os.path.realpath(a).replace(os.sep,"/"):{"hasTrustDialogAccepted":True} for a in sys.argv[1:]}}))
 JS
-export SUPER_AJAN_CLAUDE_JSON="$T/claude.json"
+export SHEEPDOG_CLAUDE_JSON="$T/claude.json"
 kod 0 "onaylı git deposu" "$PY" guven.py "$G/onayli-depo"
 kod 1 "üstü onaylı ama kendisi onaysız git deposu" "$PY" guven.py "$G/onaysiz-depo"
 kod 0 "git dışı klasör üstten onay alır" "$PY" guven.py "$G/ust/alt"
 kod 1 "hiçbir üstü onaylı olmayan klasör" "$PY" guven.py "$T/baska"
-unset SUPER_AJAN_CLAUDE_JSON
+unset SHEEPDOG_CLAUDE_JSON
 
 echo "deneme/kur.sh"
 kod 0 "deneme kurucusu bash sözdizimi" bash -n deneme/kur.sh
@@ -228,7 +228,7 @@ printf '[init]\n\tdefaultBranch = baska\n' > "$DENEME_GIT_CONFIG"
 cp "$DENEME_GIT_CONFIG" "$T/deneme-global-once"
 D="$T/kitaplık denemesi"
 kod 0 "geçici hedefe kurulum" env GIT_CONFIG_GLOBAL="$DENEME_GIT_CONFIG" GIT_CONFIG_NOSYSTEM=1 bash deneme/kur.sh "$D"
-icerir "kurulum sonraki adımları gösterir" "claude --agent super-ajan --name super-ajan --permission-mode auto"
+icerir "kurulum sonraki adımları gösterir" "claude --agent sheepdog --name sheepdog --permission-mode auto"
 icerir "güven onayı adımı" "güven onayını"
 icerir "başlatma isteği" "hazır kartları başlat"
 icerir "canlı pano komutu" "./pano.sh --izle"
@@ -299,6 +299,29 @@ icerir "tüm bağımlılıklar bitmiş başlar" "011-y"
 kart 012-z hazir "~/yok"; sed -i 's#^Proje: .*#Proje: ~/olmayan-klasor-xyz#' isler/012-z/kart.md
 kod 1 "tilde yolu açılır, klasör yoksa hata" ./baslat.sh isler/012-z isci
 icerir "açılmış yol" "$HOME/olmayan-klasor-xyz"
+
+echo "sheepdog (front door)"
+mkdir -p isler-yedek; rm -rf isler-yedek
+kod 0 "help" ./sheepdog help
+icerir "help lists policy" "policy"
+kod 2 "bilinmeyen komut" ./sheepdog nope
+kod 0 "policy varsayılan auto" ./sheepdog policy
+icerir "auto" "auto"
+kod 0 "policy ask" ./sheepdog policy ask
+kod 0 "policy kalıcı" ./sheepdog policy
+icerir "ask kalıcı" "ask"
+kod 2 "geçersiz policy" ./sheepdog policy bogus
+./sheepdog policy auto >/dev/null
+kod 0 "new kart" ./sheepdog new demo-is --project "$T" --type icerik --waits 001-a
+icerir "yeni kart yolu" "demo-is/kart.md"
+KN="$(ls -d isler/[0-9][0-9][0-9]-demo-is)"; grep -q '^Tür: icerik' "$KN/kart.md" && grep -q '^Bekliyor: 001-a' "$KN/kart.md" && grep -q '^Durum: taslak' "$KN/kart.md" && gecti "yeni kart alanları" || kaldi "yeni kart alanları"
+kod 2 "new geçersiz slug" ./sheepdog new "Bad Slug" --project "$T"
+kod 2 "new proje zorunlu" ./sheepdog new x-y
+kod 0 "rounds" ./sheepdog rounds 007-g
+kod 0 "timeline" ./sheepdog timeline
+icerir "timeline kart" "007-g"
+kod 0 "ready" ./sheepdog ready
+kod 0 "board" ./sheepdog board
 
 echo
 echo "sonuç: $OK geçti, $HATA hata"

@@ -12,7 +12,7 @@ Proje: /notlarinizin/klasörü
 Yalnız `karar-ozeti.md` ve bu kartın `sonuc.md` dosyası yazılabilir. Araştırma, kaynak kontrolü, diğer kartlar ve kullanıcı karar kayıtları değiştirilemez. `.env` ve anahtar dosyalarını okuma veya değiştirme. Satın alma, hesap açma veya kararı uygulama kapsam dışı.
 
 ## Takılırsan
-008 bitmemişse, inceleme sonucu GEÇTİ değilse, kaynak notları yoksa veya 30 dakika dolarsa dur, süper ajana bildir. Araştırma seçim için yetersizse “eksik ölçüt için araştırmayı geri aç / belirsizliği kabul ederek karar iste” seçeneklerini kullanıcıya iletilmek üzere sun. Kullanıcı adına seçim yapma.
+008 bitmemişse, inceleme sonucu GEÇTİ değilse, kaynak notları yoksa veya 30 dakika dolarsa dur, Sheepdog'a bildir. Araştırma seçim için yetersizse “eksik ölçüt için araştırmayı geri aç / belirsizliği kabul ederek karar iste” seçeneklerini kullanıcıya iletilmek üzere sun. Kullanıcı adına seçim yapma.
 
 ## Bitti demek
 - [ ] `wc -w karar-ozeti.md` çıktısı en fazla 150; başlık ve seçenekler sayımda. Komut ve çıktı `sonuc.md` → `Uzunluk` içinde.

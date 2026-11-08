@@ -12,7 +12,7 @@ Bu örnekte `package.json` içindeki `http-istemcisi`, projedeki gerçek HTTP is
 Listelenen dört dosya dışı, başka paketlerin toplu güncellenmesi, çalışma zamanı ana sürümü ve CI yapılandırması kapsam dışı. `.env` ve anahtar dosyalarını okuma veya değiştirme. Push, PR ve ana dala birleştirme yapma. Geri alma için reset veya geçmişi yeniden yazma yapma.
 
 ## Takılırsan
-Yer tutucu/sürüm seçimi çözülmemişse, resmî notlara erişilemiyorsa ya da 60 dakika dolarsa dur. Çalışma zamanı yükseltmesi veya davranış değişikliği gerekirse “yükseltmeyi ertele / ayrı uyumluluk kartı aç” seçeneklerini süper ajana ilet; kullanıcı kararını bekle. Geri alma ölçütü oluştuysa başarısız komutu da bildir; testi gevşetme.
+Yer tutucu/sürüm seçimi çözülmemişse, resmî notlara erişilemiyorsa ya da 60 dakika dolarsa dur. Çalışma zamanı yükseltmesi veya davranış değişikliği gerekirse “yükseltmeyi ertele / ayrı uyumluluk kartı aç” seçeneklerini Sheepdog'a ilet; kullanıcı kararını bekle. Geri alma ölçütü oluştuysa başarısız komutu da bildir; testi gevşetme.
 
 ## Bitti demek
 - [ ] `sonuc.md` → `Sürüm ve kaynaklar`: eski/yeni kesin sürüm, açılan resmî bağlantılar, erişim tarihi ve her kırıcı değişikliğin ilgili dosyası veya uygulanmama gerekçesi var.

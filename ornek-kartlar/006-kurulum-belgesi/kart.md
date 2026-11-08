@@ -12,7 +12,7 @@ Python tabanlı örnek projenin kök `README.md` dosyasındaki kurulum ve ilk ç
 Hedef projede yalnız kök `README.md` değişebilir. Uygulama, bağımlılık dosyaları, CI ve kullanıcıya ait mevcut ortamlar kapsam dışı. `.env` ve anahtar dosyalarını okuma veya değiştirme. Gerçek servis veya üretim verisi kullanma. Push, PR ve ana dala birleştirme yapma.
 
 ## Takılırsan
-Kurulum sır ya da ücretli servis istiyorsa, uygulama hatası çıkarsa, ağ erişimi yoksa veya 45 dakika dolarsa dur. “Sırsız yerel deneme yolu / ayrı yapılandırma kartı” seçeneklerini süper ajana ilet, kullanıcı kararını bekle. Çalıştırılmayan adımı doğrulandı diye işaretleme.
+Kurulum sır ya da ücretli servis istiyorsa, uygulama hatası çıkarsa, ağ erişimi yoksa veya 45 dakika dolarsa dur. “Sırsız yerel deneme yolu / ayrı yapılandırma kartı” seçeneklerini Sheepdog'a ilet, kullanıcı kararını bekle. Çalıştırılmayan adımı doğrulandı diye işaretleme.
 
 ## Bitti demek
 - [ ] `sonuc.md` → `Temiz ortam`: iki geçici klasörün yolu, başlangıç commit’i, işletim sistemi, Python/pip sürümleri ve ortam oluşturma komutlarının çıktıları var.

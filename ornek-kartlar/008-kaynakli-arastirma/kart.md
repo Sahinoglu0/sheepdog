@@ -12,7 +12,7 @@ Proje: /notlarinizin/klasörü
 Yalnız `arastirma.md`, `kaynak-kontrol.md` ve kartın yanındaki `sonuc.md` yazılabilir. Diğer notlar, hesap ayarları, satın alma ve dışarıda yayınlama kapsam dışı. `.env` ve anahtar dosyalarını okuma veya değiştirme. Ezberden kaynak, açılmamış link ve doğrulanmamış fiyat yazma.
 
 ## Takılırsan
-Adaylar veya başlangıç bağlantıları eksikse, internete erişilemiyorsa ya da 60 dakika dolarsa dur, süper ajana bildir. Kaynaklar çelişirse belirsizliği kaydet; ücretli erişim gerekirse “erişilebilir resmî kaynakla kapsamı daralt / araştırmayı beklet” seçeneklerini kullanıcıya süper ajan üzerinden sor. Erişilemeyen kaynağı kontrol edilmiş sayma.
+Adaylar veya başlangıç bağlantıları eksikse, internete erişilemiyorsa ya da 60 dakika dolarsa dur, Sheepdog'a bildir. Kaynaklar çelişirse belirsizliği kaydet; ücretli erişim gerekirse “erişilebilir resmî kaynakla kapsamı daralt / araştırmayı beklet” seçeneklerini kullanıcıya Sheepdog üzerinden sor. Erişilemeyen kaynağı kontrol edilmiş sayma.
 
 ## Bitti demek
 - [ ] `arastirma.md` üç yaklaşımı beş ölçütte karşılaştırıyor; `wc -w arastirma.md` sonucu en fazla 800. Komut ve çıktı `sonuc.md` → `Kapsam` içinde.

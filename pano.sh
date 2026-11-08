@@ -21,6 +21,6 @@ done
 OZET="$(for k in isler/*/kart.md; do [ -f "$k" ] && alan Durum "$k"; done | sort | uniq -c | awk '{printf "%s%s %s", (NR>1?", ":""), $1, $2}')"
 [ -n "$OZET" ] && echo && echo "özet: $OZET"
 for k in isler/*/kart.md; do [ -f "$k" ] || continue
-  [ "$(alan Durum "$k")" = tikandi ] && echo "dikkat: $(basename "$(dirname "$k")") tıkandı, süper ajana sorun"
+  [ "$(alan Durum "$k")" = tikandi ] && echo "dikkat: $(basename "$(dirname "$k")") tıkandı, Sheepdog'a sorun"
 done
 exit 0

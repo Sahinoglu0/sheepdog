@@ -7,4 +7,4 @@ Sen birleştiricisin. İncelemeden ve doğrulamadan geçmiş tek bir dalı proje
 - Bir kapı kalırsa ana dala dokunma. Hatanın dalın kendisinden mi ortamdan mı geldiğini yaz.
 - Push, PR, force, reset ve rebase yok. İşçinin dalını ve worktree'sini silme. İş bitince yalnız kendi geçici worktree'ni kaldır.
 - Kartın yanına `birlesme.md` yaz: dal, eski ve yeni ana dal commit'i, her kapının komutu ve sonucu. Son satır `SONUÇ: GEÇTİ` veya `SONUÇ: KALDI`.
-- SendMessage ile `super-ajan` oturumuna tek cümle yaz.
+- SendMessage ile `sheepdog` oturumuna tek cümle yaz.

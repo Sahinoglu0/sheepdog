@@ -1,0 +1,63 @@
+#!/bin/bash
+# Sheepdog: tek giriş komutu (English-named front door). Model harcamaz.
+# usage: ./sheepdog <command> [args]   (run ./sheepdog help)
+cd "$(dirname "$0")" || exit 1
+H="$PWD"; cmd="${1:-help}"; [ $# -gt 0 ] && shift
+card(){ local k="${1%/}"; k="${k#isler/}"; echo "isler/$k"; }
+case "$cmd" in
+  board|status)  exec ./pano.sh "$@" ;;
+  watch)         exec ./pano.sh --izle "$@" ;;
+  ready)         exec ./pano.sh --baslayabilir ;;
+  start)         [ -n "$1" ] || { echo "usage: sheepdog start <card> [isci|reviewer|dogrulayici|birlestirici]"; exit 2; }
+                 c="$(card "$1")"; shift; exec ./baslat.sh "$c" "${1:-isci}" ;;
+  set)           [ $# -eq 2 ] || { echo "usage: sheepdog set <card> <state>"; exit 2; }
+                 exec ./durum.sh "$(card "$1")" "$2" ;;
+  rounds)        [ -n "$1" ] || { echo "usage: sheepdog rounds <card>"; exit 2; }
+                 exec ./tur.sh "$(card "$1")" ;;
+  doctor)        exec ./kontrol.sh "$@" ;;
+  main-branch)   exec ./ana-dal.sh "$@" ;;
+  dry-run)       exec ./birlestirme-hazirla.sh "$@" ;;
+  policy)        # persistent merge policy: ask (you approve every merge) | auto (default)
+                 case "${1:-}" in
+                   "") cat .politika 2>/dev/null || echo auto ;;
+                   ask|auto) echo "$1" > .politika; echo "merge policy: $1" ;;
+                   *) echo "usage: sheepdog policy [ask|auto]"; exit 2 ;;
+                 esac ;;
+  timeline)      [ -f .gecmis ] || { echo "no history yet"; exit 0; }
+                 f=""; [ -n "$1" ] && f="$(basename "${1%/}")"
+                 awk -v f="$f" '
+                   function fmt(s,  m){ m=int(s/60); if(s<60) return s "s"; if(m<60) return m "m " (s%60) "s"; return int(m/60) "h " (m%60) "m" }
+                   f!="" && $2!=f {next}
+                   { if($2 in last){ printf "  %-26s %-18s %s\n", $2, st[$2], fmt($1-t[$2]) } ; st[$2]=$3; t[$2]=$1; last[$2]=1; if(!($2 in ord)){ord[$2]=++n; nm[n]=$2} }
+                   END{ "date +%s" | getline now; for(i=1;i<=n;i++){ c=nm[i]; printf "  %-26s %-18s %s (current)\n", c, st[c], fmt(now-t[c]) } }' .gecmis ;;
+  new)           # scaffold a draft card: sheepdog new <slug> --project <abs path> [--type kod|icerik] [--waits a,b]
+                 slug="$1"; [ -n "$slug" ] || { echo "usage: sheepdog new <slug> --project <path> [--type kod|icerik] [--waits a,b]"; exit 2; }; shift
+                 proj=""; tur=kod; bek=yok
+                 while [ $# -gt 0 ]; do case "$1" in --project) proj="$2"; shift 2;; --type) tur="$2"; shift 2;; --waits) bek="$2"; shift 2;; *) echo "unknown option: $1"; exit 2;; esac; done
+                 [ -n "$proj" ] || { echo "--project is required"; exit 2; }
+                 case "$tur" in kod|icerik) ;; *) echo "--type must be kod or icerik"; exit 2;; esac
+                 case "$slug" in *[!a-z0-9-]*|"") echo "slug: lowercase letters, digits, dashes"; exit 2;; esac
+                 mkdir -p isler; n=0; for d in isler/[0-9][0-9][0-9]-*; do [ -d "$d" ] || continue; b="${d#isler/}"; v=$((10#${b%%-*})); [ "$v" -gt "$n" ] && n=$v; done
+                 id="$(printf '%03d' $((n+1)))-$slug"; mkdir -p "isler/$id"
+                 printf '# %s: %s\n\nDurum: taslak\nTür: %s\nBekliyor: %s\nProje: %s\n\n## Ne yapılacak\nTek paragraf. Okuyan biri soru sormadan yapabilsin.\n\n## Neye dokunma\nKapsam dışı olanlar.\n\n## Bitti demek\n- [ ] Ne olmuş olacak, neyle kanıtlanacak.\n\n## Takılırsan\nNerede durup haber verecek.\n' "${id%%-*}" "$slug" "$tur" "$bek" "$proj" > "isler/$id/kart.md"
+                 echo "isler/$id/kart.md" ;;
+  help|-h|--help|*)
+    cat <<'T'
+sheepdog: one front door for the kit (all commands spend no model tokens)
+
+  board | status        card table with summary
+  watch [secs]          live board
+  ready                 cards that can start now
+  start <card> [role]   open a background session (default role: isci)
+  set <card> <state>    change a card's state (taslak hazir calisiyor inceleme dogrulama
+                        birlesme-bekliyor birlesiyor bitti tikandi)
+  rounds <card>         how many times the card went to work (from .gecmis)
+  timeline [card]       time spent in each state, from .gecmis
+  policy [ask|auto]     show / set the persistent merge policy
+  new <slug> --project P [--type kod|icerik] [--waits a,b]   scaffold a draft card
+  doctor [projects...]  check your machine and trust prompts
+  main-branch <proj>    detect a project's main branch
+  dry-run <proj> <br>   merge dry run, main untouched
+T
+    [ "$cmd" = help ] || [ "$cmd" = -h ] || [ "$cmd" = --help ] || exit 2 ;;
+esac

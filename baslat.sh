@@ -28,11 +28,11 @@ esac
 for m in "$MODEL" "$EF"; do case "$m" in *[!A-Za-z0-9._-]*|"") echo "Geçersiz model/efor: '$m' (ayarlar.sh ya da kart)" >&2; exit 1;; esac; done
 case "$EF" in low|medium|high) ;; *) echo "Geçersiz efor: '$EF' (rol: $ROL; beklenen: low, medium, high)" >&2; exit 1;; esac
 cd "$PROJE"
-if [ "${SUPER_AJAN_KURU:-}" = 1 ]; then
-  printf '%q ' claude --bg ${SUPER_AJAN_BAYRAK:-} --permission-mode auto --model "$MODEL" --effort "$EF" --append-system-prompt-file "$MERKEZ/roller/$ROL.md" --add-dir "$MERKEZ/$K" --name "$AD2" -- "Kartın: $KART. Rolüne göre işini yap ve kartın klasörüne yaz."
+if [ "${SHEEPDOG_KURU:-}" = 1 ]; then
+  printf '%q ' claude --bg ${SHEEPDOG_BAYRAK:-} --permission-mode auto --model "$MODEL" --effort "$EF" --append-system-prompt-file "$MERKEZ/roller/$ROL.md" --add-dir "$MERKEZ/$K" --name "$AD2" -- "Kartın: $KART. Rolüne göre işini yap ve kartın klasörüne yaz."
   printf '\n'
   exit 0
 fi
-claude --bg ${SUPER_AJAN_BAYRAK:-} --permission-mode auto --model "$MODEL" --effort "$EF" --append-system-prompt-file "$MERKEZ/roller/$ROL.md" --add-dir "$MERKEZ/$K" --name "$AD2" -- "Kartın: $KART. Rolüne göre işini yap ve kartın klasörüne yaz."
+claude --bg ${SHEEPDOG_BAYRAK:-} --permission-mode auto --model "$MODEL" --effort "$EF" --append-system-prompt-file "$MERKEZ/roller/$ROL.md" --add-dir "$MERKEZ/$K" --name "$AD2" -- "Kartın: $KART. Rolüne göre işini yap ve kartın klasörüne yaz."
 [ "$ROL" = isci ] && "$MERKEZ/durum.sh" "$K" calisiyor >/dev/null
 echo "başladı: $AD2 ($PROJE)"

@@ -12,7 +12,7 @@ Proje: /projenizin/klasörü
 Yalnız `api/siparisler.py` ve `tests/test_siparisler.py` değişebilir. Kimlik doğrulama, veritabanı şeması ve diğer uç noktalar kapsam dışı. `.env` ve anahtar dosyalarını okuma veya değiştirme. Push, PR ve ana dala birleştirme yapma.
 
 ## Takılırsan
-Hatayı iki denemede üretemezsen, test sunucusu açılamazsa veya 30 dakika dolarsa dur. Komutları ve engeli süper ajana bildir. Mevcut API sözleşmesi boş değer için farklı sonuç istiyorsa kullanıcıya süper ajan üzerinden “boş değeri 1 saymak / 400 ile reddetmek” seçeneklerini sor; cevaba kadar sözleşmeyi değiştirme.
+Hatayı iki denemede üretemezsen, test sunucusu açılamazsa veya 30 dakika dolarsa dur. Komutları ve engeli Sheepdog'a bildir. Mevcut API sözleşmesi boş değer için farklı sonuç istiyorsa kullanıcıya Sheepdog üzerinden “boş değeri 1 saymak / 400 ile reddetmek” seçeneklerini sor; cevaba kadar sözleşmeyi değiştirme.
 
 ## Bitti demek
 - [ ] `sonuc.md` → `Yeniden üretme`: aynı isteğin iki çalıştırmasının komutu, 500 yanıtı ve sır içermeyen hata izi var; `Kök neden` başlığı dosya ve satırı açıklıyor.

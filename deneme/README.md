@@ -1,6 +1,6 @@
 # 10 dakikalık deneme
 
-Kendi projenize dokunmadan süper ajanın iş dağıtmasını, karar sormasını,
+Kendi projenize dokunmadan Sheepdog'un iş dağıtmasını, karar sormasını,
 bağımsız incelemeyi, testleri, birleştirmeyi ve bağımlı kartı deneyin.
 Hazır Python kitaplık projesi ve üç kart içerir. Kurulum birkaç saniye sürer;
 oturumların toplam süresi model yanıtlarına ve kararınıza göre değişir.
@@ -31,7 +31,7 @@ hata çıktısını ve klasörleri inceleyin, betik otomatik temizlik yapmaz.
 Kurucunun yazdığı sırayı izleyin:
 
 1. Hedefte bir kez `claude` açın, güven onayını verin ve oturumdan çıkın.
-2. Merkeze dönün ve `claude --agent super-ajan --name super-ajan --permission-mode auto` çalıştırın.
+2. Merkeze dönün ve `claude --agent sheepdog --name sheepdog --permission-mode auto` çalıştırın.
 3. **“hazır kartları başlat”** yazın. Merkezde başka hazır kartlarınız varsa bu
    istek onları da başlatabilir; yalnız denemeyi çalıştırmak için talebi
    **“yalnız 901-iade-hatasi, 902-gecikme-listesi ve ardından 903-kullanim-notu kartlarını başlat”** diye sınırlandırın.
@@ -44,7 +44,7 @@ Birleştirmeden önce onay isterseniz başlatma mesajınıza “birleştirmeden 
 | Kart | Gösterdiği adım | Beklenen sonuç |
 |---|---|---|
 | 901-iade-hatasi | Hatayı üretme, regresyon testi, inceleme ve doğrulama | Erken iadede negatif gecikme sıfıra döner; testli düzeltme ana dala girer. |
-| 902-gecikme-listesi | Ayrı işçiye dağıtım ve kullanıcı kararı | Süper ajan tablo/JSON seçeneklerini sorar; seçtiğiniz biçimde `gecikenler` komutu ana dala girer. |
+| 902-gecikme-listesi | Ayrı işçiye dağıtım ve kullanıcı kararı | Sheepdog tablo/JSON seçeneklerini sorar; seçtiğiniz biçimde `gecikenler` komutu ana dala girer. |
 | 903-kullanim-notu | Bağımlı içerik kartı ve inceleme | 902 bitince başlar; `isler/903-kullanim-notu/sonuc.md` kullanıcı notu olur. Kod birleştirmesi yapılmaz. |
 
 İlk iki kart bağımsız başlayabilir ve ayrı dosyalara ağırlık verir. Aynı projeye
