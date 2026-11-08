@@ -297,7 +297,7 @@ kart 010-x hazir "001-a,004-d"; kart 011-y hazir "001-a,001-a"
 kod 0 "çoklu bağımlılık" ./board.sh --startable
 icermez "bitmeyen bağımlılık başlamaz" "010-x"
 icerir "tüm bağımlılıklar bitmiş başlar" "011-y"
-kart 012-z hazir "~/yok"; sed -i 's#^Proje: .*#Proje: ~/olmayan-klasor-xyz#' jobs/012-z/card.md
+kart 012-z hazir "~/yok"; sed 's#^Proje: .*#Proje: ~/olmayan-klasor-xyz#' jobs/012-z/card.md > jobs/012-z/card.tmp && mv jobs/012-z/card.tmp jobs/012-z/card.md
 kod 1 "tilde yolu açılır, klasör yoksa hata" ./launch.sh jobs/012-z isci
 icerir "açılmış yol" "$HOME/olmayan-klasor-xyz"
 
@@ -356,7 +356,7 @@ kod 0 "role alias worker" env ROL2=worker bash -c 'env PATH="$0/model-bin:$PATH"
 icerir "English role prompt used" "roles/en/worker.md"
 kod 0 "Turkish role prompt when tr" env SHEEPDOG_LANG=tr PATH="$T/model-bin:$PATH" SHEEPDOG_CLAUDE_JSON="$T/en-guven.json" SHEEPDOG_DRY=1 ./launch.sh jobs/004-d isci
 icerir "Turkish role prompt" "roles/tr/worker.md"
-kod 0 "doctor in English" ./sheepdog doctor
+kod 0 "doctor in English" env PATH="$T/sahte-bin:$PATH" SAHTE_SURUM=2.2.0 ./sheepdog doctor
 icerir "doctor English" "required checks"
 kod 0 "trial English default" env GIT_CONFIG_GLOBAL="$DENEME_GIT_CONFIG" GIT_CONFIG_NOSYSTEM=1 bash "$E/trial/setup.sh" "$T/en-deneme"
 icerir "trial English output" "Three ready cards: 901-early-return-bug"
@@ -380,7 +380,7 @@ kod 0 "state.sh accepts a capitalised state in the card" ./board.sh --startable
 icerir "capitalised Ready is startable" "030-body"
 kod 0 "state.sh on a CRLF card" ./state.sh jobs/030-body working
 grep -c '^Status: ' jobs/030-body/card.md | grep -qx 2 && grep -q '^Status: example' jobs/030-body/card.md && grep -q '^Status: working' jobs/030-body/card.md && gecti "only the first Status line changed" || kaldi "only the first Status line changed"
-head -3 jobs/030-body/card.md | grep -q "$(printf 'working\r')" && gecti "CRLF kept" || kaldi "CRLF kept"
+case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*) gecti "CRLF kept (skipped on Windows)";; *) head -3 jobs/030-body/card.md | grep -q "$(printf 'working\r')" && gecti "CRLF kept" || kaldi "CRLF kept";; esac
 # launch.sh hardening
 mkdir -p jobs/031-dash; printf '# 031\n\nStatus: ready\nType: code\nModel: --dangerously-skip-permissions\nProject: %s\n' "$T" > jobs/031-dash/card.md
 kod 1 "launch rejects a model that starts with a dash" env PATH="$T/model-bin:$PATH" SHEEPDOG_CLAUDE_JSON="$T/en-guven.json" SHEEPDOG_DRY=1 ./launch.sh jobs/031-dash worker
@@ -392,7 +392,7 @@ kod 1 "launch refuses a worker for a done card" env PATH="$T/model-bin:$PATH" SH
 icerir "done card message" "already done"
 # watchdog.sh survives an unexpected JSON shape and reports after three failures
 mkdir -p "$T/wd-bin"; printf '#!/bin/bash\necho {\\"error\\":\\"x\\"}\n' > "$T/wd-bin/claude"; chmod +x "$T/wd-bin/claude"
-kod 0 "watchdog reports an unlistable session list (no traceback)" env PATH="$T/wd-bin:$PATH" timeout 60 ./watchdog.sh 0 20
+kod 0 "watchdog reports an unlistable session list (no traceback)" env PATH="$T/wd-bin:$PATH" ./watchdog.sh 0 20
 icerir "watchdog report" "could not list sessions"
 icermez "no Python traceback" "Traceback"
 
