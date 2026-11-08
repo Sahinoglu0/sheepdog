@@ -1,0 +1,41 @@
+name: kontrol
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  duman:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ortam
+        run: |
+          bash --version | head -1
+          git --version
+          (python3 --version || python --version) 2>&1
+
+      - name: Duman testi
+        run: bash testler/duman.sh
+
+      - name: Duman testi (macOS'un kendi bash 3.2 sürümüyle)
+        if: runner.os == 'macOS'
+        run: /bin/bash testler/duman.sh
+
+      - name: shellcheck (bilgi amaçlı, kalmaz)
+        if: runner.os == 'Linux'
+        continue-on-error: true
+        run: |
+          if command -v shellcheck >/dev/null; then
+            shellcheck ./*.sh testler/*.sh || true
+          else
+            echo "shellcheck yok, atlandı"
+          fi
