@@ -11,7 +11,7 @@ tr=os.environ.get('SHEEPDOG_LANG')=='tr'
 def M(a,b): return a if tr else b
 limit=int(os.environ['LIMIT'])*60; now=time.time()
 try:
-    d=json.loads(subprocess.run([shutil.which('claude') or 'claude','agents','--json','--all'],capture_output=True,text=True,timeout=60,stdin=subprocess.DEVNULL).stdout)
+    d=json.loads(subprocess.run([os.environ.get('SHEEPDOG_CLAUDE') or shutil.which('claude') or 'claude','agents','--json','--all'],capture_output=True,text=True,timeout=60,stdin=subprocess.DEVNULL).stdout)
     d=d if isinstance(d,list) else d.get('sessions')
     if not isinstance(d,list) or not all(isinstance(s,dict) for s in d): raise ValueError('unexpected JSON shape')
 except Exception as e:

@@ -393,7 +393,7 @@ kod 1 "launch refuses a worker for a done card" env PATH="$T/model-bin:$PATH" SH
 icerir "done card message" "already done"
 # watchdog.sh survives an unexpected JSON shape and reports after three failures
 mkdir -p "$T/wd-bin"; printf '#!/bin/bash\necho {\\"error\\":\\"x\\"}\n' > "$T/wd-bin/claude"; chmod +x "$T/wd-bin/claude"
-kod 0 "watchdog reports an unlistable session list (no traceback)" env PATH="$T/wd-bin:$PATH" ./watchdog.sh 0 20
+kod 0 "watchdog reports an unlistable session list (no traceback)" env SHEEPDOG_CLAUDE="$T/wd-bin/claude" PATH="$T/wd-bin:$PATH" ./watchdog.sh 0 20
 icerir "watchdog report" "could not list sessions"
 icermez "no Python traceback" "Traceback"
 

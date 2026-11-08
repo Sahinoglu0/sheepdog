@@ -201,7 +201,7 @@ On örnek kart [examples/tr/](examples/README.tr.md) içinde. Kartlar İngilizce
 | birleştirici | sonnet, high | `settings.sh` |
 | gözcü, pano, prova | model yok | — |
 
-En kolayı `settings.sh` içinde profil seçmek: `PROFILE=frugal` (ekonomik), `balanced` (dengeli, varsayılan) ya da `strong` (güçlü). Profiller öneridir, ölçülmedi. Oturum açmadan ne çalışacağını görmek için: `SHEEPDOG_DRY=1 ./launch.sh jobs/<kart> worker`.
+En kolayı `settings.sh` içinde profil seçmek: `PROFILE=frugal` (ekonomik), `balanced` (dengeli, varsayılan) ya da `strong` (güçlü). Profiller öneridir, ölçülmedi. Oturum açmadan ne çalışacağını görmek için: `SHEEPDOG_DRY=1 ./launch.sh jobs/<kart> worker`. `claude` PATH'inizde değilse `SHEEPDOG_CLAUDE` değişkenini tam yoluna ayarlayın.
 
 ## Bu orkestrasyon değil
 

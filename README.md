@@ -197,7 +197,7 @@ Ten worked examples live in [examples/](examples/README.md). Cards can also be w
 | merger | sonnet, high | `settings.sh` |
 | watchdog, board, dry run | no model | none |
 
-The easiest switch is a profile in `settings.sh`: `PROFILE=frugal`, `balanced` (default) or `strong`. Profiles are suggestions and have **not** been benchmarked. To preview what would run without opening a session: `SHEEPDOG_DRY=1 ./launch.sh jobs/<card> worker`.
+The easiest switch is a profile in `settings.sh`: `PROFILE=frugal`, `balanced` (default) or `strong`. Profiles are suggestions and have **not** been benchmarked. To preview what would run without opening a session: `SHEEPDOG_DRY=1 ./launch.sh jobs/<card> worker`. If `claude` is not on your PATH, set `SHEEPDOG_CLAUDE` to its full path.
 
 ## This is not orchestration
 

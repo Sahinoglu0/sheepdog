@@ -32,10 +32,10 @@ for m in "$MODEL" "$EF"; do case "$m" in -*|*[!A-Za-z0-9._-]*|"") echo "$(T "Ge�
 case "$EF" in low|medium|high) ;; *) echo "$(T "Geçersiz efor" "Invalid effort"): '$EF' ($(T rol role): $ROL; $(T beklenen expected): low, medium, high)" >&2; exit 1;; esac
 cd "$PROJECT"
 if [ "${SHEEPDOG_DRY:-}" = 1 ]; then
-  printf '%q ' claude --bg ${SHEEPDOG_FLAGS:-} --permission-mode auto --model "$MODEL" --effort "$EF" --append-system-prompt-file "$ROLEFILE" --add-dir "$HUB/$K" --name "$AD2" -- "$(T "Kartın: $CARD. Rolüne göre işini yap ve kartın klasörüne yaz." "Your card: $CARD. Do your role's job and write your output into the card's folder.")"
+  printf '%q ' "${SHEEPDOG_CLAUDE:-claude}" --bg ${SHEEPDOG_FLAGS:-} --permission-mode auto --model "$MODEL" --effort "$EF" --append-system-prompt-file "$ROLEFILE" --add-dir "$HUB/$K" --name "$AD2" -- "$(T "Kartın: $CARD. Rolüne göre işini yap ve kartın klasörüne yaz." "Your card: $CARD. Do your role's job and write your output into the card's folder.")"
   printf '\n'
   exit 0
 fi
-claude --bg ${SHEEPDOG_FLAGS:-} --permission-mode auto --model "$MODEL" --effort "$EF" --append-system-prompt-file "$ROLEFILE" --add-dir "$HUB/$K" --name "$AD2" -- "$(T "Kartın: $CARD. Rolüne göre işini yap ve kartın klasörüne yaz." "Your card: $CARD. Do your role's job and write your output into the card's folder.")"
+"${SHEEPDOG_CLAUDE:-claude}" --bg ${SHEEPDOG_FLAGS:-} --permission-mode auto --model "$MODEL" --effort "$EF" --append-system-prompt-file "$ROLEFILE" --add-dir "$HUB/$K" --name "$AD2" -- "$(T "Kartın: $CARD. Rolüne göre işini yap ve kartın klasörüne yaz." "Your card: $CARD. Do your role's job and write your output into the card's folder.")"
 [ "$ROL" = worker ] && "$HUB/state.sh" "$K" working >/dev/null
 echo "$(T başladı started): $AD2 ($PROJECT)"
