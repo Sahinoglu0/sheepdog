@@ -80,9 +80,9 @@ kuru(){ env PATH="$T/model-bin:$PATH" SHEEPDOG_CLAUDE_JSON="$T/model-guven.json"
 cp jobs/004-d/card.md "$T/model-kart-once"
 cp .history "$T/model-gecmis-once"
 for rol in isci reviewer dogrulayici birlestirici; do
-  ef=high; [ "$rol" != dogrulayici ] || ef=medium
+  mo=sonnet; [ "$rol" != dogrulayici ] || mo=haiku
   kod 0 "$rol varsayılan kuru başlatma" kuru jobs/004-d "$rol"
-  icerir "$rol varsayılan model ve efor" "--model sonnet --effort $ef"
+  icerir "$rol varsayılan (ekonomik) model ve efor" "--model $mo --effort medium"
   icerir "$rol komut başlangıcı" "claude --bg"
   if [ "$(printf '%s\n' "$SON" | wc -l | tr -d ' ')" = 1 ]; then gecti "$rol tek satır komut"; else kaldi "$rol birden fazla satır" "$SON"; fi
 done
@@ -118,14 +118,14 @@ kod 0 "ekonomik profil: doğrulayıcı" kuru jobs/004-d dogrulayici
 icerir "ekonomik profil doğrulayıcıya haiku verir" "--model haiku"
 cp "$T/model-ayarlar-once" settings.sh
 for rol in reviewer dogrulayici birlestirici; do
-  ef=high; [ "$rol" != dogrulayici ] || ef=medium
+  mo=sonnet; [ "$rol" != dogrulayici ] || mo=haiku
   kod 0 "$rol kart modelini yok sayar" kuru jobs/004-d "$rol"
-  icerir "$rol kendi model ve eforunu korur" "--model sonnet --effort $ef"
+  icerir "$rol kendi model ve eforunu korur" "--model $mo --effort medium"
 done
 cp "$T/model-kart-once" jobs/004-d/card.md
 printf '\nModel: opus\n' >> jobs/004-d/card.md
 kod 0 "kartta yalnız model" kuru jobs/004-d isci
-icerir "eksik kart eforu rol ayarından" "--model opus --effort high"
+icerir "eksik kart eforu rol ayarından" "--model opus --effort medium"
 cp "$T/model-kart-once" jobs/004-d/card.md
 printf '\nEfor: low\n' >> jobs/004-d/card.md
 kod 0 "kartta yalnız efor" kuru jobs/004-d isci
@@ -149,9 +149,9 @@ done
 # Ayar dosyası bulunmayan eski kurulumlarda da aynı varsayılanlar kullanılır.
 rm settings.sh
 for rol in isci reviewer dogrulayici birlestirici; do
-  ef=high; [ "$rol" != dogrulayici ] || ef=medium
+  mo=sonnet; [ "$rol" != dogrulayici ] || mo=haiku
   kod 0 "$rol ayar dosyası olmadan" kuru jobs/004-d "$rol"
-  icerir "$rol yerleşik varsayılan" "--model sonnet --effort $ef"
+  icerir "$rol yerleşik varsayılan (ekonomik)" "--model $mo --effort medium"
 done
 mv "$T/model-ayarlar-once" settings.sh
 printf '{"projects":{}}\n' > "$T/model-guven.json"

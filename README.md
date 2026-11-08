@@ -48,6 +48,8 @@ Sheepdog takes that bookkeeping off you. You only ever talk to **Sheepdog**. It 
 
 ## Try it in 10 minutes
 
+> **Cost warning.** Every role is a separate Claude session, and the manager stays open the whole time. The trial (two code cards and one content card) opens about **nine sessions**. The defaults are the cheapest profile (`frugal`, manager on `sonnet`), but a trial still spends real usage limit: run it once, not repeatedly.
+
 Do not point it at your own project first. The trial kit builds a small Python library that has a deliberate bug and a missing feature, plus three ready cards: a bug fix, a feature that asks you to choose between options, and a content job that depends on it.
 
 ```bash
@@ -190,14 +192,14 @@ Ten worked examples live in [examples/](examples/README.md). Cards can also be w
 
 | Role | Default | Where to change |
 |---|---|---|
-| Sheepdog | opus, high | `.claude/agents/sheepdog.md` → `model:`, `effort:` |
-| worker | sonnet, high | `settings.sh`; for a single job add `Model: opus` to the card |
-| reviewer | sonnet, high | `settings.sh` |
-| verifier | sonnet, medium | `settings.sh` |
-| merger | sonnet, high | `settings.sh` |
+| Sheepdog | sonnet, medium | `.claude/agents/sheepdog.md` → `model:`, `effort:` |
+| worker | sonnet, medium | `settings.sh`; for a single job add `Model: opus` to the card |
+| reviewer | sonnet, medium | `settings.sh` |
+| verifier | haiku, medium | `settings.sh` |
+| merger | sonnet, medium | `settings.sh` |
 | watchdog, board, dry run | no model | none |
 
-The easiest switch is a profile in `settings.sh`: `PROFILE=frugal`, `balanced` (default) or `strong`. Profiles are suggestions and have **not** been benchmarked. To preview what would run without opening a session: `SHEEPDOG_DRY=1 ./launch.sh jobs/<card> worker`. If `claude` is not on your PATH, set `SHEEPDOG_CLAUDE` to its full path.
+The easiest switch is a profile in `settings.sh`: `PROFILE=frugal` (default), `balanced` or `strong`. Profiles are suggestions and have **not** been benchmarked. To preview what would run without opening a session: `SHEEPDOG_DRY=1 ./launch.sh jobs/<card> worker`. If `claude` is not on your PATH, set `SHEEPDOG_CLAUDE` to its full path.
 
 ## This is not orchestration
 

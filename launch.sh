@@ -13,10 +13,10 @@ case "$PROJECT" in "~"|"~/"*) PROJECT="$HOME${PROJECT#\~}";; esac
 [ "$ROL" != merger ] || [ "$(policy_of)" != ask ] || approved "$(basename "$K")" || { echo "$(T "ONAY GEREKLİ" "APPROVAL NEEDED"): $(basename "$K") $(T "için birleştirici başlatılamaz: politika ask. Kullanıcıya sorun; evet derse: ./sheepdog approve" "cannot launch the merger: the policy is ask. Ask the user; if they say yes run: ./sheepdog approve") $(basename "$K")" >&2; exit 1; }
 PY=python3; "$PY" -c "" 2>/dev/null || PY=python
 "$PY" "$HUB/trust.py" "$PROJECT" || { echo "$(T "Güven onayı yok: $PROJECT içinde bir kez claude açıp onay verin" "No trust approval: open claude once inside $PROJECT and accept the trust prompt")"; exit 2; }
-MODEL_WORKER=sonnet; EFFORT_WORKER=high
-MODEL_REVIEWER=sonnet; EFFORT_REVIEWER=high
-MODEL_VERIFIER=sonnet; EFFORT_VERIFIER=medium
-MODEL_MERGER=sonnet; EFFORT_MERGER=high
+MODEL_WORKER=sonnet; EFFORT_WORKER=medium
+MODEL_REVIEWER=sonnet; EFFORT_REVIEWER=medium
+MODEL_VERIFIER=haiku; EFFORT_VERIFIER=medium
+MODEL_MERGER=sonnet; EFFORT_MERGER=medium
 if [ -f "$HUB/settings.sh" ]; then source "$HUB/settings.sh"; fi
 case "$ROL" in
   worker)

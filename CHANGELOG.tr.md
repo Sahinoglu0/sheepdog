@@ -2,6 +2,7 @@
 
 ## v0.4: Sheepdog
 
+- Gerçek koşular çok kullanım limiti harcadığı için daha ucuz varsayılanlar: yönetici artık `sonnet` / `medium`, varsayılan profil `frugal` (işçi, incelemeci ve birleştirici `sonnet medium`, doğrulayıcı `haiku medium`) ve README bir denemenin yaklaşık dokuz oturum açtığını uyarıyor. Zor işler için `PROFILE=balanced|strong` ile yükseltin.
 - `SHEEPDOG_CLAUDE`, `launch.sh` ve `watchdog.sh` içindeki `claude` komutunu geçersiz kılar. Gözcü testi artık bunu kullanıyor; gerçek `claude` kurulu Windows makinelerindeki sahte hatayı giderir (masaüstü koşusundan bildirildi).
 - Birleştirme onayı artık zorunlu: politika `ask` iken `launch.sh ... merger` ve `state.sh ... merging`, `./sheepdog approve <kart>` kaydedilene kadar reddedilir (gerçek bir koşuda yönetici sormadan birleştirmişti). Merkezdeki `CLAUDE.md`, orada açılan her oturumu (masaüstü uygulaması dahil) yönetici kurallarına bağlar (önceki uygulama koşuları README'den doğaçlama yapıp aşamaları atlamıştı). Duman testi: 299 kontrol.
 - Windows'ta (Git Bash) gerçek oturumlarla ilk uçtan uca koşu: üç deneme kartı mühürlü kanıtlarla inceleme, doğrulama ve birleştirmeden geçti. `doctor`, Windows'ta `CLAUDE_CODE_GIT_BASH_PATH` ayarlı değilse uyarır.

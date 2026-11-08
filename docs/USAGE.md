@@ -93,17 +93,17 @@ There is no "stop this card" flow yet; setting a card to `draft` does not stop a
 
 | Role | Job | Default | Effort |
 |---|---|---|---|
-| worker | does the card, writes evidence | sonnet | high |
-| reviewer | independent acceptance review | sonnet | high |
-| verifier | runs the written checks | sonnet | medium |
-| merger | tests the merged tree, lands it | sonnet | high |
-| Sheepdog | sessions and decisions | opus | high |
+| worker | does the card, writes evidence | sonnet | medium |
+| reviewer | independent acceptance review | sonnet | medium |
+| verifier | runs the written checks | haiku | medium |
+| merger | tests the merged tree, lands it | sonnet | medium |
+| Sheepdog | sessions and decisions | sonnet | medium |
 | watchdog, board, dry run | no model | none | none |
 
 Choose a profile in `settings.sh`:
 
 ```bash
-PROFILE=frugal   # or balanced (default) or strong
+PROFILE=frugal   # default; or balanced or strong
 ```
 
 | Profile | worker | reviewer | verifier | merger |

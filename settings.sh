@@ -14,25 +14,27 @@
 # Changes apply only to sessions started afterwards.
 # Put only plain assignments and comments in this file: it is sourced as shell.
 
-# 1) Pick a profile: frugal | balanced | strong
-PROFILE=balanced
+# 1) Pick a profile: frugal (default) | balanced | strong
+#    Every role is a separate Claude session, so a single card costs several sessions. The default is the
+#    cheapest profile on purpose; raise it only for hard jobs.
+PROFILE=frugal
 
 case "$PROFILE" in
-  frugal)    # narrow scope, clear definition of done
-    MODEL_WORKER=sonnet;   EFFORT_WORKER=medium
-    MODEL_REVIEWER=sonnet; EFFORT_REVIEWER=medium
-    MODEL_VERIFIER=haiku;  EFFORT_VERIFIER=medium
-    MODEL_MERGER=sonnet;   EFFORT_MERGER=medium ;;
+  balanced)  # a middle path
+    MODEL_WORKER=sonnet;   EFFORT_WORKER=high
+    MODEL_REVIEWER=sonnet; EFFORT_REVIEWER=high
+    MODEL_VERIFIER=sonnet; EFFORT_VERIFIER=medium
+    MODEL_MERGER=sonnet;   EFFORT_MERGER=high ;;
   strong)    # complex code, hard review
     MODEL_WORKER=opus;     EFFORT_WORKER=high
     MODEL_REVIEWER=opus;   EFFORT_REVIEWER=high
     MODEL_VERIFIER=sonnet; EFFORT_VERIFIER=high
     MODEL_MERGER=opus;     EFFORT_MERGER=high ;;
-  *)         # balanced (default)
-    MODEL_WORKER=sonnet;   EFFORT_WORKER=high
-    MODEL_REVIEWER=sonnet; EFFORT_REVIEWER=high
-    MODEL_VERIFIER=sonnet; EFFORT_VERIFIER=medium
-    MODEL_MERGER=sonnet;   EFFORT_MERGER=high ;;
+  *)         # frugal (default): narrow scope, clear definition of done
+    MODEL_WORKER=sonnet;   EFFORT_WORKER=medium
+    MODEL_REVIEWER=sonnet; EFFORT_REVIEWER=medium
+    MODEL_VERIFIER=haiku;  EFFORT_VERIFIER=medium
+    MODEL_MERGER=sonnet;   EFFORT_MERGER=medium ;;
 esac
 
 # 2) Override a single role regardless of profile (remove the leading #):

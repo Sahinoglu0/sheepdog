@@ -4,6 +4,7 @@
 
 ## v0.4: Sheepdog
 
+- Cheaper defaults after real runs used a lot of usage limit: the manager is now `sonnet` / `medium`, the default profile is `frugal` (worker, reviewer and merger `sonnet medium`, verifier `haiku medium`), and the README warns that a trial opens about nine sessions. Raise it with `PROFILE=balanced|strong` for hard jobs.
 - `SHEEPDOG_CLAUDE` overrides the `claude` command in `launch.sh` and `watchdog.sh`. The watchdog test now uses it, which fixes a false failure on Windows machines that have a real `claude` installed (reported from a desktop run).
 - Merge approval is now enforced: while the policy is `ask`, `launch.sh ... merger` and `state.sh ... merging` refuse until `./sheepdog approve <card>` is recorded (a real run showed the manager merging without asking). `CLAUDE.md` in the hub makes any session opened there, including in the desktop app, follow the manager rules (the earlier app runs improvised from the README and skipped stages). Smoke test: 299 checks.
 - First end-to-end run with real sessions on Windows (Git Bash): three trial cards went through review, verification and merge with sealed evidence. `doctor` now warns when `CLAUDE_CODE_GIT_BASH_PATH` is unset on Windows.

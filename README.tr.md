@@ -48,6 +48,8 @@ Sheepdog bu takibi sizden alır. Siz yalnızca **Sheepdog** ile konuşursunuz. O
 
 ## 10 dakikada deneyin
 
+> **Maliyet uyarısı.** Her rol ayrı bir Claude oturumudur ve yönetici bütün süre açık kalır. Deneme (iki kod kartı, bir içerik kartı) yaklaşık **dokuz oturum** açar. Varsayılanlar en ucuz profildir (`frugal`, yönetici `sonnet`), ama deneme yine de gerçek kullanım limitinizden harcar: bir kez çalıştırın, tekrar tekrar değil.
+
 İlk denemeyi kendi projenizde yapmayın. Deneme seti, bilerek hata ve eksik özellik bırakılmış küçük bir Python kitaplığı ile üç hazır kart kurar: bir hata düzeltmesi, size seçenek soran bir özellik ve ona bağlı bir içerik işi.
 
 ```bash
@@ -194,14 +196,14 @@ On örnek kart [examples/tr/](examples/README.tr.md) içinde. Kartlar İngilizce
 
 | Rol | Varsayılan | Nereden değişir |
 |---|---|---|
-| Sheepdog | opus, high | `.claude/agents/sheepdog-tr.md` → `model:`, `effort:` |
-| işçi | sonnet, high | `settings.sh`; tek bir iş için karta `Model: opus` |
-| incelemeci | sonnet, high | `settings.sh` |
-| doğrulayıcı | sonnet, medium | `settings.sh` |
-| birleştirici | sonnet, high | `settings.sh` |
+| Sheepdog | sonnet, medium | `.claude/agents/sheepdog-tr.md` → `model:`, `effort:` |
+| işçi | sonnet, medium | `settings.sh`; tek bir iş için karta `Model: opus` |
+| incelemeci | sonnet, medium | `settings.sh` |
+| doğrulayıcı | haiku, medium | `settings.sh` |
+| birleştirici | sonnet, medium | `settings.sh` |
 | gözcü, pano, prova | model yok | — |
 
-En kolayı `settings.sh` içinde profil seçmek: `PROFILE=frugal` (ekonomik), `balanced` (dengeli, varsayılan) ya da `strong` (güçlü). Profiller öneridir, ölçülmedi. Oturum açmadan ne çalışacağını görmek için: `SHEEPDOG_DRY=1 ./launch.sh jobs/<kart> worker`. `claude` PATH'inizde değilse `SHEEPDOG_CLAUDE` değişkenini tam yoluna ayarlayın.
+En kolayı `settings.sh` içinde profil seçmek: `PROFILE=frugal` (ekonomik, varsayılan), `balanced` (dengeli) ya da `strong` (güçlü). Profiller öneridir, ölçülmedi. Oturum açmadan ne çalışacağını görmek için: `SHEEPDOG_DRY=1 ./launch.sh jobs/<kart> worker`. `claude` PATH'inizde değilse `SHEEPDOG_CLAUDE` değişkenini tam yoluna ayarlayın.
 
 ## Bu orkestrasyon değil
 

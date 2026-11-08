@@ -221,13 +221,13 @@ profiller ölçülmedi; maliyet veya başarı garantisi değildir.
 En kolayı profil seçmek. `settings.sh` içinde tek satırı değiştirin:
 
 ```bash
-PROFILE=frugal   # ya da balanced (varsayılan) ya da strong
+PROFILE=frugal   # varsayılan; ya da balanced ya da strong
 ```
 
 | Profil | İşçi | İncelemeci | Doğrulayıcı | Birleştirici | Ne zaman |
 |---|---|---|---|---|---|
-| frugal (ekonomik) | sonnet, medium | sonnet, medium | haiku, medium | sonnet, medium | Kapsamı dar, bitti şartı net işler |
-| balanced (dengeli) | sonnet, high | sonnet, high | sonnet, medium | sonnet, high | Varsayılan |
+| frugal (ekonomik) | sonnet, medium | sonnet, medium | haiku, medium | sonnet, medium | Varsayılan. Kapsamı dar, bitti şartı net işler |
+| balanced (dengeli) | sonnet, high | sonnet, high | sonnet, medium | sonnet, high | Orta yol |
 | strong (güçlü) | opus, high | opus, high | sonnet, high | opus, high | Karmaşık kod, zor inceleme |
 
 Tek bir rolü profilden bağımsız değiştirmek için `settings.sh` içindeki ikinci bölümde
