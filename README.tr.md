@@ -311,7 +311,7 @@ Sorunlar ve çekme istekleri (pull request) memnuniyetle karşılanır; bkz. [CO
 
 Sheepdog, **kredi şartlı** [Apache Lisansı 2.0](LICENSE) ile lisanslıdır: forklarsanız, kopyalarsanız ya da üzerine geliştirirseniz [NOTICE](NOTICE) dosyasını korumalı ve şu krediyi projenizde görünür bir yerde (örneğin README'nizin başında) göstermelisiniz:
 
-> **Sheepdog** temel alınmıştır, yapımcısı Sheepdog katkıcıları: <https://github.com/Sahinoglu0/sheepdog>
+> **Sheepdog** temel alınmıştır, yapımcısı Sahinoglu0: <https://github.com/Sahinoglu0/sheepdog>
 
 Ayrıntılar [NOTICE](NOTICE) dosyasında; şart Apache-2.0 madde 4(d) üzerinden uygulanır. Türev işi özgün eser gibi sunmayın, Sheepdog adını ya da görsellerini onay izlenimi vermek için kullanmayın. Atıf dosyası: [CITATION.cff](CITATION.cff).
 

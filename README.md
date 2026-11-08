@@ -307,7 +307,7 @@ Issues and pull requests are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md). Th
 
 Sheepdog is licensed under the [Apache License 2.0](LICENSE) **with a credit requirement**: if you fork it, copy it, or build on it, you must keep the [NOTICE](NOTICE) file and show this credit in a visible place of your project (for example the top of its README):
 
-> Based on **Sheepdog**, created by the Sheepdog contributors: <https://github.com/Sahinoglu0/sheepdog>
+> Based on **Sheepdog**, created by Sahinoglu0 (GitHub): <https://github.com/Sahinoglu0/sheepdog>
 
 Details are in [NOTICE](NOTICE); the requirement is enforced through Apache-2.0 section 4(d). Please do not present derived work as an original creation, and do not use the Sheepdog name or artwork to suggest endorsement. A citation file is available in [CITATION.cff](CITATION.cff).
 
