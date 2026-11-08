@@ -1,5 +1,7 @@
 # Örnek kartlar ve kart yazma rehberi
 
+[English](../examples/README.md) · **Türkçe**
+
 Bu kartlar uyarlanacak taslaklardır. Dosya adları, uç noktalar, test komutları, sürümler ve sayısal hedefler örnek proje sözleşmeleridir; mevcut projenizde doğrulanmış bilgi sayılmaz. Kartlarda geçen işleri bu kit üzerinde çalıştırmayın. Her kart tek bir teslimi ve o teslimin bağımsız olarak nasıl kontrol edileceğini anlatır.
 
 | Klasör | Tür | Ne öğretir? |

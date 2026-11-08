@@ -14,7 +14,8 @@
 - `sheepdog timeline`: kart başına durum süreleri (`.gecmis`).
 - `sheepdog new`: kart iskeleti açar (numara otomatik).
 - Yeni belgeler: `docs/ARCHITECTURE.md`, `docs/GLOSSARY.md`, `docs/USAGE.md`, `CONTRIBUTING.md`, `SECURITY.md`, issue/PR şablonları; yeni görseller (akış, kart yaşam döngüsü).
-- Duman testi 202 kontrole çıktı.
+- Tam iki dilli (İngilizce ve Türkçe): betik mesajları, rol istemleri (`roller/en`, `roller/tr`), yönetici ajan (`sheepdog`, `sheepdog-tr`), kart yetenekleri (`/job-card`, `/is-karti`), İngilizce deneme projesi (`deneme/en`, `kur.sh --lang`), İngilizce örnek kartlar (`examples/`), belgeler. Kart alanları, durum adları ve rol adları iki dilde de kabul edilir (`dil.sh`). Dil: `./sheepdog lang en|tr` ya da `SHEEPDOG_LANG`.
+- Duman testi 235 kontrole çıktı.
 
 ## v0.3: kolay kullanım
 

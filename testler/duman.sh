@@ -12,12 +12,13 @@ kod(){ local b="$1" ad="$2"; shift 2; local o c; o="$("$@" 2>&1)"; c=$?
 icerir(){ if printf '%s\n' "$SON" | grep -qF -- "$2"; then gecti "$1"; else kaldi "$1 (çıktıda yok: $2)" "$SON"; fi; }
 icermez(){ if printf '%s\n' "$SON" | grep -qF -- "$2"; then kaldi "$1 (çıktıda olmamalı: $2)" "$SON"; else gecti "$1"; fi; }
 
+export SHEEPDOG_LANG=tr   # existing checks assert the Turkish messages; the English ones are tested at the end
 tar -C "$KOK" --exclude=./.git --exclude=./.claude -cf - . | tar -C "$T" -xf -
 cd "$T" || exit 1
 mkdir -p isler
 
 echo "bash -n"
-for f in ./*.sh testler/*.sh; do kod 0 "bash -n $f" bash -n "$f"; done
+for f in ./*.sh testler/*.sh ./sheepdog; do kod 0 "bash -n $f" bash -n "$f"; done
 
 echo "sahte kartlar"
 kart(){ mkdir -p "isler/$1"; printf '# %s\n\nDurum: %s\nTür: kod\nBekliyor: %s\nProje: %s\n' "$1" "$2" "$3" "$T" > "isler/$1/kart.md"; }
@@ -228,7 +229,7 @@ printf '[init]\n\tdefaultBranch = baska\n' > "$DENEME_GIT_CONFIG"
 cp "$DENEME_GIT_CONFIG" "$T/deneme-global-once"
 D="$T/kitaplık denemesi"
 kod 0 "geçici hedefe kurulum" env GIT_CONFIG_GLOBAL="$DENEME_GIT_CONFIG" GIT_CONFIG_NOSYSTEM=1 bash deneme/kur.sh "$D"
-icerir "kurulum sonraki adımları gösterir" "claude --agent sheepdog --name sheepdog --permission-mode auto"
+icerir "kurulum sonraki adımları gösterir" "claude --agent sheepdog-tr --name sheepdog --permission-mode auto"
 icerir "güven onayı adımı" "güven onayını"
 icerir "başlatma isteği" "hazır kartları başlat"
 icerir "canlı pano komutu" "./pano.sh --izle"
@@ -322,6 +323,47 @@ kod 0 "timeline" ./sheepdog timeline
 icerir "timeline kart" "007-g"
 kod 0 "ready" ./sheepdog ready
 kod 0 "board" ./sheepdog board
+
+echo "English (SHEEPDOG_LANG=en)"
+"$PY" - "$T" > "$T/en-guven.json" <<'JS'
+import json,os,sys
+print(json.dumps({"projects":{os.path.realpath(sys.argv[1]).replace(os.sep,"/"):{"hasTrustDialogAccepted":True}}}))
+JS
+export SHEEPDOG_LANG=en
+mkdir -p isler/020-en; printf '# 020: en\n\nStatus: ready\nType: code\nWaits-for: none\nProject: %s\n' "$T" > isler/020-en/kart.md
+mkdir -p isler/021-en; printf '# 021: en\n\nStatus: ready\nType: content\nWaits-for: 020-en, \nProject: %s\n' "$T" > isler/021-en/kart.md
+kod 0 "ready lists English card" ./sheepdog ready
+icerir "English card startable" "020-en"
+kod 0 "set accepts English state" ./durum.sh isler/020-en working
+icerir "output in English" "020-en: working"
+grep -qx 'Status: working' isler/020-en/kart.md && gecti "Status line keeps its language" || kaldi "Status line keeps its language"
+grep -q ' 020-en calisiyor$' .gecmis && gecti "log uses canonical state" || kaldi "log uses canonical state"
+kod 0 "rounds counts English-set work" ./tur.sh isler/020-en
+icerir "one round" "1"
+kod 0 "board in English" ./sheepdog board
+icerir "English header" "STATE"
+icerir "English state shown" "working"
+kod 1 "invalid state English message" ./durum.sh isler/020-en bogus
+icerir "invalid state text" "Invalid state"
+kod 0 "mixed: Turkish value on English card" ./durum.sh isler/020-en inceleme
+grep -qx 'Status: review' isler/020-en/kart.md && gecti "English card stores English value" || kaldi "English card stores English value"
+kod 0 "new card in English" ./sheepdog new en-card --project "$T" --type code
+icerir "English card path" "en-card/kart.md"
+KE="$(ls -d isler/[0-9][0-9][0-9]-en-card)"; grep -q '^Type: code' "$KE/kart.md" && grep -q '^Status: draft' "$KE/kart.md" && grep -q '^## Definition of done' "$KE/kart.md" && gecti "English template" || kaldi "English template"
+kod 0 "lang shows en" ./sheepdog lang
+icerir "lang en" "en"
+kod 0 "role alias worker" env ROL2=worker bash -c 'env PATH="$0/model-bin:$PATH" SHEEPDOG_CLAUDE_JSON="$0/en-guven.json" SHEEPDOG_KURU=1 ./baslat.sh isler/004-d worker' "$T"
+icerir "English role prompt used" "roller/en/isci.md"
+kod 0 "Turkish role prompt when tr" env SHEEPDOG_LANG=tr PATH="$T/model-bin:$PATH" SHEEPDOG_CLAUDE_JSON="$T/en-guven.json" SHEEPDOG_KURU=1 ./baslat.sh isler/004-d isci
+icerir "Turkish role prompt" "roller/tr/isci.md"
+kod 0 "doctor in English" ./sheepdog doctor
+icerir "doctor English" "required checks"
+kod 0 "trial English default" env GIT_CONFIG_GLOBAL="$DENEME_GIT_CONFIG" GIT_CONFIG_NOSYSTEM=1 bash "$E/deneme/kur.sh" "$T/en-deneme"
+icerir "trial English output" "Three ready cards: 901-early-return-bug"
+kod 0 "English trial project tests pass" bash -c "cd '$T/en-deneme' && python3 -m unittest 2>&1 | tail -1 | grep -q OK || python -m unittest 2>&1 | tail -1 | grep -q OK"
+kod 0 "English trial shows the planted bug" bash -c "cd '$T/en-deneme' && (python3 -m library lateness --due-date 2026-01-15 --return-date 2026-01-01 || python -m library lateness --due-date 2026-01-15 --return-date 2026-01-01) | grep -q 'Late: -14 days'"
+grep -q '^Status: ready' "$T/en-deneme/../ikinci-merkez/isler/901-early-return-bug/kart.md" && gecti "English trial card ready" || kaldi "English trial card ready"
+kod 0 "ana-dal English error text" bash -c './ana-dal.sh "$0/yok-klasor" 2>&1 | grep -q "Main branch not found"; true' "$T"
 
 echo
 echo "sonuç: $OK geçti, $HATA hata"

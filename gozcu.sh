@@ -14,9 +14,10 @@ except Exception as e:
 d=d if isinstance(d,list) else d.get('sessions',d)
 ad={}
 for s in d: ad.setdefault(s.get('name'),[]).append(s)
+NORM={'working':'calisiyor','review':'inceleme','verify':'dogrulama','merging':'birlesiyor'}
 AKTIF={'calisiyor':'','inceleme':'-reviewer','dogrulama':'-dogrulayici','birlesiyor':'-birlestirici'}
 for k in sorted(glob.glob('isler/*/kart.md')):
-    t=open(k,encoding='utf8').read(); m=re.search(r'^Durum: (.*)$',t,re.M); durum=m[1].strip() if m else ''
+    t=open(k,encoding='utf8').read(); m=re.search(r'^(?:Durum|Status): (.*)$',t,re.M); durum=NORM.get(m[1].strip(),m[1].strip()) if m else ''
     a=os.path.basename(os.path.dirname(k))
     if durum not in AKTIF: continue
     yas=simdi-os.path.getmtime(k); o=ad.get(a+AKTIF[durum],[])

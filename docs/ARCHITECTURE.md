@@ -85,9 +85,13 @@ For anything important, run under a separate OS account or container.
 
 ```
 sheepdog            front door (English-named commands)
-.claude/agents/     manager agent definition
-.claude/skills/     /is-karti card-writing skill
-roller/             role prompts (worker, reviewer, verifier, merger)
+.claude/agents/     manager agent: sheepdog (en), sheepdog-tr (tr)
+.claude/skills/     /job-card (en) and /is-karti (tr) card-writing skills
+examples/, ornek-kartlar/   ten example cards (en, tr)
+deneme/             trial kit: deneme/en (English project + cards) and the Turkish original
+roller/en, roller/tr  role prompts per language (worker, reviewer, verifier, merger)
+dil.sh              language + alias helpers (sourced by the scripts): T "tr" "en", field/state/role aliases
+.dil                persistent language (en | tr)                                 (git-ignored)
 isler/<card>/       card + sonuc.md / inceleme.md / dogrulama.md / birlesme.md   (git-ignored)
 .gecmis             append-only state log                                         (git-ignored)
 .politika           merge policy: ask | auto                                      (git-ignored)

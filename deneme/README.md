@@ -1,76 +1,52 @@
-# 10 dakikalık deneme
+# 10-minute trial
 
-Kendi projenize dokunmadan Sheepdog'un iş dağıtmasını, karar sormasını,
-bağımsız incelemeyi, testleri, birleştirmeyi ve bağımlı kartı deneyin.
-Hazır Python kitaplık projesi ve üç kart içerir. Kurulum birkaç saniye sürer;
-oturumların toplam süresi model yanıtlarına ve kararınıza göre değişir.
+**English** · [Türkçe](README.tr.md)
 
-Kitin gereksinimleri hazır olmalı: Bash (macOS 3.2 ve Windows Git Bash dahil),
-git 2.38+, Python 3.8+ (`python3` veya `python`) ve arka plan oturumlarını
-destekleyen Claude Code. Kurucu Claude çalıştırmaz; denemeyi başlatınca ajan
-oturumları hesabınızın kullanım limitinden harcar.
+Try Sheepdog dispatching work, asking you for a decision, independent review, tests, merging and a dependent card, without touching your own project. The kit contains a ready Python library project and three cards. Setup takes seconds; the total time of the sessions depends on model replies and your decision.
 
-## Kurulum ve başlatma
+The kit's requirements must be ready: Bash (including macOS 3.2 and Windows Git Bash), git 2.38+, Python 3.8+ (`python3` or `python`), and a Claude Code that supports background sessions. The installer does not run Claude; once you start the trial, the agent sessions spend your account's usage limit.
 
-Kitin kökünde, kendi projelerinizden ayrı yeni bir hedef seçin. Boşluk içeren
-yolları tırnak içine alın. Örneğin kitin kardeşi bir klasör:
+## Setup and start
+
+From the hub root, choose a new target separate from your own projects. Quote paths that contain spaces. For example a sibling folder of the hub:
 
 ```bash
-bash deneme/kur.sh "../kitaplik-denemesi"
+bash deneme/kur.sh "../library-trial"            # English project and cards (default)
+bash deneme/kur.sh "../kitaplik-denemesi" --lang tr   # Turkish project and cards
 ```
 
-Hedef yoksa oluşturulur; varsa tamamen boş olmalıdır (gizli dosyalar dahil).
-Proje kopyalanır, `main` dalında ilk commit atılır. Global git kimliğiniz yoksa
-yalnız bu yeni depoya `deneme <deneme@example.invalid>` kimliği yazılır;
-global ayarlar değişmez. Kurucu merkezin `isler/` klasörüne 901, 902 ve 903
-kartlarını `hazir` olarak kurar, proje yollarını mutlak yola çevirir.
-Hedef doluysa veya aynı adlı kartlardan biri varsa yazmaya başlamadan durur.
-Hiçbir şey silmez. Beklenmedik bir disk/git hatasında kısmi kurulum kalabilir;
-hata çıktısını ve klasörleri inceleyin, betik otomatik temizlik yapmaz.
+The target is created if missing; if it exists it must be completely empty (hidden files included). The project is copied and a first commit is made on `main`. If you have no global git identity, `trial <deneme@example.invalid>` is written to this new repository only; global settings are not changed. The installer sets up cards 901, 902 and 903 as ready in the hub's `isler/` folder and rewrites the project paths to absolute. If the target is not empty or one of the cards already exists it stops before writing anything. It deletes nothing. On an unexpected disk/git error a partial setup may remain; inspect the error output and the folders, the script does no automatic cleanup.
 
-Kurucunun yazdığı sırayı izleyin:
+Follow the order the installer prints:
 
-1. Hedefte bir kez `claude` açın, güven onayını verin ve oturumdan çıkın.
-2. Merkeze dönün ve `claude --agent sheepdog --name sheepdog --permission-mode auto` çalıştırın.
-3. **“hazır kartları başlat”** yazın. Merkezde başka hazır kartlarınız varsa bu
-   istek onları da başlatabilir; yalnız denemeyi çalıştırmak için talebi
-   **“yalnız 901-iade-hatasi, 902-gecikme-listesi ve ardından 903-kullanim-notu kartlarını başlat”** diye sınırlandırın.
-4. Merkezde ayrı bir terminalde `./pano.sh --izle` çalıştırın.
+1. Open `claude` once in the target, accept the trust prompt, and exit the session.
+2. Go back to the hub and run `claude --agent sheepdog --name sheepdog --permission-mode auto` (Turkish: `--agent sheepdog-tr`).
+3. Say **"start the ready cards"**. If you have other ready cards in the hub, this may start them too; to run only the trial say **"start only 901-early-return-bug, 902-overdue-list and then 903-usage-note"**.
+4. In the hub, watch the board in another terminal with `./sheepdog watch`.
 
-Birleştirmeden önce onay isterseniz başlatma mesajınıza “birleştirmeden önce sor” ekleyin.
+If you want approval before merging, add "ask me before merging" to your start message (or run `./sheepdog policy ask` first).
 
-## Kartlar neyi gösterir?
+## What do the cards show?
 
-| Kart | Gösterdiği adım | Beklenen sonuç |
+| Card | Step shown | Expected result |
 |---|---|---|
-| 901-iade-hatasi | Hatayı üretme, regresyon testi, inceleme ve doğrulama | Erken iadede negatif gecikme sıfıra döner; testli düzeltme ana dala girer. |
-| 902-gecikme-listesi | Ayrı işçiye dağıtım ve kullanıcı kararı | Sheepdog tablo/JSON seçeneklerini sorar; seçtiğiniz biçimde `gecikenler` komutu ana dala girer. |
-| 903-kullanim-notu | Bağımlı içerik kartı ve inceleme | 902 bitince başlar; `isler/903-kullanim-notu/sonuc.md` kullanıcı notu olur. Kod birleştirmesi yapılmaz. |
+| 901-early-return-bug | Reproducing a bug, a regression test, review and verification | Negative lateness on early return becomes zero; the tested fix enters main. |
+| 902-overdue-list | Handing off to a separate worker and a user decision | Sheepdog asks the table/JSON options; the `overdue` command in the format you choose enters main. |
+| 903-usage-note | A dependent content card and review | Starts when 902 is done; `isler/903-usage-note/sonuc.md` becomes the user note. No code merge. |
 
-İlk iki kart bağımsız başlayabilir ve ayrı dosyalara ağırlık verir. Aynı projeye
-birleştirmeler sırayla yapılır. 903 başlangıçta hazır görünür ama
-`./pano.sh --baslayabilir` çıktısında bulunmaz; 902 bitince listelenir.
+The first two cards can start independently and touch different files. Merges to the same project happen one after another. 903 looks ready at the start but is not in `./sheepdog ready` until 902 is done.
 
-## Başlangıçta ve bittiğinde
+## At the start and at the end
 
-Hedefte başlangıç kontrolü:
+A starting check in the target:
 
 ```bash
 python3 -m unittest
-python3 -m kitaplik gecikme --son-tarih 2026-01-15 --iade-tarihi 2026-01-01
+python3 -m library lateness --due-date 2026-01-15 --return-date 2026-01-01
 ```
 
-8 test geçer ama ikinci komut `Gecikme: -14 gün` yazar. Bu, bilerek bırakılmış
-gerçek hatadır; başlangıç testleri erken iadeyi kapsamıyor. Komut veri dosyası
-oluşturmaz. Windows'ta Python 3 yalnız `python` adıyla varsa komutlarda onu kullanın.
+8 tests pass but the second command prints `Late: -14 days`. That is the deliberately left real bug; the starting tests do not cover an early return. The command creates no data file. If Python 3 exists only as `python` on Windows, use that in the commands.
 
-Deneme tamamlandığında panoda üç kart `bitti` olmalı. Hedefte aynı test komutu
-yeni testlerle geçmeli; hatayı üreten komut `Gecikme: 0 gün` yazmalı ve
-`python3 -m kitaplik gecikenler --tarih 2026-01-20` çalışmalı. Veri yoksa
-seçiminize göre `Geciken ödünç yok.` veya `[]` görünür. Kart klasörlerinde
-sonuç ve inceleme kanıtları, kod kartlarında doğrulama ve birleşme raporları
-bulunur. `git log --oneline` ana dala giren değişiklikleri gösterir.
+When the trial is complete the board should show three cards `done`. In the target the same test command should pass with the new tests; the reproducing command should print `Late: 0 days` and `python3 -m library overdue --date 2026-01-20` should run. With no data you see `No overdue loans.` or `[]` depending on your choice. The card folders hold results and review evidence, and for code cards the verification and merge reports. `git log --oneline` shows the changes that entered main.
 
-Deneme deposu, kartlar ve işçi worktree'leri incelemeniz için kalır; otomatik
-silme veya push yapılmaz. Yeniden denemek için ayrı bir kit kopyası ve yeni
-boş bir hedef kullanın; mevcut kartların üzerine yazılmaz.
+The trial repository, the cards and the workers' worktrees stay for you to inspect; nothing is deleted or pushed automatically. To retry, use a separate copy of the kit and a new empty target; existing cards are never overwritten.

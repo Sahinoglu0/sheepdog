@@ -45,8 +45,9 @@ Sheepdog takes that bookkeeping off you. You only ever talk to **Sheepdog**. It 
 | **Multi-project** | Jobs run in the project they belong to. Fix a bug in one repo, research in another, ship a feature in a third. |
 | **Dependencies between cards** | `Bekliyor: 001-a,002-b` starts a card only when everything it waits for is `bitti` (done). |
 | **One command, persistent policy** | `./sheepdog` is the front door: scaffold cards, see where time went (`timeline`), and set a lasting `policy ask` so every merge needs your approval, even in a new session. |
+| **Bilingual, for real** | English and Turkish roles, agents, card skills, messages, docs, trial project and example cards. Cards and states work in either language, even mixed. |
 | **Hard limits in code** | Review rounds are counted from an append-only log (`tur.sh`), not from the agent's memory. |
-| **Tested everywhere** | A 200-check smoke test runs on Ubuntu, macOS (including its stock bash 3.2) and Windows (Git Bash) on every push. |
+| **Tested everywhere** | A 230-check smoke test runs on Ubuntu, macOS (including its stock bash 3.2) and Windows (Git Bash) on every push. |
 
 ## Try it in 10 minutes
 
@@ -55,12 +56,15 @@ Don't point it at your own project first. The trial kit builds a small Python li
 ```bash
 git clone https://github.com/Sahinoglu0/sheepdog hq
 cd hq
-bash deneme/kur.sh ../library-trial
+bash deneme/kur.sh ../library-trial              # English trial (default)
+bash deneme/kur.sh ../kitaplik-denemesi --lang tr   # Turkish trial
 ```
 
-Details (in Turkish): [deneme/README.md](deneme/README.md)
+Add `--lang tr` for the Turkish project and cards. Details: [deneme/README.md](deneme/README.md) · [Türkçe](deneme/README.tr.md)
 
 ## Install in three steps
+
+> **Language:** the scripts, roles, agent and card template are available in **English (default) and Turkish**. For Turkish run `./sheepdog lang tr` once (or set `SHEEPDOG_LANG=tr`) and start the agent `sheepdog-tr`; the card skill is `/is-karti`. Cards, states and field names are accepted in both languages. See [docs/GLOSSARY.md](docs/GLOSSARY.md).
 
 **1. Clone it and check your machine**
 
@@ -78,7 +82,7 @@ Open `claude` once in each project folder where you will give jobs, and accept t
 
 **3. Describe the job, then start Sheepdog**
 
-Open Claude Code inside `hq` and write `/is-karti <the job>` (*is-karti* = job card). The skill inspects the job, asks you about anything ambiguous, and writes a job card. Read the card and set `Durum: hazir` (*ready*). Then:
+Open Claude Code inside `hq` and write `/job-card <the job>` (Turkish: `/is-karti`). The skill inspects the job, asks you about anything ambiguous, and writes a job card. Read the card and set `Status: ready` (`./sheepdog set <card> ready`). Then:
 
 ```bash
 claude --agent sheepdog --name sheepdog --permission-mode auto
@@ -88,18 +92,18 @@ and tell Sheepdog **"start the ready cards"**. Everything after that happens in 
 
 ## What a session looks like
 
-Taken unchanged from a real dry run on a clean install. The job was to fix a sign-up form that crashed on an empty e-mail. (Sheepdog answered in Turkish, the language of the original kit; the roles and prompts are language-agnostic.)
+Taken from a real dry run on a clean install (translated; the original run was in Turkish, see [README.tr.md](README.tr.md)). The job was to fix a sign-up form that crashed on an empty e-mail.
 
 ```text
-❯ Bu projede birleştirmeden önce bana sor. Hazır kartları başlat.
-● Hazır olan tek kartın (001-bos-eposta-cokmesi) işçi oturumunu başlattım.
-  Bu projede birleştirmeden önce onayını isteyeceğim.
-● Kart 001'in işçisi işini bitirdiğini bildirdi. Kartı incelemeye aldım ve inceleme oturumunu başlattım.
-● Kart 001 incelemeden geçti. Kod kartı olduğu için doğrulamaya aldım ve doğrulama oturumunu başlattım.
-● Kart 001 doğrulamadan geçti ve birleştirme provası temiz çıktı
-  (dal worktree-kart-001-bos-eposta, 1 commit). Bu dalı ana dala birleştireyim mi?
-❯ Evet, birleştir.
-● Kart 001 bitti: worktree-kart-001-bos-eposta dalı ana dala e99b19e birleştirme commit'iyle girdi.
+❯ In this project ask me before merging. Start the ready cards.
+● I started the worker session for the only ready card (001-empty-email-crash).
+  I will ask for your approval before merging in this project.
+● The worker for card 001 reported it is done. I moved the card to review and started the review session.
+● Card 001 passed review. It is a code card, so I moved it to verification and started the verifier.
+● Card 001 passed verification and the merge dry run is clean
+  (branch worktree-card-001-empty-email, 1 commit). Shall I merge this branch into main?
+❯ Yes, merge it.
+● Card 001 is done: branch worktree-card-001-empty-email entered main as merge commit e99b19e.
 ```
 
 You did not write the job, open the worker's window, or check the result. You were asked exactly once, at the one point where the decision was yours.
@@ -161,25 +165,25 @@ A card is a Markdown file the worker can complete without asking questions. Its 
 ```markdown
 # 001: Fix crash on empty e-mail
 
-Durum: taslak          # state: taslak (draft) → hazir (ready) → … → bitti (done)
-Tür: kod               # kod (code, gets verify + merge) or icerik (content, review only)
-Bekliyor: yok          # "waits for": none, or comma-separated card folder names
-Proje: /abs/path/to/project
+Status: draft          # draft → ready → working → review → verify → merge-queue → merging → done
+Type: code             # code (gets verify + merge) or content (review only)
+Waits-for: none        # none, or comma-separated card folder names
+Project: /abs/path/to/project
 
-## Ne yapılacak            (what to do)
+## What to do
 One paragraph. Someone should be able to do it without asking.
 
-## Neye dokunma            (do not touch)
+## Do not touch
 Everything out of scope.
 
-## Bitti demek             (definition of done)
+## Definition of done
 - [ ] What will be true, and what proves it.
 
-## Takılırsan              (if you get stuck)
+## If you get stuck
 Where to stop and report.
 ```
 
-The card format, state names and artifact file names are Turkish, a legacy of the original kit; see the [glossary](docs/GLOSSARY.md). Ten worked examples live in [ornek-kartlar/](ornek-kartlar/README.md).
+Every field and state also has a Turkish name (`Durum`, `Tür`, `Bekliyor`, `Proje`; `taslak`, `hazir`, `calisiyor` …) and the scripts accept both; see the [glossary](docs/GLOSSARY.md). Ten worked examples live in [examples/](examples/README.md) ([Türkçe: ornek-kartlar/](ornek-kartlar/README.md)).
 
 ## Which role uses which model
 
@@ -284,9 +288,9 @@ No. It runs while your machine is on.
 </details>
 
 <details>
-<summary><b>Why are file names and card fields in Turkish?</b></summary>
+<summary><b>Why do some file names look Turkish?</b></summary>
 
-The kit was first written in Turkish. The behavior is language-independent, and the [glossary](docs/GLOSSARY.md) maps every Turkish name to its English meaning. An English-named interface is on the [roadmap](#roadmap).
+The kit was first written in Turkish and the script and artifact file names (`pano.sh`, `durum.sh`, `sonuc.md`, …) stayed. Everything user-facing is bilingual: `./sheepdog` has English commands, cards and states are accepted in English or Turkish, and the roles, agent, card skill, messages, docs, trial and example cards exist in both languages. The [glossary](docs/GLOSSARY.md) maps every name.
 </details>
 
 ## Documentation
@@ -297,13 +301,13 @@ The kit was first written in Turkish. The behavior is language-independent, and 
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | State machine, session naming, files on disk, trust model |
 | [docs/GLOSSARY.md](docs/GLOSSARY.md) | Turkish term → English meaning for every command, state and file |
 | [docs/USAGE.tr.md](docs/USAGE.tr.md) | The full usage guide in Turkish |
-| [ornek-kartlar/](ornek-kartlar/README.md) | Ten example cards and a card-writing guide (Turkish) |
+| [examples/](examples/README.md) · [ornek-kartlar/](ornek-kartlar/README.md) | Ten example cards and a card-writing guide (English · Turkish) |
+| [deneme/](deneme/README.md) · [Türkçe](deneme/README.tr.md) | The 10-minute trial kit, English and Turkish |
 | [CHANGELOG.md](CHANGELOG.md) | Release notes |
 
 ## Roadmap
 
-- [ ] English-named commands, states and card fields (with a compatibility layer for the Turkish ones)
-- [ ] English example cards and trial project
+- [ ] English-named script and artifact files (with compatibility links for the Turkish ones)
 - [ ] A "stop this card" flow
 - [ ] Measured cost and success numbers for the model profiles
 - [ ] Real-session testing on macOS and Windows

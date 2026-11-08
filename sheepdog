@@ -2,7 +2,7 @@
 # Sheepdog: tek giriş komutu (English-named front door). Model harcamaz.
 # usage: ./sheepdog <command> [args]   (run ./sheepdog help)
 cd "$(dirname "$0")" || exit 1
-H="$PWD"; cmd="${1:-help}"; [ $# -gt 0 ] && shift
+. ./dil.sh; H="$PWD"; cmd="${1:-help}"; [ $# -gt 0 ] && shift
 card(){ local k="${1%/}"; k="${k#isler/}"; echo "isler/$k"; }
 case "$cmd" in
   board|status)  exec ./pano.sh "$@" ;;
@@ -14,6 +14,12 @@ case "$cmd" in
                  exec ./durum.sh "$(card "$1")" "$2" ;;
   rounds)        [ -n "$1" ] || { echo "usage: sheepdog rounds <card>"; exit 2; }
                  exec ./tur.sh "$(card "$1")" ;;
+  lang)          case "${1:-}" in
+                   "") echo "$SHEEPDOG_LANG" ;;
+                   en|tr) echo "$1" > .dil; echo "language: $1 ($(T "roller, ajan ve kart şablonu bu dilde" "roles, agent and card template use this language"))";
+                          [ "$1" = tr ] && echo "claude --agent sheepdog-tr --name sheepdog --permission-mode auto" || echo "claude --agent sheepdog --name sheepdog --permission-mode auto" ;;
+                   *) echo "usage: sheepdog lang [en|tr]"; exit 2 ;;
+                 esac ;;
   doctor)        exec ./kontrol.sh "$@" ;;
   main-branch)   exec ./ana-dal.sh "$@" ;;
   dry-run)       exec ./birlestirme-hazirla.sh "$@" ;;
@@ -30,16 +36,21 @@ case "$cmd" in
                    f!="" && $2!=f {next}
                    { if($2 in last){ printf "  %-26s %-18s %s\n", $2, st[$2], fmt($1-t[$2]) } ; st[$2]=$3; t[$2]=$1; last[$2]=1; if(!($2 in ord)){ord[$2]=++n; nm[n]=$2} }
                    END{ "date +%s" | getline now; for(i=1;i<=n;i++){ c=nm[i]; printf "  %-26s %-18s %s (current)\n", c, st[c], fmt(now-t[c]) } }' .gecmis ;;
-  new)           # scaffold a draft card: sheepdog new <slug> --project <abs path> [--type kod|icerik] [--waits a,b]
-                 slug="$1"; [ -n "$slug" ] || { echo "usage: sheepdog new <slug> --project <path> [--type kod|icerik] [--waits a,b]"; exit 2; }; shift
+  new)           # scaffold a draft card: sheepdog new <slug> --project <abs path> [--type code|content] [--waits a,b]
+                 slug="$1"; [ -n "$slug" ] || { echo "usage: sheepdog new <slug> --project <path> [--type code|content] [--waits a,b]"; exit 2; }; shift
                  proj=""; tur=kod; bek=yok
                  while [ $# -gt 0 ]; do case "$1" in --project) proj="$2"; shift 2;; --type) tur="$2"; shift 2;; --waits) bek="$2"; shift 2;; *) echo "unknown option: $1"; exit 2;; esac; done
                  [ -n "$proj" ] || { echo "--project is required"; exit 2; }
-                 case "$tur" in kod|icerik) ;; *) echo "--type must be kod or icerik"; exit 2;; esac
+                 tur="$(ntur "$tur")"; case "$tur" in kod|icerik) ;; *) echo "--type must be kod|code or icerik|content"; exit 2;; esac
                  case "$slug" in *[!a-z0-9-]*|"") echo "slug: lowercase letters, digits, dashes"; exit 2;; esac
                  mkdir -p isler; n=0; for d in isler/[0-9][0-9][0-9]-*; do [ -d "$d" ] || continue; b="${d#isler/}"; v=$((10#${b%%-*})); [ "$v" -gt "$n" ] && n=$v; done
                  id="$(printf '%03d' $((n+1)))-$slug"; mkdir -p "isler/$id"
-                 printf '# %s: %s\n\nDurum: taslak\nTür: %s\nBekliyor: %s\nProje: %s\n\n## Ne yapılacak\nTek paragraf. Okuyan biri soru sormadan yapabilsin.\n\n## Neye dokunma\nKapsam dışı olanlar.\n\n## Bitti demek\n- [ ] Ne olmuş olacak, neyle kanıtlanacak.\n\n## Takılırsan\nNerede durup haber verecek.\n' "${id%%-*}" "$slug" "$tur" "$bek" "$proj" > "isler/$id/kart.md"
+                 if [ "$SHEEPDOG_LANG" = tr ]; then
+                   printf '# %s: %s\n\nDurum: taslak\nTür: %s\nBekliyor: %s\nProje: %s\n\n## Ne yapılacak\nTek paragraf. Okuyan biri soru sormadan yapabilsin.\n\n## Neye dokunma\nKapsam dışı olanlar.\n\n## Bitti demek\n- [ ] Ne olmuş olacak, neyle kanıtlanacak.\n\n## Takılırsan\nNerede durup haber verecek.\n' "${id%%-*}" "$slug" "$tur" "$bek" "$proj" > "isler/$id/kart.md"
+                 else
+                   [ "$bek" = yok ] && bek=none; case "$tur" in kod) tur=code;; icerik) tur=content;; esac
+                   printf '# %s: %s\n\nStatus: draft\nType: %s\nWaits-for: %s\nProject: %s\n\n## What to do\nOne paragraph. Someone should be able to do it without asking questions.\n\n## Do not touch\nEverything out of scope.\n\n## Definition of done\n- [ ] What will be true, and what proves it.\n\n## If you get stuck\nWhere to stop and report.\n' "${id%%-*}" "$slug" "$tur" "$bek" "$proj" > "isler/$id/kart.md"
+                 fi
                  echo "isler/$id/kart.md" ;;
   help|-h|--help|*)
     cat <<'T'
@@ -54,7 +65,8 @@ sheepdog: one front door for the kit (all commands spend no model tokens)
   rounds <card>         how many times the card went to work (from .gecmis)
   timeline [card]       time spent in each state, from .gecmis
   policy [ask|auto]     show / set the persistent merge policy
-  new <slug> --project P [--type kod|icerik] [--waits a,b]   scaffold a draft card
+  lang [en|tr]          show / set the language of roles, agent and card template
+  new <slug> --project P [--type code|content] [--waits a,b]   scaffold a draft card
   doctor [projects...]  check your machine and trust prompts
   main-branch <proj>    detect a project's main branch
   dry-run <proj> <br>   merge dry run, main untouched

@@ -3,7 +3,7 @@
 Komutları, aksi belirtilmedikçe kitin kök klasöründe çalıştırın. `<hedef>`,
 `<proje>` ve `<kart>` yerlerini kendi yollarınızla veya kart klasör adıyla değiştirin;
 köşeli parantezleri yazmayın. Kartların `Proje:` alanına mutlak yol yazın.
-Windows'ta Git Bash kullanın.
+Windows'ta Git Bash kullanın. Türkçe çalışmak için önce bir kez `./sheepdog lang tr` çalıştırın.
 
 ## Başlamadan önce
 
@@ -20,7 +20,7 @@ Windows'ta Git Bash kullanın.
    Sheepdog'u kit kökünde başlatın:
 
    ```bash
-   claude --agent sheepdog --name sheepdog --permission-mode auto
+   claude --agent sheepdog-tr --name sheepdog --permission-mode auto
    ```
 
    Ardından **“hazır kartları başlat”** yazın. Bir bilgisayarda aynı anda tek

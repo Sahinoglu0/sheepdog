@@ -42,6 +42,8 @@ Ayrıntılar: [deneme/README.md](deneme/README.md)
 
 ## Üç adımda kurulum
 
+> **Dil:** Betikler, roller ve kart şablonu varsayılan olarak İngilizcedir. Türkçe için kurulumdan sonra bir kez `./sheepdog lang tr` çalıştırın (ya da `SHEEPDOG_LANG=tr`). Yönetici ajan Türkçe için `sheepdog-tr`, kart yazdıran yetenek `/is-karti` komutudur.
+
 **1. İndirin ve makinenizi kontrol edin**
 
 ```bash
@@ -61,7 +63,7 @@ cd merkez
 `merkez` içinde Claude Code açıp işi anlatın: `/is-karti yapılacak iş`. Komut işi inceler, belirsiz yeri size sorar ve bir iş kartı yazar. Kartı okuyup `Durum: hazir` yapın. Sonra:
 
 ```bash
-claude --agent sheepdog --name sheepdog --permission-mode auto
+claude --agent sheepdog-tr --name sheepdog --permission-mode auto
 ```
 
 ve Sheepdog'a **"hazır kartları başlat"** yazın. Gerisi bu konuşmadan yürür.
@@ -204,7 +206,7 @@ This kit is not DeepSeek's code. It is an adaptation of the idea in [deepseek-ai
 2. In `merkez`, open Claude Code and write job cards with `/is-karti <the job>`. Read each card and set `Durum: hazir`.
 3. Start the super agent and say "hazır kartları başlat" ("start the ready cards"):
    ```bash
-   claude --agent sheepdog --name sheepdog --permission-mode auto
+   claude --agent sheepdog-tr --name sheepdog --permission-mode auto
    ```
 
 Say "birleştirmeden önce sor" ("ask before merging") if you want to merge yourself. Each session spends from your usage limit separately; use a separate OS account or container for important work.
