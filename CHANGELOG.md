@@ -4,7 +4,7 @@
 
 ## v0.4: Sheepdog
 
-- Licensed under Apache-2.0 with a credit requirement: `NOTICE` (forks and copies must keep it and show the credit), `THIRD_PARTY_NOTICES.md` (the notice of the earlier MIT-licensed work this project adapts) and `CITATION.cff`.
+- Licensed under Apache-2.0 with a credit requirement: `NOTICE` (forks and copies must keep it and show the credit) and `CITATION.cff`.
 
 - The project is now **Sheepdog**, fully bilingual (English and Turkish): README, docs, roles, agents, skills, messages, the trial kit and the example cards.
 - All file, folder and command names are English: `board.sh`, `state.sh`, `launch.sh`, `watchdog.sh`, `dry-run.sh`, `doctor.sh`, `settings.sh`, `main-branch.sh`, `rounds.sh`, `trust.py`, `lang.sh`; `jobs/`, `roles/`, `trial/`, `examples/`, `tests/`; card files `card.md`, `result.md`, `review.md`, `verification.md`, `merge.md`. State, role and card-field names are kept in English canonical form; the Turkish names are accepted as aliases (`lang.sh`, see `docs/LANGUAGES.md`).

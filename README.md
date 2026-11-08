@@ -311,6 +311,6 @@ Sheepdog is licensed under the [Apache License 2.0](LICENSE) **with a credit req
 
 Details are in [NOTICE](NOTICE); the requirement is enforced through Apache-2.0 section 4(d). Please do not present derived work as an original creation, and do not use the Sheepdog name or artwork to suggest endorsement. A citation file is available in [CITATION.cff](CITATION.cff).
 
-The idea comes from DeepSeek's super-agent approach: [deepseek-ai/dsh-superagent-prototype](https://github.com/deepseek-ai/dsh-superagent-prototype). Sheepdog is an adaptation of earlier open-source work; the notices that must travel with it are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+The idea comes from DeepSeek's super-agent approach: [deepseek-ai/dsh-superagent-prototype](https://github.com/deepseek-ai/dsh-superagent-prototype).
 
 [License](LICENSE) · [NOTICE](NOTICE) · [Changelog](CHANGELOG.md)

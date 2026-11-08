@@ -315,6 +315,6 @@ Sheepdog, **kredi şartlı** [Apache Lisansı 2.0](LICENSE) ile lisanslıdır: f
 
 Ayrıntılar [NOTICE](NOTICE) dosyasında; şart Apache-2.0 madde 4(d) üzerinden uygulanır. Türev işi özgün eser gibi sunmayın, Sheepdog adını ya da görsellerini onay izlenimi vermek için kullanmayın. Atıf dosyası: [CITATION.cff](CITATION.cff).
 
-Fikir DeepSeek'in süper ajan yaklaşımından geliyor: [deepseek-ai/dsh-superagent-prototype](https://github.com/deepseek-ai/dsh-superagent-prototype). Sheepdog, daha önceki açık kaynak çalışmanın uyarlamasıdır; onunla birlikte taşınması gereken bildirimler [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) içindedir.
+Fikir DeepSeek'in süper ajan yaklaşımından geliyor: [deepseek-ai/dsh-superagent-prototype](https://github.com/deepseek-ai/dsh-superagent-prototype).
 
 [Lisans](LICENSE) · [NOTICE](NOTICE) · [Sürüm notları](CHANGELOG.tr.md)
