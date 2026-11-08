@@ -80,7 +80,7 @@ stateDiagram-v2
 |---|---|---|
 | A role may not edit card state | prompt rule + only `state.sh` writes | behavioral |
 | A role works on its own card folder in the hub | `--add-dir <hub>/<card>` | adds access, removes none: hygiene, not a wall |
-| Review is independent of the work | roles are separate sessions; the card folder is writable by all of them | prompt-level: a worker could write `review.md` itself; spot-check |
+| Review is independent of the work | roles are separate sessions; every verdict file is sealed with its SHA-256 (`seal.sh`) | tamper-evident, not tamper-proof: a forged or edited verdict is detected and the card goes `stuck`; spot-check anyway |
 | Model and effort values are sane | validated in `launch.sh` before launch | enforced |
 | The manager cannot write files | tool list | enforced by the harness; Bash is still available |
 | Merging never rewrites history | merger prompt + ff-only | behavioral + git |
@@ -91,6 +91,7 @@ For anything important, run under a separate OS account or container.
 ## Files on disk
 
 ```
+seal.sh             tamper evidence: pre / done / check on the evidence files
 sheepdog            front door (all commands spend zero model tokens)
 board.sh state.sh launch.sh watchdog.sh dry-run.sh doctor.sh main-branch.sh rounds.sh trust.py settings.sh lang.sh
 .claude/agents/     manager agents: sheepdog (en), sheepdog-tr (tr)
@@ -98,6 +99,7 @@ board.sh state.sh launch.sh watchdog.sh dry-run.sh doctor.sh main-branch.sh roun
 roles/<lang>/       role prompts: worker, reviewer, verifier, merger
 jobs/<card>/        card.md + result.md / review.md / verification.md / merge.md     (git-ignored)
 .history            append-only state log: "epoch card state"                         (git-ignored)
+.seals              SHA-256 ledger of the evidence files                              (git-ignored)
 .policy             merge policy: ask | auto                                          (git-ignored)
 .lang               persistent language: en | tr                                      (git-ignored)
 trial/              trial kit: setup.sh, README, en/ and tr/ projects and cards

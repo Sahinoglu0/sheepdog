@@ -80,7 +80,7 @@ stateDiagram-v2
 |---|---|---|
 | Rol kart durumunu değiştirmez | istem kuralı + yalnız `state.sh` yazar | davranışsal |
 | Rol merkezde kendi kart klasöründe çalışır | `--add-dir <merkez>/<kart>` | erişim ekler, kaldırmaz: düzen, duvar değil |
-| İnceleme işten bağımsızdır | roller ayrı oturumlardır; kart klasörü hepsince yazılabilir | istem düzeyinde: bir işçi `review.md` dosyasını kendisi yazabilir; arada kontrol edin |
+| İnceleme işten bağımsızdır | roller ayrı oturumlardır; her karar dosyası SHA-256 ile mühürlenir (`seal.sh`) | kurcalamayı gösterir, engellemez: sahte ya da değiştirilmiş karar tespit edilir ve kart `stuck` olur; yine de arada kontrol edin |
 | Model ve efor değerleri makul | `launch.sh` başlatmadan önce doğrular | uygulanır |
 | Yönetici dosya yazamaz | araç listesi | altyapı uygular; Bash hâlâ var |
 | Birleştirme geçmişi yeniden yazmaz | birleştirici istemi + ff-only | davranışsal + git |
@@ -91,6 +91,7 @@ stateDiagram-v2
 ## Diskteki dosyalar
 
 ```
+seal.sh             kurcalama tespiti: kanıt dosyaları için pre / done / check
 sheepdog            giriş kapısı (bütün komutlar sıfır model harcar)
 board.sh state.sh launch.sh watchdog.sh dry-run.sh doctor.sh main-branch.sh rounds.sh trust.py settings.sh lang.sh
 .claude/agents/     yönetici ajanlar: sheepdog (en), sheepdog-tr (tr)
@@ -98,6 +99,7 @@ board.sh state.sh launch.sh watchdog.sh dry-run.sh doctor.sh main-branch.sh roun
 roles/<dil>/        rol istemleri: worker, reviewer, verifier, merger
 jobs/<kart>/        card.md + result.md / review.md / verification.md / merge.md     (git'e girmez)
 .history            eklemeli durum kaydı: "epoch kart durum"                         (git'e girmez)
+.seals              kanıt dosyalarının SHA-256 defteri                                (git'e girmez)
 .policy             birleştirme politikası: ask | auto                                (git'e girmez)
 .lang               kalıcı dil: en | tr                                               (git'e girmez)
 trial/              deneme seti: setup.sh, README, en/ ve tr/ projeler ve kartlar

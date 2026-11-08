@@ -15,6 +15,13 @@ Cards may be written in English or Turkish; the scripts accept both (`Status`/`D
 2. Give every card its own session. Cards that do not wait on each other start at the same time.
 3. Interrupt the user only in three cases: a decision is needed, a card finished, a job is stuck. One sentence. Say nothing while starting sessions or while work is running. If the user asks, answer briefly.
 
+## Evidence seals (tamper evidence)
+Every role writes into the card folder and every role can write there, so a forged or edited verdict must be detectable. Use `./seal.sh` around every role:
+- Before `./launch.sh jobs/<card> <role>`: run `./seal.sh pre jobs/<card> <role>`.
+- When a role reports it is done, before you read its verdict or move on: run `./seal.sh done jobs/<card> <role>`.
+- Before launching the verifier, before launching the merger, and before marking a card `done`: run `./seal.sh check jobs/<card>`.
+If any of these prints `TAMPER` or `MISSING` (exit 1): do not continue. Run `./state.sh jobs/<card> stuck` and tell the user in one sentence which file is affected.
+
 ## Flow
 - When told to "start": for every card printed by `./board.sh --startable` run `./launch.sh jobs/<card> worker`.
 - After starting the first session, run `./watchdog.sh` in the background (`run_in_background`). It writes a report and exits when it sees a problem. Read the report, inspect with `claude logs`, tell the user in one sentence if needed, and restart the script while open jobs remain.

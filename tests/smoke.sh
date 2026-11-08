@@ -396,6 +396,28 @@ kod 0 "watchdog reports an unlistable session list (no traceback)" env PATH="$T/
 icerir "watchdog report" "could not list sessions"
 icermez "no Python traceback" "Traceback"
 
+echo "seal.sh (tamper evidence)"
+mkdir -p jobs/040-seal; printf '# 040\n\nStatus: working\nType: code\nProject: %s\n' "$T" > jobs/040-seal/card.md
+kod 0 "pre: nothing written yet" ./seal.sh pre jobs/040-seal reviewer
+kod 1 "done: file missing" ./seal.sh done jobs/040-seal reviewer
+echo "RESULT: PASSED" > jobs/040-seal/review.md
+kod 1 "pre: an unsealed verdict already exists (forged by another role)" ./seal.sh pre jobs/040-seal reviewer
+icerir "TAMPER reported" "TAMPER"
+rm jobs/040-seal/review.md; echo "everything done" > jobs/040-seal/result.md
+kod 0 "worker seals its result" ./seal.sh done jobs/040-seal worker
+kod 0 "check is clean" ./seal.sh check jobs/040-seal
+echo "edited later" >> jobs/040-seal/result.md
+kod 1 "check detects an edit after sealing" ./seal.sh check jobs/040-seal
+icerir "edit reported" "changed after it was sealed"
+kod 1 "pre: edited sealed file is flagged" ./seal.sh pre jobs/040-seal worker
+echo "everything done" > jobs/040-seal/result.md
+kod 0 "restored content passes again" ./seal.sh check jobs/040-seal
+kod 0 "pre: an earlier sealed round is fine" ./seal.sh pre jobs/040-seal worker
+kod 2 "usage error" ./seal.sh bogus jobs/040-seal
+kod 0 "front door seal" ./sheepdog seal check jobs/040-seal
+rm -f jobs/040-seal/result.md
+kod 1 "check detects a deleted sealed file" ./seal.sh check jobs/040-seal
+
 echo
 echo "result: $OK passed, $HATA failed"
 [ "$HATA" = 0 ]

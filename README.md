@@ -43,7 +43,7 @@ Sheepdog takes that bookkeeping off you. You only ever talk to **Sheepdog**. It 
 | **A lasting merge policy** | `./sheepdog policy ask` makes every merge need your approval, even in a brand-new session. |
 | **Timeline** | `./sheepdog timeline` shows where each card spent its time. |
 | **Truly bilingual** | English and Turkish roles, agents, skills, messages, docs, trial project and example cards. Cards and states work in either language. |
-| **Tested everywhere** | A 255-check smoke test runs on Ubuntu, macOS (including its stock bash 3.2) and Windows (Git Bash) on every push. |
+| **Tested everywhere** | A 270-check smoke test runs on Ubuntu, macOS (including its stock bash 3.2) and Windows (Git Bash) on every push. |
 
 ## Try it in 10 minutes
 
@@ -108,6 +108,7 @@ The rule: **an agent where judgment is needed, a program where it isn't.** Progr
 | `main-branch.sh` | script | Detects the project's main branch (`main`, `master`, or whatever `origin/HEAD` says). |
 | `rounds.sh` | script | Counts how many times a card was sent back, from the log. |
 | `state.sh` | script | The only thing that changes a card's state. |
+| `seal.sh` | script | Tamper evidence: seals each evidence file with its SHA-256 and detects forged or edited verdicts. |
 | `launch.sh` | script | Starts a role's background session with the right model and scope. |
 
 ### A card's journey
@@ -220,7 +221,7 @@ Be aware of:
 - Auto permission mode reduces prompts. Sessions can be influenced by text they read online; for important work use a separate OS account or a container.
 - Sheepdog has no file-writing tool, but it can run shell commands. That is a behavioral rule, not a hard security boundary. Likewise "workers may not read `.env` and key files" is a rule, not a lock.
 - Each session is started with `--add-dir` for its own card folder only. That adds access; it does not remove any. A worker runs in your project with auto permission mode and could, in principle, still write elsewhere, including the hub (`settings.sh`, the role prompts). Treat the scoping as hygiene, not enforcement. Model and effort values are validated before a session starts, but none of this is a **sandbox**.
-- The card folder is writable by every role, so review independence is a prompt-level rule: a worker could in principle write `review.md` itself. Sheepdog reads verdicts together with the reviewer's own message, and you should spot-check finished jobs.
+- The card folder is writable by every role, so a worker could in principle write `review.md` itself. `seal.sh` makes that **detectable**: Sheepdog seals each evidence file with its SHA-256 when its role reports, and refuses to go on if a file shows up unsealed or changes later. It is tamper-evident, not tamper-proof, so still spot-check finished jobs.
 - For code jobs, background sessions create `.claude/worktrees/` inside your project. Add it to the project's `.gitignore`, and clean up old branches and worktrees yourself (`git worktree list`).
 
 Report security problems as described in [SECURITY.md](SECURITY.md).

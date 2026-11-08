@@ -9,7 +9,7 @@ Sheepdog, otomatik izin modunda özerk kodlama oturumları başlatır. Önemli b
 - Rol kısıtları (push yok, durum düzenleme yok, `.env` okuma yok) istem kurallarıdır, kilit değildir.
 - Yöneticide Bash vardır. "Dosya yazma aracı yok" bir davranış kuralıdır, güvenlik kutusu değildir.
 - `--add-dir` bir oturuma erişim ekler, kısıtlamaz. Bir işçi kart klasörü dışına, merkez dahil, yazabilir.
-- İncelemenin bağımsızlığı bir istem kuralıdır: kart klasörü bütün rollerce yazılabilir.
+- İncelemenin bağımsızlığı kurcalamayı gösterir, engellemez: kart klasörü bütün rollerce yazılabilir; `seal.sh` yalnızca sahte ya da değiştirilmiş kararları tespit eder.
 - Oturumlar web'den ya da depolardan okudukları metinden etkilenebilir.
 
 Önemli işleri ayrı bir işletim sistemi hesabında ya da kapsayıcıda çalıştırın.

@@ -43,7 +43,7 @@ Sheepdog bu takibi sizden alır. Siz yalnızca **Sheepdog** ile konuşursunuz. O
 | **Kalıcı birleştirme politikası** | `./sheepdog policy ask` her birleştirmeyi onayınıza bağlar; yepyeni bir oturumda bile. |
 | **Zaman çizelgesi** | `./sheepdog timeline` her kartın zamanını nerede harcadığını gösterir. |
 | **Gerçekten iki dilli** | İngilizce ve Türkçe roller, ajanlar, yetenekler, mesajlar, belgeler, deneme projesi ve örnek kartlar. Kartlar ve durumlar iki dilde de çalışır. |
-| **Her yerde test edilir** | 255 kontrollük duman testi her push'ta Ubuntu, macOS (kendi bash 3.2 sürümü dahil) ve Windows'ta (Git Bash) koşar. |
+| **Her yerde test edilir** | 270 kontrollük duman testi her push'ta Ubuntu, macOS (kendi bash 3.2 sürümü dahil) ve Windows'ta (Git Bash) koşar. |
 
 ## 10 dakikada deneyin
 
@@ -110,6 +110,7 @@ Kural: **yargı gereken yerde ajan, gerekmeyen yerde program.** Programlar kulla
 | `main-branch.sh` | betik | Projenin ana dalını bulur (`main`, `master` ya da `origin/HEAD` neyse). |
 | `rounds.sh` | betik | Bir kartın kaç kez geri gönderildiğini kayıttan sayar. |
 | `state.sh` | betik | Kart durumunu değiştiren tek yer. |
+| `seal.sh` | betik | Kurcalama tespiti: her kanıt dosyasını SHA-256 ile mühürler, sahte ya da değiştirilmiş kararları yakalar. |
 | `launch.sh` | betik | Bir rolün arka plan oturumunu doğru model ve kapsamla başlatır. |
 
 ### Bir kartın yolculuğu
@@ -224,7 +225,7 @@ Dikkat edin:
 - Otomatik izin modu soruları azaltır. Oturumlar internetten okudukları metinden etkilenebilir; önemli işlerde ayrı bir işletim sistemi hesabı veya kapsayıcı kullanın.
 - Sheepdog'un dosya yazma aracı yok ama kabuk komutu çalıştırabilir. Bu bir davranış kuralıdır, katı bir güvenlik sınırı değildir. Aynı şekilde "işçiler `.env` ve anahtar dosyalarını okumaz" bir kuraldır, kilit değildir.
 - Her oturum yalnız kendi kart klasörü için `--add-dir` ile başlatılır. Bu erişim ekler, kaldırmaz: işçi sizin projenizde otomatik izin modunda çalışır ve prensipte merkez dahil başka yerlere de yazabilir (`settings.sh`, rol istemleri). Bu daraltmayı düzen için sayın, güvence olarak görmeyin. Model ve efor değerleri oturum açılmadan doğrulanır, ama bunların hiçbiri **güvenlik kutusu değildir**.
-- Kart klasörü bütün rollerce yazılabilir; yani incelemenin bağımsızlığı bir istem kuralıdır: bir işçi prensipte `review.md` dosyasını kendisi yazabilir. Sheepdog karar dosyalarını incelemecinin kendi mesajıyla birlikte okur; biten işleri siz de arada kontrol edin.
+- Kart klasörü bütün rollerce yazılabilir; bir işçi prensipte `review.md` dosyasını kendisi yazabilir. `seal.sh` bunu **fark edilir** kılar: Sheepdog rol bildirdiğinde her kanıt dosyasını SHA-256 ile mühürler; bir dosya mühürsüz ortaya çıkarsa ya da sonradan değişirse devam etmez. Kurcalamayı gösterir, engellemez; biten işleri yine de arada kontrol edin.
 - Kod işlerinde arka plan oturumları projenizin içinde `.claude/worktrees/` klasörü açar. Bunu projenin `.gitignore` dosyasına ekleyin; iş bitince eski dalları ve worktree'leri `git worktree list` ile görüp kendiniz temizleyin.
 
 Güvenlik sorunlarını [SECURITY.tr.md](SECURITY.tr.md) içinde anlatıldığı gibi bildirin.

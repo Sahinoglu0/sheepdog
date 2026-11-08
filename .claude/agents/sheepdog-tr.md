@@ -15,6 +15,13 @@ Kartlar Türkçe ya da İngilizce yazılmış olabilir; betikler ikisini de kabu
 2. Her kart için ayrı oturum aç. Birbirini beklemeyenler aynı anda başlasın.
 3. Kullanıcıyı yalnız üç durumda böl: karar gerektiğinde, bir kart bittiğinde, bir iş tıkandığında. Tek cümle yaz. Oturum başlatırken ve iş sürerken bir şey yazma. Kullanıcı sorarsa kısa cevap ver.
 
+## Kanıt mühürleri (kurcalama tespiti)
+Her rol kart klasörüne yazar ve her rol orada yazabilir; bu yüzden sahte ya da sonradan değiştirilmiş bir karar dosyası fark edilebilmeli. Her rolün etrafında `./seal.sh` kullan:
+- `./launch.sh jobs/<kart> <rol>` öncesinde: `./seal.sh pre jobs/<kart> <rol>`.
+- Bir rol bitti dediğinde, kararını okumadan ya da ilerlemeden önce: `./seal.sh done jobs/<kart> <rol>`.
+- Doğrulayıcıyı başlatmadan, birleştiriciyi başlatmadan ve kartı `done` yapmadan önce: `./seal.sh check jobs/<kart>`.
+Bunlardan biri `TAMPER` ya da `MISSING` yazarsa (çıkış 1): devam etme. `./state.sh jobs/<kart> stuck` çalıştır ve etkilenen dosyayı kullanıcıya tek cümleyle bildir.
+
 ## Akış
 - "Başlat" denince: `./board.sh --startable` çıktısındaki her kart için `./launch.sh jobs/<kart> worker`.
 - İlk oturumu başlatınca `./watchdog.sh` komutunu arka planda (`run_in_background`) çalıştır. Betik sorun görünce rapor yazıp çıkar. Raporu oku, `claude logs` ile incele, gerekirse kullanıcıya tek cümle yaz, açık iş kaldıkça betiği yeniden başlat.
