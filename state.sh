@@ -4,6 +4,11 @@
 cd "$(dirname "$0")"; . ./lang.sh; K="${1%/}"; Y="$(nstate "$2")"
 case "$Y" in draft|ready|working|review|verify|merge-queue|merging|done|stuck) ;; *) echo "$(T "Geçersiz durum" "Invalid state"): $2"; exit 1;; esac
 [ -f "$K/card.md" ] || { echo "$(T "Kart yok" "No such card"): $K"; exit 1; }
+# Merge approval: with "./sheepdog policy ask" nothing may start merging before "./sheepdog approve <card>".
+if [ "$Y" = merging ] && [ "$(policy_of)" = ask ] && ! approved "$(basename "$K")"; then
+  echo "$(T "ONAY GEREKLİ" "APPROVAL NEEDED"): $(basename "$K") $(T "birleştirilemez: politika 'ask'. Kullanıcıya sorun; evet derse ./sheepdog approve $(basename "$K")" "may not be merged: the policy is 'ask'. Ask the user; if they say yes run ./sheepdog approve $(basename "$K")")" >&2
+  exit 1
+fi
 # Stage gates: a card cannot skip review, verification or the merge. SHEEPDOG_GATE=off disables them (humans only).
 if [ "${SHEEPDOG_GATE:-on}" != off ]; then
   TYPE="$(ntype "$(field Tür "$K/card.md")")"; need=""

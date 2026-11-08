@@ -115,6 +115,8 @@ jobs/<card>/        card.md + result.md / review.md / verification.md / merge.md
 .history            append-only state log: "epoch card state"                         (git-ignored)
 .seals              SHA-256 ledger of the evidence files                              (git-ignored)
 .policy             merge policy: ask | auto                                          (git-ignored)
+.approvals          your merge approvals ("epoch card"), written by `./sheepdog approve`   (git-ignored)
+CLAUDE.md           makes any session opened in the hub (terminal or desktop app) follow the manager rules
 .lang               persistent language: en | tr                                      (git-ignored)
 trial/              trial kit: setup.sh, README, en/ and tr/ projects and cards
 examples/           ten example cards (en/ and tr/) and the card-writing guide

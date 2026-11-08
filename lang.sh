@@ -26,3 +26,6 @@ dstate(){ if [ "$SHEEPDOG_LANG" = tr ]; then tstate "$1"; else echo "$1"; fi; }
 ntype(){ case "$1" in kod) echo code;; icerik) echo content;; *) echo "$1";; esac; }
 # nrole: role alias (en or tr) -> canonical role id (worker|reviewer|verifier|merger)
 nrole(){ case "$1" in isci) echo worker;; incelemeci) echo reviewer;; dogrulayici) echo verifier;; birlestirici) echo merger;; *) echo "$1";; esac; }
+# merge policy and approvals (see ./sheepdog policy / approve)
+policy_of(){ head -1 "$_SD_HOME/.policy" 2>/dev/null || echo auto; }
+approved(){ [ -f "$_SD_HOME/.approvals" ] && awk -v c="$1" '$2==c{f=1} END{exit !f}' "$_SD_HOME/.approvals"; }

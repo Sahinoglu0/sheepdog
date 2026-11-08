@@ -2,6 +2,7 @@
 
 ## v0.4: Sheepdog
 
+- Birleştirme onayı artık zorunlu: politika `ask` iken `launch.sh ... merger` ve `state.sh ... merging`, `./sheepdog approve <kart>` kaydedilene kadar reddedilir (gerçek bir koşuda yönetici sormadan birleştirmişti). Merkezdeki `CLAUDE.md`, orada açılan her oturumu (masaüstü uygulaması dahil) yönetici kurallarına bağlar (önceki uygulama koşuları README'den doğaçlama yapıp aşamaları atlamıştı). Duman testi: 299 kontrol.
 - Windows'ta (Git Bash) gerçek oturumlarla ilk uçtan uca koşu: üç deneme kartı mühürlü kanıtlarla inceleme, doğrulama ve birleştirmeden geçti. `doctor`, Windows'ta `CLAUDE_CODE_GIT_BASH_PATH` ayarlı değilse uyarır.
 - Aşama kapıları: `state.sh` inceleme, doğrulama ve birleştirmeyi atlamayı reddeder (`seal.sh verdict`; insanlar `SHEEPDOG_GATE=off` kullanabilir). Masaüstü uygulamasındaki gerçek bir deneme koşusunda yöneticinin kartları işçiden hemen sonra `done` yapması üzerine eklendi. İşçi istemlerine Windows'ta `EnterWorktree` hatası için elle worktree yedeği eklendi.
 - `seal.sh`: kanıt dosyaları (`result.md`, `review.md`, `verification.md`, `merge.md`) için kurcalama tespiti. Yönetici rol bildirdiğinde her birini SHA-256 ile mühürler; doğrulayıcı, birleştirici ve `done` öncesi kontrol eder; sahte ya da değiştirilmiş kararda kartı `stuck` yapar.

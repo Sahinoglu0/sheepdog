@@ -10,6 +10,7 @@ PROJECT="$(field Proje "$CARD")"
 case "$PROJECT" in "~"|"~/"*) PROJECT="$HOME${PROJECT#\~}";; esac
 [ -d "$PROJECT" ] || { echo "$(T "Proje klasörü yok" "Project folder not found"): $PROJECT"; exit 1; }
 [ "$ROL" != worker ] || [ "$(nstate "$(field Durum "$CARD")")" != done ] || { echo "$(T "Kart zaten bitti; işçi yeniden başlatılmaz" "Card is already done; not relaunching a worker"): $CARD" >&2; exit 1; }
+[ "$ROL" != merger ] || [ "$(policy_of)" != ask ] || approved "$(basename "$K")" || { echo "$(T "ONAY GEREKLİ" "APPROVAL NEEDED"): $(basename "$K") $(T "için birleştirici başlatılamaz: politika ask. Kullanıcıya sorun; evet derse: ./sheepdog approve" "cannot launch the merger: the policy is ask. Ask the user; if they say yes run: ./sheepdog approve") $(basename "$K")" >&2; exit 1; }
 PY=python3; "$PY" -c "" 2>/dev/null || PY=python
 "$PY" "$HUB/trust.py" "$PROJECT" || { echo "$(T "Güven onayı yok: $PROJECT içinde bir kez claude açıp onay verin" "No trust approval: open claude once inside $PROJECT and accept the trust prompt")"; exit 2; }
 MODEL_WORKER=sonnet; EFFORT_WORKER=high

@@ -41,10 +41,10 @@ Sheepdog bu takibi sizden alır. Siz yalnızca **Sheepdog** ile konuşursunuz. O
 | **Kart bağımlılıkları** | `Bekliyor: 001-a,002-b` yazarsanız kart, beklediği her şey bitince başlar. |
 | **Aşamalar kodda uygulanır** | `state.sh`, o aşamanın kararı yoksa, mühürlü değilse ya da geçmediyse kartı inceleme, doğrulama ya da birleştirmenin ötesine taşımayı reddeder. Yönetici atlayamaz; yalnız bir insan atlayabilir (`SHEEPDOG_GATE=off`). |
 | **Sınırlar kodda uygulanır** | İnceleme turları ajanın hafızasından değil, yalnız eklenen bir kayıttan (`rounds.sh`) sayılır. |
-| **Kalıcı birleştirme politikası** | `./sheepdog policy ask` her birleştirmeyi onayınıza bağlar; yepyeni bir oturumda bile. |
+| **Kalıcı birleştirme politikası** | `./sheepdog policy ask` her birleştirmeyi onayınıza bağlar; yepyeni bir oturumda bile. Politika `ask` iken `./sheepdog approve <kart>` kaydedilmeden birleştirici başlatılamaz. |
 | **Zaman çizelgesi** | `./sheepdog timeline` her kartın zamanını nerede harcadığını gösterir. |
 | **Gerçekten iki dilli** | İngilizce ve Türkçe roller, ajanlar, yetenekler, mesajlar, belgeler, deneme projesi ve örnek kartlar. Kartlar ve durumlar iki dilde de çalışır. |
-| **Her yerde test edilir** | 289 kontrollük duman testi her push'ta Ubuntu, macOS (kendi bash 3.2 sürümü dahil) ve Windows'ta (Git Bash) koşar. |
+| **Her yerde test edilir** | 299 kontrollük duman testi her push'ta Ubuntu, macOS (kendi bash 3.2 sürümü dahil) ve Windows'ta (Git Bash) koşar. |
 
 ## 10 dakikada deneyin
 
@@ -157,6 +157,7 @@ Betiklerin üzerinde tek giriş kapısı. Hiçbiri model harcamaz.
 ./sheepdog start 001-hata-duzelt [rol]    ./sheepdog set 001-hata-duzelt ready
 ./sheepdog rounds 001-hata-duzelt         ./sheepdog timeline [kart]    durum başına geçen süre
 ./sheepdog policy [ask|auto]              kalıcı birleştirme politikası ("ask": her birleştirmeyi siz onaylarsınız)
+./sheepdog approve 001-hata-duzelt        bir kartı birleştirme onayınızı kaydeder (politika "ask" iken gerekir)
 ./sheepdog lang [en|tr]                   mesajların, rollerin, ajanın ve şablonların dili
 ```
 

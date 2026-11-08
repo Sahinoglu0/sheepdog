@@ -4,6 +4,7 @@
 
 ## v0.4: Sheepdog
 
+- Merge approval is now enforced: while the policy is `ask`, `launch.sh ... merger` and `state.sh ... merging` refuse until `./sheepdog approve <card>` is recorded (a real run showed the manager merging without asking). `CLAUDE.md` in the hub makes any session opened there, including in the desktop app, follow the manager rules (the earlier app runs improvised from the README and skipped stages). Smoke test: 299 checks.
 - First end-to-end run with real sessions on Windows (Git Bash): three trial cards went through review, verification and merge with sealed evidence. `doctor` now warns when `CLAUDE_CODE_GIT_BASH_PATH` is unset on Windows.
 - Stage gates: `state.sh` refuses to skip review, verification or the merge (`seal.sh verdict`; humans can use `SHEEPDOG_GATE=off`). Added after a real trial run in the desktop app where the manager marked cards `done` straight after the worker. Worker prompts gained a manual-worktree fallback for `EnterWorktree` failures on Windows.
 - `seal.sh`: tamper evidence for the evidence files (`result.md`, `review.md`, `verification.md`, `merge.md`). The manager seals each with its SHA-256 when a role reports, checks before the verifier, the merger and `done`, and parks the card as `stuck` on a forged or edited verdict.

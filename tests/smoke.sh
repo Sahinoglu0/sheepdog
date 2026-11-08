@@ -450,6 +450,22 @@ kod 1 "gate: content card cannot finish without review" $G ./state.sh jobs/051-c
 printf 'RESULT: PASSED\n' > jobs/051-content/review.md; ./seal.sh done jobs/051-content reviewer >/dev/null
 kod 0 "gate: content card finishes after a passed review (no merge needed)" $G ./state.sh jobs/051-content done
 
+echo "merge approval (policy ask)"
+./sheepdog policy ask >/dev/null
+mkdir -p jobs/060-appr; printf '# 060\n\nStatus: merge-queue\nType: code\nProject: %s\n' "$T" > jobs/060-appr/card.md
+kod 1 "state merging refused while policy is ask and the card is not approved" ./state.sh jobs/060-appr merging
+icerir "approval message" "APPROVAL NEEDED"
+kod 1 "merger launch refused before approval" env PATH="$T/model-bin:$PATH" SHEEPDOG_CLAUDE_JSON="$T/en-guven.json" SHEEPDOG_DRY=1 ./launch.sh jobs/060-appr merger
+icerir "launch approval message" "APPROVAL NEEDED"
+kod 0 "approve records the approval" ./sheepdog approve 060-appr
+kod 0 "state merging allowed after approval" ./state.sh jobs/060-appr merging
+kod 0 "merger launch allowed after approval" env PATH="$T/model-bin:$PATH" SHEEPDOG_CLAUDE_JSON="$T/en-guven.json" SHEEPDOG_DRY=1 ./launch.sh jobs/060-appr merger
+kod 1 "approve needs a real card" ./sheepdog approve 999-nope
+mkdir -p jobs/061-other; printf '# 061\n\nStatus: merge-queue\nType: code\nProject: %s\n' "$T" > jobs/061-other/card.md
+kod 1 "approval is per card" ./state.sh jobs/061-other merging
+./sheepdog policy auto >/dev/null
+kod 0 "policy auto needs no approval" ./state.sh jobs/061-other merging
+
 echo
 echo "result: $OK passed, $HATA failed"
 [ "$HATA" = 0 ]

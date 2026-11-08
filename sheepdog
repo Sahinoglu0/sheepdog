@@ -22,6 +22,9 @@ case "$cmd" in
                    *) echo "usage: sheepdog lang [en|tr]"; exit 2 ;;
                  esac ;;
   seal)          exec ./seal.sh "$@" ;;
+  approve)       [ -n "$1" ] || { echo "usage: sheepdog approve <card>"; exit 2; }
+                 c="$(basename "${1%/}")"; [ -d "jobs/$c" ] || { echo "No such card: $c"; exit 1; }
+                 printf '%s %s\n' "$(date +%s)" "$c" >> .approvals; echo "approved for merging: $c" ;;
   doctor)        exec ./doctor.sh "$@" ;;
   main-branch)   exec ./main-branch.sh "$@" ;;
   dry-run)       exec ./dry-run.sh "$@" ;;
@@ -67,6 +70,7 @@ sheepdog: one front door for the kit (every command spends zero model tokens)
   rounds <card>         how many times the card went to work (from .history)
   timeline [card]       time spent in each state (from .history)
   policy [ask|auto]     show or set the persistent merge policy
+  approve <card>        record your approval to merge a card (required while the policy is "ask")
   lang [en|tr]          show or set the language of messages, roles, agent and templates
   new <slug> --project P [--type code|content] [--waits a,b]   scaffold a draft card
   seal pre|done|check   tamper evidence for the evidence files (see docs/ARCHITECTURE.md)

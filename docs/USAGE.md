@@ -68,6 +68,8 @@ Make it persistent, so a new Sheepdog session still honors it:
 ./sheepdog policy auto     # default
 ```
 
+While the policy is `ask`, `launch.sh ... merger` and `state.sh ... merging` are refused until you answer yes in the chat and Sheepdog records it with `./sheepdog approve <card>`. You can also run that command yourself.
+
 When asked, read `result.md`, `review.md` and `verification.md`, check the diff, then say *"approve the merge for 001"* or *"don't merge 001 yet; wait for my decision"*. Content cards never reach the merge step.
 
 ## 6. Leaving it running for hours

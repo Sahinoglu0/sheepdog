@@ -41,10 +41,10 @@ Sheepdog takes that bookkeeping off you. You only ever talk to **Sheepdog**. It 
 | **Card dependencies** | `Waits-for: 001-a,002-b` starts a card only when everything it waits for is `done`. |
 | **Stages enforced in code** | `state.sh` refuses to move a card past review, verification or the merge unless that stage's verdict exists, is sealed and passed. The manager cannot skip them; only a human can (`SHEEPDOG_GATE=off`). |
 | **Limits enforced in code** | Review rounds are counted from an append-only log (`rounds.sh`), not from an agent's memory. |
-| **A lasting merge policy** | `./sheepdog policy ask` makes every merge need your approval, even in a brand-new session. |
+| **A lasting merge policy** | `./sheepdog policy ask` makes every merge need your approval, even in a brand-new session. While it is `ask`, the merger cannot be launched until `./sheepdog approve <card>` is recorded. |
 | **Timeline** | `./sheepdog timeline` shows where each card spent its time. |
 | **Truly bilingual** | English and Turkish roles, agents, skills, messages, docs, trial project and example cards. Cards and states work in either language. |
-| **Tested everywhere** | A 289-check smoke test runs on Ubuntu, macOS (including its stock bash 3.2) and Windows (Git Bash) on every push. |
+| **Tested everywhere** | A 299-check smoke test runs on Ubuntu, macOS (including its stock bash 3.2) and Windows (Git Bash) on every push. |
 
 ## Try it in 10 minutes
 
@@ -155,6 +155,7 @@ One front door over the scripts. None of it spends model tokens.
 ./sheepdog start 001-fix-login [role]     ./sheepdog set 001-fix-login ready
 ./sheepdog rounds 001-fix-login           ./sheepdog timeline [card]    time spent per state
 ./sheepdog policy [ask|auto]              persistent merge policy ("ask": you approve every merge)
+./sheepdog approve 001-fix-login          record your approval to merge a card (needed while the policy is "ask")
 ./sheepdog lang [en|tr]                   language of messages, roles, agent and templates
 ```
 

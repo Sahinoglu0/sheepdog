@@ -115,6 +115,8 @@ jobs/<kart>/        card.md + result.md / review.md / verification.md / merge.md
 .history            eklemeli durum kaydı: "epoch kart durum"                         (git'e girmez)
 .seals              kanıt dosyalarının SHA-256 defteri                                (git'e girmez)
 .policy             birleştirme politikası: ask | auto                                (git'e girmez)
+.approvals          birleştirme onaylarınız ("epoch kart"), `./sheepdog approve` yazar   (git'e girmez)
+CLAUDE.md           merkezde açılan her oturumu (terminal ya da masaüstü uygulaması) yönetici kurallarına bağlar
 .lang               kalıcı dil: en | tr                                               (git'e girmez)
 trial/              deneme seti: setup.sh, README, en/ ve tr/ projeler ve kartlar
 examples/           on örnek kart (en/ ve tr/) ve kart yazma rehberi
