@@ -1,6 +1,6 @@
 # Değişiklik günlüğü
 
-## v0.4: ekip sürümü (fornhere/super-ajan v0.3 çatalı)
+## v0.4: ekip sürümü
 
 - `ana-dal.sh`: ana dal adı otomatik bulunur (origin/HEAD, çıkış yapılmış dal, main, master). `birlestirme-hazirla.sh` ve birleştirici artık `main` varsaymaz.
 - `tur.sh`: geri gönderme turu `.gecmis` kaydından sayılır; üç tur sınırı süper ajanın hafızasına bağlı kalmaz.

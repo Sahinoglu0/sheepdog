@@ -11,7 +11,6 @@
   <img src="https://img.shields.io/badge/Claude%20Code-%E2%89%A5%202.1.293-b45309?style=flat-square&labelColor=1f2328" alt="Claude Code 2.1.293 veya sonrası">
   <img src="https://img.shields.io/badge/Linux%20%C2%B7%20macOS%20%C2%B7%20Windows-test%20ediliyor-b45309?style=flat-square&labelColor=1f2328" alt="Linux, macOS ve Windows">
   <a href="LICENSE"><img src="https://img.shields.io/badge/lisans-MIT-b45309?style=flat-square&labelColor=1f2328" alt="MIT lisansı"></a>
-  <a href="https://youtube.com/@fornyapayzeka"><img src="https://img.shields.io/badge/YouTube-Forn%20AI-b45309?style=flat-square&logo=youtube&logoColor=white&labelColor=1f2328" alt="YouTube: Forn AI"></a>
 </p>
 
 <p align="center"><b>Pencere pencere gezmeyi bırakın. Tek bir ajanla konuşun, gerisini o takip etsin.</b></p>
@@ -185,11 +184,9 @@ Hayır. Bilgisayarınız açıkken çalışır.
 
 ## Kaynak ve lisans
 
-Bu depo [fornhere/super-ajan](https://github.com/fornhere/super-ajan) v0.3 sürümünün (MIT) ekibimize özel çatalıdır; değişiklikler [CHANGELOG.md](CHANGELOG.md) dosyasında.
-
 Fikir DeepSeek'in süper ajan yaklaşımından geliyor: [deepseek-ai/dsh-superagent-prototype](https://github.com/deepseek-ai/dsh-superagent-prototype). Bu kit onun kodu değildir; fikrin Claude Code'a uyarlanmış, farklı projelere yayılmış hâlidir.
 
-[MIT lisansı](LICENSE) · [Sürüm notları](CHANGELOG.md) · [Forn AI, YouTube](https://youtube.com/@fornyapayzeka)
+[MIT lisansı](LICENSE) · [Sürüm notları](CHANGELOG.md)
 
 <details>
 <summary><b>English summary</b></summary>
