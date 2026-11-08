@@ -238,7 +238,7 @@ Report security problems as described in [SECURITY.md](SECURITY.md).
 |---|---|
 | Linux | Run end to end with real jobs; scripts smoke-tested on every push |
 | macOS | Scripts smoke-tested on every push (including macOS's own bash 3.2); not yet tried with real sessions |
-| Windows | Run the commands in Git Bash. Scripts smoke-tested on every push; not yet tried with real sessions |
+| Windows | Run the commands in Git Bash. Run end to end with real sessions (the trial kit: three cards through review, verification and merge); scripts smoke-tested on every push. If Git is installed in a non-standard place, set `CLAUDE_CODE_GIT_BASH_PATH` to its `bash.exe`, otherwise the manager session has no shell (`./sheepdog doctor` warns about it) |
 
 ## FAQ
 

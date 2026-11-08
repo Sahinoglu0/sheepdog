@@ -50,6 +50,13 @@ else
   fi
 fi
 
+# Windows: Claude Code needs Git Bash for its shell tool. If Git lives in a non-standard place the manager
+# session starts WITHOUT a shell and cannot run any script (seen in a real trial run).
+case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*)
+  if [ -n "${CLAUDE_CODE_GIT_BASH_PATH:-}" ]; then tamam "CLAUDE_CODE_GIT_BASH_PATH $(T ayarlı set): $CLAUDE_CODE_GIT_BASH_PATH"
+  else uyari "$(T "Windows: CLAUDE_CODE_GIT_BASH_PATH ayarlı değil. Git standart yerde değilse (ör. başka bir programın içinde) Sheepdog oturumu kabuk aracı olmadan açılır. Örnek: export CLAUDE_CODE_GIT_BASH_PATH='C:\\yol\\git\\bin\\bash.exe'" "Windows: CLAUDE_CODE_GIT_BASH_PATH is not set. If Git is not in its standard place (for example bundled inside another program) the Sheepdog session starts without a shell tool. Example: export CLAUDE_CODE_GIT_BASH_PATH='C:\\path\\to\\git\\bin\\bash.exe'")"; fi ;;
+esac
+
 if [ "$#" -gt 0 ]; then
   if [ -z "$PY" ] || ! command -v git >/dev/null 2>&1; then
     uyari "$(T "güven onayı kontrol edilemedi: python ve git gerekli" "cannot check trust approval: python and git are required")"

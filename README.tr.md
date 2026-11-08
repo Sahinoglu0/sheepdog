@@ -242,7 +242,7 @@ Güvenlik sorunlarını [SECURITY.tr.md](SECURITY.tr.md) içinde anlatıldığı
 |---|---|
 | Linux | Gerçek işlerle uçtan uca denendi; betikler her push'ta duman testinden geçiyor |
 | macOS | Betikler her push'ta duman testinden geçiyor (macOS'un kendi bash 3.2 sürümü dahil); gerçek oturumlarla henüz denenmedi |
-| Windows | Komutları Git Bash'te çalıştırın. Betikler her push'ta duman testinden geçiyor; gerçek oturumlarla henüz denenmedi |
+| Windows | Komutları Git Bash'te çalıştırın. Gerçek oturumlarla uçtan uca denendi (deneme seti: üç kart inceleme, doğrulama ve birleştirmeden geçti); betikler her push'ta duman testinden geçiyor. Git standart olmayan bir yere kurulduysa `CLAUDE_CODE_GIT_BASH_PATH` değişkenini `bash.exe` yoluna ayarlayın, yoksa yönetici oturumunda kabuk olmaz (`./sheepdog doctor` bunu uyarır) |
 
 ## Sık sorulanlar
 
