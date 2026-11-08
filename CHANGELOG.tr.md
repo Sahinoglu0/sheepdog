@@ -2,6 +2,7 @@
 
 ## v0.4: Sheepdog
 
+- Aşama kapıları: `state.sh` inceleme, doğrulama ve birleştirmeyi atlamayı reddeder (`seal.sh verdict`; insanlar `SHEEPDOG_GATE=off` kullanabilir). Masaüstü uygulamasındaki gerçek bir deneme koşusunda yöneticinin kartları işçiden hemen sonra `done` yapması üzerine eklendi. İşçi istemlerine Windows'ta `EnterWorktree` hatası için elle worktree yedeği eklendi.
 - `seal.sh`: kanıt dosyaları (`result.md`, `review.md`, `verification.md`, `merge.md`) için kurcalama tespiti. Yönetici rol bildirdiğinde her birini SHA-256 ile mühürler; doğrulayıcı, birleştirici ve `done` öncesi kontrol eder; sahte ya da değiştirilmiş kararda kartı `stuck` yapar.
 - Lisans Apache-2.0; `NOTICE` içinde dostça bir kredi ricası (ek koşul değil) ve `CITATION.cff`.
 
@@ -15,7 +16,7 @@
 - Oturumlara yalnız kendi kart klasörü verilir; model ve efor değerleri doğrulanır; `~/` proje yolları açılır.
 - `watchdog.sh`: art arda üç `claude agents` hatasında rapor verir. `board.sh`: `Bekliyor:` birden çok kartı kabul eder.
 - Tamamen yeni görseller: `tools/build_assets.py` ile üretilen animasyonlu SVG'ler (afiş, akış, yaşam döngüsü, konuşma, mimari, güvenlik; iki dilde).
-- Duman testi 270 kontrole çıktı. Bağımsız incelemeden sonra düzeltmeler: `main-branch.sh` açık özellik dalını ana dal sanmaz; `watchdog.sh` beklenmedik JSON'da çökmez; `state.sh` yalnız ilk durum satırını değiştirir ve CRLF'i korur; büyük harfli durumlar kabul edilir; model/efor `-` ile başlayamaz; biten kart için işçi yeniden başlatılmaz; `incelemeci` takma adı çalışır; güven modeli anlatımı `--add-dir`'in yaptığını abartmaz.
+- Duman testi 289 kontrole çıktı. Bağımsız incelemeden sonra düzeltmeler: `main-branch.sh` açık özellik dalını ana dal sanmaz; `watchdog.sh` beklenmedik JSON'da çökmez; `state.sh` yalnız ilk durum satırını değiştirir ve CRLF'i korur; büyük harfli durumlar kabul edilir; model/efor `-` ile başlayamaz; biten kart için işçi yeniden başlatılmaz; `incelemeci` takma adı çalışır; güven modeli anlatımı `--add-dir`'in yaptığını abartmaz.
 
 ## v0.3: kolay kullanım
 

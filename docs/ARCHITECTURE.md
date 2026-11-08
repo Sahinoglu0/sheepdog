@@ -74,6 +74,20 @@ stateDiagram-v2
 5. No push, PR, force, reset or rebase. The worker's branch and worktree are never deleted.
 6. `merge.md` records the branch, the old and new main commit, and every gate's command and result.
 
+## Stage gates
+
+`state.sh` refuses a transition when the stage before it has no sealed, passing verdict (`seal.sh verdict`):
+
+| Move to | Requires |
+|---|---|
+| `review` | the worker's `result.md`, sealed |
+| `verify` | the reviewer's `review.md`, sealed, last line `RESULT: PASSED` |
+| `merge-queue`, `merging` | review and the verifier's `verification.md`, sealed and passed |
+| `done` (code) | review, verification and the merger's `merge.md`, sealed and passed |
+| `done` (content) | review, sealed and passed |
+
+Moving back (`working`, `stuck`, `draft`, `ready`) is never gated. A human can bypass with `SHEEPDOG_GATE=off`. This exists because a real trial run showed a manager marking cards `done` straight after the worker.
+
 ## Trust model
 
 | Boundary | How it is enforced | Strength |

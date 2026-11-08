@@ -74,6 +74,20 @@ stateDiagram-v2
 5. Push, PR, force, reset ve rebase yok. İşçinin dalı ve worktree'si asla silinmez.
 6. `merge.md` dalı, eski ve yeni ana dal commit'ini ve her kapının komutu ile sonucunu kaydeder.
 
+## Aşama kapıları
+
+`state.sh`, kendinden önceki aşamanın mühürlü ve geçmiş bir kararı yoksa (`seal.sh verdict`) geçişi reddeder:
+
+| Şuraya geçiş | Gerektirir |
+|---|---|
+| `review` | işçinin mühürlü `result.md` dosyası |
+| `verify` | incelemecinin mühürlü `review.md` dosyası, son satır `SONUÇ: GEÇTİ` (ya da `RESULT: PASSED`) |
+| `merge-queue`, `merging` | inceleme ve doğrulayıcının mühürlü, geçmiş `verification.md` dosyası |
+| `done` (kod) | inceleme, doğrulama ve birleştiricinin mühürlü, geçmiş `merge.md` dosyası |
+| `done` (içerik) | mühürlü ve geçmiş inceleme |
+
+Geriye dönüş (`working`, `stuck`, `draft`, `ready`) asla kapıya takılmaz. Bir insan `SHEEPDOG_GATE=off` ile aşabilir. Gerçek bir deneme koşusunda yöneticinin kartları işçiden hemen sonra `done` yaptığı görüldüğü için eklendi.
+
 ## Güven modeli
 
 | Sınır | Nasıl sağlanır | Güç |

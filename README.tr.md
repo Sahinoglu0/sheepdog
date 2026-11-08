@@ -39,11 +39,12 @@ Sheepdog bu takibi sizden alır. Siz yalnızca **Sheepdog** ile konuşursunuz. O
 | **Yargı gerekmeyen yerde betik** | Pano, gözcü ve birleştirme provası düz betiklerdir. Sıfır model harcar. |
 | **Aynı anda çok proje** | İşler ait oldukları projede yürür: bir depoda hata düzeltme, başkasında araştırma, üçüncüsünde özellik. |
 | **Kart bağımlılıkları** | `Bekliyor: 001-a,002-b` yazarsanız kart, beklediği her şey bitince başlar. |
+| **Aşamalar kodda uygulanır** | `state.sh`, o aşamanın kararı yoksa, mühürlü değilse ya da geçmediyse kartı inceleme, doğrulama ya da birleştirmenin ötesine taşımayı reddeder. Yönetici atlayamaz; yalnız bir insan atlayabilir (`SHEEPDOG_GATE=off`). |
 | **Sınırlar kodda uygulanır** | İnceleme turları ajanın hafızasından değil, yalnız eklenen bir kayıttan (`rounds.sh`) sayılır. |
 | **Kalıcı birleştirme politikası** | `./sheepdog policy ask` her birleştirmeyi onayınıza bağlar; yepyeni bir oturumda bile. |
 | **Zaman çizelgesi** | `./sheepdog timeline` her kartın zamanını nerede harcadığını gösterir. |
 | **Gerçekten iki dilli** | İngilizce ve Türkçe roller, ajanlar, yetenekler, mesajlar, belgeler, deneme projesi ve örnek kartlar. Kartlar ve durumlar iki dilde de çalışır. |
-| **Her yerde test edilir** | 270 kontrollük duman testi her push'ta Ubuntu, macOS (kendi bash 3.2 sürümü dahil) ve Windows'ta (Git Bash) koşar. |
+| **Her yerde test edilir** | 289 kontrollük duman testi her push'ta Ubuntu, macOS (kendi bash 3.2 sürümü dahil) ve Windows'ta (Git Bash) koşar. |
 
 ## 10 dakikada deneyin
 

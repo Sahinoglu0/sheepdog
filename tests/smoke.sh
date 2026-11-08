@@ -12,6 +12,7 @@ kod(){ local b="$1" ad="$2"; shift 2; local o c; o="$("$@" 2>&1)"; c=$?
 icerir(){ if printf '%s\n' "$SON" | grep -qF -- "$2"; then gecti "$1"; else kaldi "$1 (çıktıda yok: $2)" "$SON"; fi; }
 icermez(){ if printf '%s\n' "$SON" | grep -qF -- "$2"; then kaldi "$1 (çıktıda olmamalı: $2)" "$SON"; else gecti "$1"; fi; }
 
+export SHEEPDOG_GATE=off   # the stage gates are tested explicitly near the end
 export SHEEPDOG_LANG=tr   # existing checks assert the Turkish messages; the English ones are tested at the end
 tar -C "$KOK" --exclude=./.git --exclude=./.claude -cf - . | tar -C "$T" -xf -
 cd "$T" || exit 1
@@ -417,6 +418,37 @@ kod 2 "usage error" ./seal.sh bogus jobs/040-seal
 kod 0 "front door seal" ./sheepdog seal check jobs/040-seal
 rm -f jobs/040-seal/result.md
 kod 1 "check detects a deleted sealed file" ./seal.sh check jobs/040-seal
+
+echo "stage gates (state.sh cannot skip review, verification or the merge)"
+G="env SHEEPDOG_GATE=on"
+mkdir -p jobs/050-gate; printf '# 050\n\nStatus: working\nType: code\nProject: %s\n' "$T" > jobs/050-gate/card.md
+kod 1 "gate: review needs a sealed result" $G ./state.sh jobs/050-gate review
+icerir "gate message" "STAGE SKIPPED"
+echo "done" > jobs/050-gate/result.md; ./seal.sh done jobs/050-gate worker >/dev/null
+kod 0 "gate: review allowed after the worker's result is sealed" $G ./state.sh jobs/050-gate review
+kod 1 "gate: verify needs a reviewer verdict" $G ./state.sh jobs/050-gate verify
+printf 'looks bad\nRESULT: FAILED\n' > jobs/050-gate/review.md; ./seal.sh done jobs/050-gate reviewer >/dev/null
+kod 1 "gate: verify refused after a failed review" $G ./state.sh jobs/050-gate verify
+icerir "NOT PASSED" "NOT PASSED"
+printf 'fixed\nRESULT: PASSED\n' > jobs/050-gate/review.md; ./seal.sh done jobs/050-gate reviewer >/dev/null
+kod 0 "gate: verify allowed after a passed, sealed review" $G ./state.sh jobs/050-gate verify
+kod 1 "gate: merge-queue needs a verifier verdict" $G ./state.sh jobs/050-gate merge-queue
+kod 1 "gate: done is refused for a code card with no merge" $G ./state.sh jobs/050-gate done
+printf 'ok\nSONUÇ: GEÇTİ\n' > jobs/050-gate/verification.md; ./seal.sh done jobs/050-gate verifier >/dev/null
+kod 0 "gate: merge-queue allowed (Turkish verdict marker accepted)" $G ./state.sh jobs/050-gate merge-queue
+kod 0 "gate: merging allowed" $G ./state.sh jobs/050-gate merging
+kod 1 "gate: done needs the merger's verdict" $G ./state.sh jobs/050-gate done
+printf 'merged\nRESULT: PASSED\n' > jobs/050-gate/merge.md; ./seal.sh done jobs/050-gate merger >/dev/null
+kod 0 "gate: done allowed after the merger's sealed verdict" $G ./state.sh jobs/050-gate done
+echo "tampered" >> jobs/050-gate/review.md
+kod 1 "gate: an edited verdict blocks the next transition" $G ./state.sh jobs/050-gate merging
+icerir "tamper reported" "TAMPER"
+kod 0 "gate: going back to working is never gated" $G ./state.sh jobs/050-gate working
+kod 0 "gate: a human can bypass with SHEEPDOG_GATE=off" env SHEEPDOG_GATE=off ./state.sh jobs/050-gate done
+mkdir -p jobs/051-content; printf '# 051\n\nStatus: review\nType: content\nProject: %s\n' "$T" > jobs/051-content/card.md
+kod 1 "gate: content card cannot finish without review" $G ./state.sh jobs/051-content done
+printf 'RESULT: PASSED\n' > jobs/051-content/review.md; ./seal.sh done jobs/051-content reviewer >/dev/null
+kod 0 "gate: content card finishes after a passed review (no merge needed)" $G ./state.sh jobs/051-content done
 
 echo
 echo "result: $OK passed, $HATA failed"

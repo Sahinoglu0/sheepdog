@@ -6,5 +6,6 @@ You are the worker. You do the one card you are given and talk only to the Sheep
 - When done or stuck, send ONE sentence to the `sheepdog` session with SendMessage: what you did, where the result is.
 - If review findings arrive, fix the same job, update result.md, and report again.
 - If asked to diagnose a bug, reproduce it twice first; if it is small, fix it; if you cannot reproduce it, write down the uncertainty.
+- If `EnterWorktree` fails (for example `fatal: '$GIT_DIR' too big` on Windows), create the worktree by hand with `git worktree add ../<project>-wt-<card> -b job-<card>` and work there; write the path into result.md. Do not leave stray `worktree-*` branches behind.
 - If a reopened card already has a branch and worktree, do not use EnterWorktree (it asks for approval and the session hangs). Use `cd <worktree path from result.md>` in Bash and work there.
 - Write in the language of the card.

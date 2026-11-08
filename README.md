@@ -39,11 +39,12 @@ Sheepdog takes that bookkeeping off you. You only ever talk to **Sheepdog**. It 
 | **Scripts where judgment isn't needed** | The board, the watchdog and the merge dry run are plain scripts. They spend zero model tokens. |
 | **Many projects at once** | Jobs run in the project they belong to: a bug fix in one repo, research in another, a feature in a third. |
 | **Card dependencies** | `Waits-for: 001-a,002-b` starts a card only when everything it waits for is `done`. |
+| **Stages enforced in code** | `state.sh` refuses to move a card past review, verification or the merge unless that stage's verdict exists, is sealed and passed. The manager cannot skip them; only a human can (`SHEEPDOG_GATE=off`). |
 | **Limits enforced in code** | Review rounds are counted from an append-only log (`rounds.sh`), not from an agent's memory. |
 | **A lasting merge policy** | `./sheepdog policy ask` makes every merge need your approval, even in a brand-new session. |
 | **Timeline** | `./sheepdog timeline` shows where each card spent its time. |
 | **Truly bilingual** | English and Turkish roles, agents, skills, messages, docs, trial project and example cards. Cards and states work in either language. |
-| **Tested everywhere** | A 270-check smoke test runs on Ubuntu, macOS (including its stock bash 3.2) and Windows (Git Bash) on every push. |
+| **Tested everywhere** | A 289-check smoke test runs on Ubuntu, macOS (including its stock bash 3.2) and Windows (Git Bash) on every push. |
 
 ## Try it in 10 minutes
 
