@@ -16,7 +16,9 @@ Son komut `İade alındı. Gecikme: 3 gün` yazar. Kayıtlar varsayılan olarak
 `kitaplik.json` içindedir; başka dosya için komuttan önce `--veri kayit.json` verin.
 Tarihler `YYYY-AA-GG` biçimindedir; son teslim günü gecikmiş sayılmaz.
 
-## Deneme için bırakılan işler
+## Denemenin başlangıç durumu
+
+> Bu bölüm projeyi deneme kartları çalışmadan **önceki** hâliyle anlatır. 901 ve 902 birleştikten sonra tarihe karışır: gecikme hatası düzelmiştir ve `gecikenler` komutu vardır. 903 kartının işçisinin bunu fark edip bildirmesi beklenir.
 
 Başlangıçtaki 8 test geçer. Erken iadeyi kapsamadıkları için aşağıdaki gerçek
 hesaplama hatasını yakalamazlar. İade işlemiyle aynı hesaplamayı kullanan,

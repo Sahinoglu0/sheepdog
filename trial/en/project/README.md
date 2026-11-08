@@ -14,7 +14,9 @@ python3 -m library return 1 --date 2026-01-18
 The last command prints `Returned. Late: 3 days`. Records live in `library.json` by default; give `--data records.json` before the command for another file.
 Dates are `YYYY-MM-DD`; the due day itself is not late.
 
-## Jobs left for the trial
+## Starting state of the trial
+
+> This section describes the project **before** the trial cards run. Once cards 901 and 902 are merged it is history: the lateness bug is fixed and the `overdue` command exists. Card 903's worker is expected to notice that and report it.
 
 The 8 starting tests pass. They do not cover early returns, so they miss the real calculation bug below. See it with a single command that uses the same calculation as returning and creates no file:
 
